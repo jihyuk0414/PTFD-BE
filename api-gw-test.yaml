@@ -8,6 +8,8 @@ spec:
       image: contest16-api-gateway-backend.kr.ncr.ntruss.com/api-gateway:latest
       ports:
         - containerPort: 7777
+      imagePullSecrets:
+        - name: regcred
       
 ---
 apiVersion: v1
