@@ -1,0 +1,23 @@
+spring:
+  cloud:
+    kubernetes:
+      config:
+        enabled: true
+        sources:
+          - name: apigw-config
+
+
+#spring:
+#  application:
+#    name: apigw
+  #profiles:
+  #  active: local
+#  config:
+#    import: ""optional:configserver:http://KPaaS-config-service-1:8071""
+      #optional:configserver:http://localhost:8071
+
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: ['refresh','beans','env']
