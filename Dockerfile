@@ -1,4 +1,4 @@
-FROM openjdk:17-oracle
+FROM openjdk:17-jdk
 WORKDIR /app
 ARG JAR_FILE=build/Api-gateway-0.0.1-SNAPSHOT.jar
 COPY ${JAR_FILE} app.jar
