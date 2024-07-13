@@ -54,6 +54,10 @@ jar {
 }
 
 dependencies {
+    //추가
+    implementation 'com.querydsl:querydsl-jpa'
+    //추가
+    annotationProcessor 'com.querydsl:querydsl-apt:5.0.0'
     testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     // Spring 및 기타 의존성
