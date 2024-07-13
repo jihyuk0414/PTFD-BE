@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
     - name: api-gateway-container
-      image: openjdk:16
+      image: contest16-api-gateway-backend.kr.ncr.ntruss.com/api-gateway:latest
       ports:
         - containerPort: 7777
       
