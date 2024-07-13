@@ -66,8 +66,9 @@ tasks.named('test') {
 }
 
 bootJar {
+    enabled = true
     // 최상위 루트 폴더에 저장할 경로 설정
-    destinationDirectory = file("$rootDir/")
+//    destinationDirectory = file("$rootDir/")
 }
 jar {
     enabled = true
