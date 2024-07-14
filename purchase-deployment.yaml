@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: purchase-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: purchase-service
+  template:
+    metadata:
+      labels:
+        app: purchase-service
+    spec:
+      containers:
+        - name: purchase-service
+          image: contest16-purchase.kr.ncr.ntruss.com/purchase:latest
+          ports:
+            - containerPort: 6080
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config/application.yml
+              subPath: application.yml
+          env:
+            - name: SPRING_CONFIG_LOCATION
+              value: "optional:file:/config/application.yml"
+      volumes:
+        - name: config-volume
+          configMap:
+            name: purchase-config
+            items:
+              - key: application.yml
+                path: application.yml
