@@ -15,7 +15,7 @@ spec:
       containers:
         - name: member-service
           image: contest16-member.kr.ncr.ntruss.com/member:latest
-          ports:g
+          ports:
             - containerPort: 8081
           volumeMounts:
             - name: config-volume
