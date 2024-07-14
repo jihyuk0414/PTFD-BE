@@ -1,0 +1,20 @@
+spring:
+  # H2 Setting Info (H2 Console에 접속하기 위한 설정정보 입력)
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:~/test
+    username: sa
+    password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+    logging.level:
+      org.hibernate.SQL: debug
