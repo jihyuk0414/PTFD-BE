@@ -61,7 +61,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'com.mysql:mysql-connector-j:8.2.0'
 //    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-    implementation 'org.springframework.cloud:spring-cloud-config-client'
+//    implementation 'org.springframework.cloud:spring-cloud-config-client'
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     implementation group: 'com.auth0', name: 'java-jwt', version: '3.18.3'
