@@ -16,7 +16,6 @@ public class AspectTest {
 
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-
         Object result = joinPoint.proceed();
 
         stopWatch.stop();
