@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: api-gateway
-          image: contest16-api-gateway-backend.kr.ncr.ntruss.com:latest
+          image: contest16-api-gateway-backend.kr.ncr.ntruss.com/api-gateway:latest
           ports:
             - containerPort: 8888
           volumeMounts:
