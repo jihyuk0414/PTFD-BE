@@ -31,7 +31,7 @@ public class PaymentService {
     //이 portonewebclient는 docker로 올릴떄도 변경하지 않아도 됩니다.
 
 //    private final WebClient webClientforMember = WebClient.builder().baseUrl("http://localhost:8080/member").build() ;
-    private final WebClient webClientforMember = WebClient.builder().baseUrl("member-service").build() ;
+    private final WebClient webClientforMember = WebClient.builder().baseUrl("http://member-service/member").build() ;
 
     //이 webclientformember는 docker container화 과정에서 변경해주어야 합니다.
 

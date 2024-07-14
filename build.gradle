@@ -86,7 +86,7 @@ dependencies {
 
 bootJar {
     enabled = true
-//    archiveFileName = 'Api-gateway-0.0.1-SNAPSHOT.jar' // 생성될 JAR 파일명 설정
+    archiveFileName = 'Purchase-0.0.1-SNAPSHOT.jar' // 생성될 JAR 파일명 설정
     destinationDirectory = file("$buildDir")
 }
 //jar {
