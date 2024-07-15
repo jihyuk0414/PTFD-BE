@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: post-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: post-service
+  template:
+    metadata:
+      labels:
+        app: post-service
+    spec:
+      containers:
+        - name: post-service
+          image: contest16-post.kr.ncr.ntruss.com/post:latest
+          ports:
+            - containerPort: 7080
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config/application.yml
+              subPath: application.yml
+          env:
+            - name: SPRING_CONFIG_LOCATION
+              value: "optional:file:/config/application.yml"
+      volumes:
+        - name: config-volume
+          configMap:
+            name: post-config
+            items:
+              - key: application.yml
+                path: application.yml
