@@ -38,7 +38,6 @@ dependencies {
 
     // Spring Boot 및 Spring Cloud 의존성
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
     implementation 'org.springframework.cloud:spring-cloud-starter-kubernetes-client-config'
     
 
@@ -65,7 +64,7 @@ dependencies {
     implementation 'jakarta.servlet:jakarta.servlet-api:5.0.0'
     testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
-  	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+  	implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.boot:spring-boot-starter-security'
