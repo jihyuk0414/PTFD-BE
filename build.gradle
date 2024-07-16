@@ -30,8 +30,7 @@ java {
 
 dependencies {
     // QueryDSL 관련 의존성
-    implementation 'com.querydsl:querydsl-jpa'
-    annotationProcessor 'com.querydsl:querydsl-apt:5.0.0'
+
 
 //    // 테스트 관련 의존성
 //    testImplementation platform('org.junit:junit-bom:5.9.1')
