@@ -74,8 +74,8 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-core:2.16.1'
 //    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 //    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
-//    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
-//    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 //    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
     implementation 'com.amazonaws:aws-java-sdk-s3:1.12.638'
  
