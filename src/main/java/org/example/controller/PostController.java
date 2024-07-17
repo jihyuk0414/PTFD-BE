@@ -182,7 +182,7 @@ public class PostController {
 //        return ResponseEntity.ok(searchService.searchPost(searchDto.getPost_name(), page-1));
 //    }
 
-    @GetMapping("/search")
+    @PostMapping("/search")
     public ResponseEntity<Page<PostWishListCountDto>> searchFullWord
             (@RequestBody SearchDto searchDto,
              @RequestParam(name = "page",required = false,defaultValue = "1") int page,
