@@ -54,6 +54,8 @@ dependencyManagement {
     }
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
+bootJar {
+    enabled = true
+    archiveFileName = 'Member-0.0.1-SNAPSHOT.jar'
+    destinationDirectory = file("$buildDir")
 }
