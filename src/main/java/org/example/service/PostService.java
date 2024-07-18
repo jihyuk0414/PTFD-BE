@@ -90,9 +90,8 @@ public class PostService {
             else {
                 return new SuccessRes(Post.getPostName(), "등록한 이메일과 일치하지 않습니다.");
             }
-
-
     }
+
     @TimeCheck
     @Transactional
     public PostDetailRes findPostDetail(Long postId,String email)

@@ -29,23 +29,12 @@ public class SearchService {
                 .toList();
 
     }
-//    @TimeCheck
-//    public Page<PostDto> searchPost(String postName,int page){
-//        Pageable pageable = PageRequest.of(page, 9, Sort.by(Sort.Direction.ASC, "postName"));
-//        Page<Post> Posts=postRepository.findByPostNameAndStateOrderByCreateAtDesc(postName,pageable);
-//        List<PostDto> p  = Posts.stream().map(PostDto::ToDto).toList();
-//        log.info(p.toString());
-//        return new PageImpl<>(p);
-//    }
 
     @TimeCheck
     public Page<PostWishListCountDto> searchPost(String postName, int page, int category_id, char gender, String location) {
         int pageSize = (page == 0 ? 16 : 8);
         Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Sort.Direction.ASC, "postName"));
-
         List<PostWishListCountDto> resultList = findMorePosts(postName, category_id, location, pageable);
-
-        // gender가 'X'가 아닌 경우 필터링 ! msa끼리 통신으로 가져오기
         if (gender != 'X') {
             List<String> emaillist = memberFeign.getEmailListByGender(gender);
             log.info(emaillist.toString());
@@ -55,7 +44,6 @@ public class SearchService {
         }
         log.info(resultList.toString());
         log.info(String.valueOf(resultList.size()));
-
         int start ;
         int end ;
         if (page == 0)
@@ -67,10 +55,7 @@ public class SearchService {
             start = 16 + ( (page -1)*pageSize);
             end = Math.min(start+pageSize-1, resultList.size());
         } // 만든, page 번호 잘라내기 입니다.
-
-
         List<PostWishListCountDto> pageContent = resultList.subList(start, end);
-
         return new PageImpl<>(pageContent, PageRequest.of(page, pageSize), resultList.size());
     }
 

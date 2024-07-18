@@ -20,15 +20,10 @@ public class PostDto {
     private String image_post;
     private String post_info;
     private int total_number;
-    float f = 0.2f;
-
     private int state;
-
     private int category_id;
-
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate start_at;
-
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate end_at;
     private boolean like=false;

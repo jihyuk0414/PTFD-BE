@@ -4,15 +4,8 @@ package org.example.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dto.*;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.post.PostDetailRes;
 import org.example.dto.post.PostDto;
@@ -41,18 +34,12 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/post")
-@Tag(name ="상품 게시판" , description = "상품 관련 API")
 public class PostController {
     private final PostService postService;
     private final WishListService wishListService;
     private final SearchService searchService;
     private final MailService mailService;
     // 게시글 작성 - email 필요
-    @Operation(summary = "상품 게시글 작성")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "상품 게시글 작성 성공"),
-            @ApiResponse(responseCode = "400", description = "상품 게시글 작성 중 문제 발생")
-    })
 
     @PostMapping("/{email}")
     public ResponseEntity<SuccessRes> savePost(@PathVariable("email") String email,
@@ -63,30 +50,12 @@ public class PostController {
         return ResponseEntity.ok(postService.addPost(PostDto,email,img_post));
     }
 
-    @Operation(summary = "상품 게시글 삭제")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "상품 게시글 삭제 성공"),
-            @ApiResponse(responseCode = "404", description = "NULL 관련 문제 발생"),
-            @ApiResponse(responseCode = "400", description = "상품 게시글 삭정 중 문제 발생"),
-            @ApiResponse(responseCode = "403", description = "접근자와 게시글 작성자가 다릅니다")
-    })
-
     @DeleteMapping("/{post_id}/{email}")
     public ResponseEntity<SuccessRes> deletePost(@PathVariable("email") String email, @PathVariable("post_id") Long postId) throws IOException {
         return ResponseEntity.ok(postService.deletePost(postId,email));
     }
 
     // 게시글 수정 , email 필요, email 활용 검증 필요
-    @Operation(summary = "상품 게시글 수정")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "상품 게시글 변경 성공"),
-            @ApiResponse(responseCode = "404", description = "NULL 관련 문제 발생"),
-            @ApiResponse(responseCode = "400", description = "상품 게시글 변경 중 문제 발생"),
-            @ApiResponse(responseCode = "403", description = "접근자와 게시글 작성자가 다릅니다")
-    })
-    @Parameters(
-            @Parameter(name = "상품 객체", description = "state,Post_id,profileImage 제외한 나머지 속성들")
-    )
     @PutMapping("/{post_id}/{email}")
     public ResponseEntity<SuccessRes> changePost(@PathVariable("email") String email,
                                            @PathVariable("post_id") Long postId,
@@ -94,68 +63,32 @@ public class PostController {
         return ResponseEntity.ok(postService.updatePost(postId,postDto,email));
     }
     // 페이징 형태로 변경
-    @Operation(summary = "페이지 별 조회")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "기본 화면 page 조회 성공"),
-            @ApiResponse(responseCode = "400", description = "상품 게시글 조회 중 문제 발생")
-    })
-
     @GetMapping("/page")
     public ResponseEntity<Page<PostWishListCountDto>> getPostPage(@RequestParam(value = "page",required = false, defaultValue = "1") int page,
                                                                   @RequestParam(value = "nick_name",required = false) String nick_name) {
         return ResponseEntity.ok(postService.findPostPage(page-1,nick_name));
     }
 
-    @Operation(summary = "사용자 상세 페이지 등록 상품 조회")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "기본 화면 page 조회 성공"),
-            @ApiResponse(responseCode = "400", description = "상품 게시글 조회 중 문제 발생")
-    })
-    @Parameters({
-            @Parameter(name = "nick_name",description = "조회할 상품을 등록한 사용자"),
-            @Parameter(name = "page",description = "요청 페이지")
-    })
     @GetMapping("/mypage")
     public ResponseEntity<Page<PostWishListCountDto>> getMyPostPage(@RequestParam(value = "page",required = false, defaultValue = "1") int page,@RequestParam("nick_name") String nickName) {
         return ResponseEntity.ok(postService.findMyPostPage(nickName,page-1));
     }
     //게시글 1개 검색
-    @Operation(summary = "상품 게시글 상세 조회")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "상품 게시글 조회 성공"),
-            @ApiResponse(responseCode = "404", description = "NULL 관련 문제 발생"),
-            @ApiResponse(responseCode = "400", description = "상품 게시글 조회 중 문제 발생")
-    })
     @GetMapping("/detail/{post_id}/{email}")
     public ResponseEntity<PostDetailRes> getPost(@PathVariable("post_id") Long postId, @PathVariable("email") String email) {
         return ResponseEntity.ok(postService.findPostDetail(postId,email));
     }
 
-    @Operation(
-            operationId = "like",
-            description = "좋아요 상품 등록 요청",
-            summary = "좋아요"
-    )
     @PostMapping("/like/{post_id}/{email}")
     public ResponseEntity<SuccessRes> uploadLike(@PathVariable("post_id") Long postId, @PathVariable("email") String email){
         return ResponseEntity.ok(wishListService.likeRegistration(email, postId));
     }
 
-    @Operation(
-            operationId = "like",
-            description = "좋아요 상품 조회 요청",
-            summary = "좋아요"
-    )
     @GetMapping("/profile/like/{nick_name}")
     public ResponseEntity<WishListDto> getLikePost(@PathVariable("nick_name") String nickName){
         return ResponseEntity.ok(wishListService.showLikePost(nickName));
     }
 
-    @Operation(
-            operationId = "like",
-            description = "좋아요 상품 삭제 요청",
-            summary = "좋아요"
-    )
     @DeleteMapping("/like/{post_id}/{email}")
     public ResponseEntity<SuccessRes> deleteLikePost( @PathVariable("post_id") Long postId, @PathVariable("email") String email){
         return ResponseEntity.ok(wishListService.delLikePost(email,postId));
@@ -191,6 +124,7 @@ public class PostController {
             @RequestParam(name = "location", required = false, defaultValue = "X") String location){
         return ResponseEntity.ok(searchService.searchPost(searchDto.getPost_name(), page-1,category_id, gender, location));
     }
+
     @PostMapping("/image")
     public PostForMessage getImage(@RequestParam("post_id") Long PostId){
         return postService.sendReservation(PostId);
