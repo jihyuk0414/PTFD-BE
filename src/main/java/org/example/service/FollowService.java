@@ -49,7 +49,6 @@ public class FollowService {
     @TimeCheck
     public FollowerDto getFollower(String nickName){
         return FollowerDto.builder().followers(followRepository.findFollower(nickName).stream().map(Member::toDto).toList()).build();
-
     }
 
     @TimeCheck
