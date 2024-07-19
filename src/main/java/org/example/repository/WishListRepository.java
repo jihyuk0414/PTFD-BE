@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface WishListRepository extends JpaRepository<WishList,Long> {
-    WishList findByEmail(String email);
+
     Optional<List<WishList>> findAllByEmail(String email);
     void deleteByEmailAndPost(String email,  Post post);
     void deleteByPostIn(List<Post> posts);
