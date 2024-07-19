@@ -15,15 +15,10 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    //금액부족시 purchas에서 바로 orderservice 저장
 
-
-    //금액이 있어서 저장만 해주면 될때
     public ResponseEntity<PaymentsRes> saveOrderRequstByMember(List<OrderSaveRequest> orderSaveRequestlist)
     {
-
         for (OrderSaveRequest orderSaveRequest : orderSaveRequestlist) {
-
             Order order = Order.builder()
                     .orderPrice(orderSaveRequest.getPost_point())
                     .orderAt(orderSaveRequest.getPurchase_at())
@@ -31,9 +26,7 @@ public class OrderService {
                     .sellerEmail(orderSaveRequest.getSeller())
                     .postId(orderSaveRequest.getPost_id())
                     .build();
-
             orderRepository.save(order);
-
         }
 
         PaymentsRes paymentsRes = PaymentsRes.builder()

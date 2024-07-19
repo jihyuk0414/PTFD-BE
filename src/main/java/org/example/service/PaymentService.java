@@ -42,7 +42,7 @@ public class PaymentService {
     //사이트 내부적으로 너무 빨리 갱신하여, 매번 가져오는 형태로 변경하였습니다.
     public Mono<String> getPortOneToken() {
         PortoneTokenRequest portoneTokenRequest = new PortoneTokenRequest("hM546ISQZ7vQ61xw0eTV0hk7GpRDS48Pr92uTBGbCc5z9u4iSC3DiMed3SHBohBQHWj8ZEPHJF6J8VNA");
-        //apisecret이 하드코딩되어있다.
+
         Mono<String> PortOneToken;
 
         PortOneToken = portOneWebClient
@@ -53,17 +53,12 @@ public class PaymentService {
                 .retrieve()
                 .bodyToMono(PortoneTokenResponse.class)
                 .map(PortoneTokenResponse::getAccessToken);
-
-//        log.info("PortOne 결제 검증 토큰 확보 및 초기화 완료") ;
-
         return PortOneToken;
 
     }
 
-    //받은 paymentId로, 결제 정보를 portone에서 받아오는 부 입니다.
     public Mono<PortOnePaymentRecords> getPaymentRecordsByPortOne(String paymentId, String portOneToken)
     {
-//        log.info("결제 정보 받아오기 (PortOne에서) 진행");
         return portOneWebClient.get()
                 .uri("/payments/{paymentId}", paymentId)
                 .header("Authorization", "Bearer " + portOneToken)
