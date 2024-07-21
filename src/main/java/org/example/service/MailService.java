@@ -49,7 +49,7 @@ public class MailService {
                         + "<img src='cid:image_reservation' style='width: 100px; height: auto;'/>"
                         + "<p>사이트를 이용해주셔서 감사합니다.</p>"
                         + "<p>대표 전화번호: 010-8852-6778</p>"
-                        + "<p>대표 이메일: darakbang0414@naver.com</p>"
+                        + "<p>대표 이메일: 5-stars16@naver.com</p>"
                         + "<p>행복한 PT 되시기를 기원하겠습니다.</p>"
                         + "</body></html>";
 
@@ -88,7 +88,7 @@ public class MailService {
                         + "<img src='cid:image_reservation' style='width: 100px; height: auto;'/>"
                         + "<p>사이트를 이용해주셔서 감사합니다.</p>"
                         + "<p>대표 전화번호: 010-8852-6778</p>"
-                        + "<p>대표 이메일: darakbang0414@naver.com</p>"
+                        + "<p>대표 이메일: 5-stars16@naver.com</p>"
                         + "<p>행복한 PT 되시기를 기원하겠습니다.</p>"
                         + "</body></html>";
 
