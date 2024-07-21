@@ -157,9 +157,11 @@ public class PostService {
     @Transactional
     public PostForMessage sendReservation(Long postId){
         log.info("구매 상품 전송 로직");
-        PostForMessage post=postRepository.findImagePostAndPostNameByPostId(postId);
-        log.info(post.getPost_name());
-        return post;
+        Post post=postRepository.findImagePostAndPostNameByPostId(postId);
+        return PostForMessage.builder()
+                .postName(post.getPostName())
+                .image_post(post.getImagePost())
+                .build();
     }
 
     //무한스크롤 조회 부

@@ -27,7 +27,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Post findByPostId(Long id);
 
-    PostForMessage findImagePostAndPostNameByPostId(Long postId);
+    Post findImagePostAndPostNameByPostId(Long postId);
 
     @Modifying
     @Query("update Post p set p.postName = :post_name, " +
