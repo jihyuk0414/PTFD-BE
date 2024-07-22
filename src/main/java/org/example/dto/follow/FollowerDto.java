@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.member.MemberDto;
+import org.example.dto.member.MemberFollow;
 
 
 import java.util.List;
@@ -11,9 +12,9 @@ import java.util.List;
 @Data
 @RequiredArgsConstructor
 public class FollowerDto {
-    private List<MemberDto> followers;
+    private List<MemberFollow> followers;
     @Builder
-    public FollowerDto(List<MemberDto> followers){
+    public FollowerDto(List<MemberFollow> followers){
         this.followers=followers;
     }
 

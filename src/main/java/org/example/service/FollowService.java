@@ -13,6 +13,8 @@ import org.example.repository.member.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 
 @Service
 @Slf4j
@@ -26,9 +28,8 @@ public class FollowService {
     @Transactional
     @TimeCheck
     public String FollowReq(String email,String MyEmail){
-
-        Member following_member = memberRepository.findByEmail(email).get();
-        Member follower_member = memberRepository.findByEmail(MyEmail).get();
+        Member following_member = memberRepository.findByEmail(email).orElseThrow();
+        Member follower_member = memberRepository.findByEmail(MyEmail).orElseThrow();
         if (!followRepository.existsByFollowingIdAndFollowerId(following_member.getMemberId(),follower_member.getMemberId())){
             Follow follow = Follow.builder()
                     .followingId(following_member.getMemberId())
@@ -40,7 +41,6 @@ public class FollowService {
             memberRepository.updateFollower(following_member);
             //member의 following수 수정
             memberRepository.updateFollowing(follower_member);
-
             return "팔로우 요청 성공";
         }
         return "이미 팔로우한 상태";
@@ -48,12 +48,12 @@ public class FollowService {
 
     @TimeCheck
     public FollowerDto getFollower(String nickName){
-        return FollowerDto.builder().followers(followRepository.findFollower(nickName).stream().map(Member::toDto).toList()).build();
+        return FollowerDto.builder().followers(followRepository.findFollower(nickName)).build();
     }
 
     @TimeCheck
     public FollowingDto getFollowing(String nickName){
-        return FollowingDto.builder().followings(followRepository.findFollowing(nickName).stream().map(Member::toDto).toList()).build();
+        return FollowingDto.builder().followings(followRepository.findFollowing(nickName)).build();
     }
 
 
