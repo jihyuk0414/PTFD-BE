@@ -83,6 +83,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 //    Page<Post> findByPostNameAndStateOrderByCreateAtDesc(@Param("postName") String postName, Pageable pageable);
 
     @Modifying
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("UPDATE Post p SET p.totalNumber=%:totalNumber% where p.postId=%:postId%")
     void updateTotalNumber(@Param("totalNumber")int totalNumber,@Param("postId")Long postId);
 
