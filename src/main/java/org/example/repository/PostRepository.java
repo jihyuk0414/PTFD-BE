@@ -93,7 +93,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findPostsExpiredOrSelled();
 
     @Query("SELECT new org.example.dto.mail.PostForMail(" +
-            "p.postImage, p.postName)" +
+            "p.imagePost, p.postName)" +
             "FROM Post p WHERE p.postId = :post_id")
     PostForMail findImageAndNamePostByPostId(@Param("post_id") Long post_id);
 
