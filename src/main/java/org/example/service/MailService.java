@@ -83,11 +83,14 @@ public class MailService {
                 // 제목
                 mimeMessageHelper.setSubject("신청하신 PT가 예약되었습니다.");
                 // 이미지 ->datasource로 변경.
-                URL imageUrl = new URL(postRepository.findImagePostByPostId(paymentReq.getPost_id()));
+                PostForMail p=postRepository.findImageAndNamePostByPostId(paymentReq.getPost_id());
+                URL imageUrl = new URL(p.getImage_post());
+                String name = p.getPost_name();
                 byte[] imageData = IOUtils.toByteArray(imageUrl);
 
                 String htmlContentWithInlineImage = "<html><body>"
                         + "<img src='cid:image_reservation' style='width: 100px; height: auto;'/>"
+                        +"<h1>"+ name +"를(을) 예약하셨습니다."+"</h1>"
                         + "<p>사이트를 이용해주셔서 감사합니다.</p>"
                         + "<p>대표 전화번호: 010-8852-6778</p>"
                         + "<p>대표 이메일: 5-stars16@naver.com</p>"
