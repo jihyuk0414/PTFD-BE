@@ -96,7 +96,8 @@ public class PostController {
 
     @PostMapping("/payments/sell")
     public PurchaseDto changeState(@RequestBody SellDto sellDto){
-        int soldOut=wishListService.sellWishList(sellDto.getPost_id(),sellDto.getEmail());
+        int soldOut = wishListService.sellWishList(sellDto.getPost_id(),sellDto.getEmail());
+        log.info(String.valueOf(soldOut));
         if (soldOut==0){
             wishListService.successPay(sellDto.getPost_id());
             postService.changeState(sellDto.getPost_id());

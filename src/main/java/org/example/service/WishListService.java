@@ -73,15 +73,15 @@ public class WishListService {
     @Transactional
     public int sellWishList(List<Long> postIds,String email){
         List<Post> posts = postRepository.findByPostIdIn(postIds).stream()
-                .filter(p->p.getState()==-1 ||p.getState()==0)
+                .filter(p -> p.getState()==0)
                 .toList();
         log.info(postIds.toString());
-
         for (Post Post : posts){
             wishListRepository.deleteByEmailAndPost(email,Post);
         }
         return posts.size();
     }
+
     @Transactional
     public void successPay(List<Long> postIds){
         List<Post> posts=postRepository.findByPostIdIn(postIds);
