@@ -105,7 +105,7 @@ public class KakaoService {
 
         ObjectMapper objectMapper = new ObjectMapper();
         String template = "template_object="+objectMapper.writeValueAsString(templateObject);;
-        log.info(template);
+
         kakaoApi.sendImage("Bearer "+ kakaoToken_user.getAccessToken(),"application/x-www-form-urlencoded",template);
     }
     public String kakaoLogOut(){

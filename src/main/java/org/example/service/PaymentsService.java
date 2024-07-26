@@ -49,7 +49,6 @@ public class PaymentsService {
                     .build();
         }
 
-
         for (PaymentsReq req : purchaseDto.getPayments_list()){
             req.setConsumer(purchaseDto.getEmail());
             if(purchaseOne(req, sellers, sellPostId)){return PaymentsRes.builder().charge(false).message("수업이 없습니다").build();}
@@ -69,19 +68,17 @@ public class PaymentsService {
             }
             purchaseFeign.saveOrder(purchaseDto.getPayments_list());
             if (consumer.get().getSocial_type() == 1) //카카오
-                 {
-                    for (PaymentsReq paymentsReq: purchaseDto.getPayments_list()){
-                        log.info("카카오 회원");
-                        sendMessage(paymentsReq.getPost_id());
-                    }
-                    postFeign.SendEmailToSeller(purchaseDto.getPayments_list());
+            {
+                for (PaymentsReq paymentsReq: purchaseDto.getPayments_list()){
+                    sendMessage(paymentsReq.getPost_id());
                 }
+                postFeign.SendEmailToSeller(purchaseDto.getPayments_list());
+            }
             else if (consumer.get().getSocial_type() == 0 ) //일반 회원가입
-                {
-                    log.info("일반 회원");
-                    postFeign.SendEmail(purchaseDto.getPayments_list(),email);//이메일 전송
-                }
-                return PaymentsRes.builder().charge(false).message("예약 성공").build();
+             {
+                 postFeign.SendEmail(purchaseDto.getPayments_list(),email);//이메일 전송
+             }
+            return PaymentsRes.builder().charge(false).message("예약 성공").build();
         }
         else {
             log.info(String.valueOf(postFeignRes.getSoldOutIds()));
@@ -110,8 +107,10 @@ public class PaymentsService {
                 .post_id(sellPostId)
                 .email(purchaseDto.getEmail()).
                 build());
+
         if (postFeignRes.isSuccess()){
             for (String email : sellers.keySet()){
+                log.info("포인트 update 쿼리문");
                 memberRepository.updatePoint(sellers.get(email),email);
             }
 
@@ -131,7 +130,7 @@ public class PaymentsService {
             return PaymentsRes.builder().charge(false).message("예약 성공").build();
         }
         else {
-            log.info(String.valueOf(postFeignRes.getSoldOutIds()));
+            log.info(postFeignRes.getSoldOutIds()+"개가 sold out 됨");
             memberRepository.updatePoint(consumer.get().getPoint(),consumer.get().getEmail());
             return PaymentsRes.builder()
                     .charge(null)
@@ -155,10 +154,9 @@ public class PaymentsService {
     }
 
     public void sendMessage(Long postId) throws JsonProcessingException {
-        log.info("메시지 로직 동작");
-        log.info(postId.toString());
+
         MessageRes Post= postFeign.getImage(postId);
-        log.info(Post.getPost_name());
+
         Content content = Content.builder()
                 .title("test")
                 .image_url(Post.getImage_real())
