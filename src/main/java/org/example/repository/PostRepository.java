@@ -81,10 +81,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 //
 //    @Query("SELECT p FROM Post p WHERE p.postName LIKE %:postName% AND p.state = 1 ORDER BY p.startAt DESC")
 //    Page<Post> findByPostNameAndStateOrderByCreateAtDesc(@Param("postName") String postName, Pageable pageable);
-
-    @Modifying
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("UPDATE Post p SET p.totalNumber=%:totalNumber% where p.postId=%:postId%")
+    @Modifying
+    @Query("UPDATE Post p SET p.totalNumber = :totalNumber where p.postId = :postId")
     void updateTotalNumber(@Param("totalNumber")int totalNumber,@Param("postId")Long postId);
 
     @Query("select count(*) from Post p ")
