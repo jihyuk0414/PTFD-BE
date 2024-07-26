@@ -92,9 +92,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("Select p FROM Post p WHERE p.state in (-1,0)")
     List<Post> findPostsExpiredOrSelled();
 
-    @Query("SELECT new org.example.dto.mail.PostForMail(" +
+    @Query("select new org.example.dto.mail.PostForMail(" +
             "p.imagePost, p.postName)" +
-            "FROM Post p WHERE p.postId = :post_id")
+            "from Post p where p.postId = :post_id")
     PostForMail findImageAndNamePostByPostId(@Param("post_id") Long post_id);
 
 

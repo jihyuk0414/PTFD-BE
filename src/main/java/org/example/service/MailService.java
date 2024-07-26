@@ -42,6 +42,7 @@ public class MailService {
                 // 제목
                 mimeMessageHelper.setSubject("게시하신 PT를 다른 고객님이 예약하셨습니다.");
                 // 이미지 ->datasource로 변경.
+                log.info("쿼리 시작");
                 PostForMail p=postRepository.findImageAndNamePostByPostId(paymentReq.getPost_id());
                 log.info(p.getImage_post());
                 log.info(p.getPost_name());
@@ -116,6 +117,7 @@ public class MailService {
             }
             return "메일 전송 완료되었습니다.";
         } catch (Exception e) {
+            log.info(e.getMessage());
             throw new CustomMailException();
         }
     }
