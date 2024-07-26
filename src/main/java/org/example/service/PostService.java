@@ -146,7 +146,7 @@ public class PostService {
     @Transactional
     public void changeState(List<Long> postIds){
         for (Long postId : postIds){
-            Post post = postRepository.findByPostId(postId);
+            Post post = postRepository.findByPostIdWithLock(postId);
             if(post.getTotalNumber()-1>0){ postRepository.updateTotalNumber(post.getTotalNumber()-1,postId);}
             else{
                 postRepository.updateTotalNumber(0,postId);
