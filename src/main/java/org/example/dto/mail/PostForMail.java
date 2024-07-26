@@ -1,10 +1,11 @@
 package org.example.dto.mail;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+
 
 @Data
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class PostForMail {
     private String image_post;
     private String post_name;
