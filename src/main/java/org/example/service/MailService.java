@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.example.dto.exception.CustomMailException;
+import org.example.dto.mail.PostForMail;
 import org.example.dto.purchase.PaymentsReq;
 import org.example.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,13 +41,15 @@ public class MailService {
                 mimeMessageHelper.setTo(paymentReq.getSeller());
                 // 제목
                 mimeMessageHelper.setSubject("게시하신 PT를 다른 고객님이 예약하셨습니다.");
-
                 // 이미지 ->datasource로 변경.
-                URL imageUrl = new URL(postRepository.findImagePostByPostId(paymentReq.getPost_id()));
+                PostForMail p=postRepository.findImageAndNamePostByPostId(paymentReq.getPost_id());
+                URL imageUrl = new URL(p.getImage_post());
+                String name = p.getPost_name();
                 byte[] imageData = IOUtils.toByteArray(imageUrl);
 
                 String htmlContentWithInlineImage = "<html><body>"
                         + "<img src='cid:image_reservation' style='width: 100px; height: auto;'/>"
+                        +"<h1>"+ name +"를(을) 예약하셨습니다."+"</h1>"
                         + "<p>사이트를 이용해주셔서 감사합니다.</p>"
                         + "<p>대표 전화번호: 010-8852-6778</p>"
                         + "<p>대표 이메일: 5-stars16@naver.com</p>"
@@ -79,7 +82,6 @@ public class MailService {
                 mimeMessageHelper.setTo(consumer_email);
                 // 제목
                 mimeMessageHelper.setSubject("신청하신 PT가 예약되었습니다.");
-
                 // 이미지 ->datasource로 변경.
                 URL imageUrl = new URL(postRepository.findImagePostByPostId(paymentReq.getPost_id()));
                 byte[] imageData = IOUtils.toByteArray(imageUrl);
@@ -100,7 +102,6 @@ public class MailService {
                 mimeMessageHelper.setFrom(new InternetAddress(mailSenderId+"@naver.com"));
                 // 이메일 보내기
                 javaMailSender.send(mimeMessage);
-
                 mimeMessageHelper.setTo(paymentReq.getSeller());
                 mimeMessageHelper.setSubject("게시하신 PT를 다른 고객님이 예약하셨습니다.");
                 // 본문

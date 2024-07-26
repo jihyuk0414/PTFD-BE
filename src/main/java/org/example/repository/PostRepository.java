@@ -2,6 +2,7 @@ package org.example.repository;
 
 import jakarta.persistence.LockModeType;
 
+import org.example.dto.mail.PostForMail;
 import org.example.dto.post.PostForMessage;
 import org.example.dto.post.PostWishListCountDto;
 import org.example.entity.Post;
@@ -92,8 +93,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("Select p FROM Post p WHERE p.state in (-1,0)")
     List<Post> findPostsExpiredOrSelled();
 
-    @Query("SELECT p.imagePost FROM Post p WHERE p.postId = :post_id")
-    String findImagePostByPostId(@Param("post_id") Long post_id);
+    @Query("SELECT new org.example.dto.mail.PostForMail("+"p.postImage, p.postName)" + "FROM Post p WHERE p.postId = :post_id")
+    PostForMail findImageAndNamePostByPostId(@Param("post_id") Long post_id);
 
 
 
