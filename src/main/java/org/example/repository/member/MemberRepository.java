@@ -26,6 +26,6 @@ public interface MemberRepository extends JpaRepository<Member,Long>, MemberRepo
 
     @Query("select new org.example.dto.purchase("+
             "m.point, m.socialType)"+
-            "from Member.m where m.email= :email")
+            "from Member m where m.email= :email")
     Optional<MemberForPay> findPointAndTypeByEmail(@Param("email") String email);
 }
