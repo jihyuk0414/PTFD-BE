@@ -43,6 +43,8 @@ public class MailService {
                 mimeMessageHelper.setSubject("게시하신 PT를 다른 고객님이 예약하셨습니다.");
                 // 이미지 ->datasource로 변경.
                 PostForMail p=postRepository.findImageAndNamePostByPostId(paymentReq.getPost_id());
+                log.info(p.getImage_post());
+                log.info(p.getPost_name());
                 URL imageUrl = new URL(p.getImage_post());
                 String name = p.getPost_name();
                 byte[] imageData = IOUtils.toByteArray(imageUrl);
@@ -84,6 +86,8 @@ public class MailService {
                 mimeMessageHelper.setSubject("신청하신 PT가 예약되었습니다.");
                 // 이미지 ->datasource로 변경.
                 PostForMail p=postRepository.findImageAndNamePostByPostId(paymentReq.getPost_id());
+                log.info(p.getImage_post());
+                log.info(p.getPost_name());
                 URL imageUrl = new URL(p.getImage_post());
                 String name = p.getPost_name();
                 byte[] imageData = IOUtils.toByteArray(imageUrl);
