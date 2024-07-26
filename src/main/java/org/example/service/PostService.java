@@ -135,7 +135,8 @@ public class PostService {
         else {
             if (post.getEmail().equals(email)){
                 postRepository.updatePost(postId,postDto.getPost_name(),postDto.getPrice(),
-                        postDto.getCategory_id(), postDto.getEnd_at(), post.getImagePost(), post.getPostInfo());
+                        postDto.getCategory_id(), postDto.getEnd_at(), postDto.getTotal_number(), post.getLocation(),
+                        post.getImagePost(), post.getPostInfo());
                 return new SuccessRes(post.getPostName(),"수정 성공");
             }
             else {return new SuccessRes(post.getPostName(),"등록한 이메일과 일치하지않습니다.");}
