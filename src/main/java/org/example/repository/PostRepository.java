@@ -35,9 +35,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "p.imagePost = :image_post, " +
             "p.postInfo = :post_info, " +
             "p.categoryId = :category_id, " +
-            "p.endAt = :end_at " +
-            "p.location= :location"+
-            "p.totalNumber= :total_number"+
+            "p.endAt = :end_at, " +
+            "p.location= :location, "+
+            "p.totalNumber= :total_number "+
             "where p.postId = :post_id")
     void updatePost(@Param("post_id") Long postId,
                        @Param("post_name") String postName,
