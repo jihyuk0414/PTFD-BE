@@ -19,10 +19,6 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         this.query = query;
     }
 
-
-
-
-
     @Override
     @Transactional
     public void updateInfo(Member member) {

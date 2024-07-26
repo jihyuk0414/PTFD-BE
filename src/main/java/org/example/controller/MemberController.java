@@ -82,10 +82,10 @@ public class MemberController {
     public ResponseEntity<RefreshDto> refreshAccessToken(@RequestBody RefreshDto refreshToken){
         return ResponseEntity.ok(memberService.refreshToken(refreshToken.getRefresh_token()));
     }
+
     @PostMapping("/logout/{email}")
     public void logOut(@PathVariable("email") String email){
         memberService.deleteRefresh(email);
-
     }
 
     @PostMapping("/search/word")

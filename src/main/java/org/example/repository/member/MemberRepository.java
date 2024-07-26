@@ -1,5 +1,6 @@
 package org.example.repository.member;
 
+import org.example.dto.purchase.MemberForPay;
 import org.example.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -22,4 +23,9 @@ public interface MemberRepository extends JpaRepository<Member,Long>, MemberRepo
 
     @Query("SELECT DISTINCT m.email FROM Member m WHERE m.gender = :gender")
     List<String> findDistinctNickNamesByGender(@Param("gender") char gender);
+
+    @Query("select new org.example.dto.purchase("+
+            "m.point, m.socialType)"+
+            "from Member.m where m.email= :email")
+    Optional<MemberForPay> findPointAndTypeByEmail(@Param("email") String email);
 }

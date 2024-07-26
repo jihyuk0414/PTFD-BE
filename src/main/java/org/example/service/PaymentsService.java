@@ -37,57 +37,61 @@ public class PaymentsService {
     public PaymentsRes purchase(PurchaseDto purchaseDto, String email) throws JsonProcessingException {
         HashMap<String,Integer> sellers = new HashMap<>();
         List<Long> sellPostId = new ArrayList<>();
-        Optional<Member> consumer = memberRepository.findByEmail(email);
+        Optional<MemberForPay> consumer = memberRepository.findPointAndTypeByEmail(email);
         consumer.orElseThrow();
-
         int consumerPoint=consumer.get().getPoint() - purchaseDto.getTotal_point();
-        log.info(String.valueOf(consumerPoint));
 
-        if (purchaseDto.getTotal_point()>consumer.get().getPoint()){return PaymentsRes.builder().charge(true).point(Math.abs(consumerPoint)).message("포인트 충전 필요").build();}
-        else {
-            for (PaymentsReq req : purchaseDto.getPayments_list()){
-                req.setConsumer(purchaseDto.getEmail());
-                if(purchaseOne(req, sellers, sellPostId)){return PaymentsRes.builder().charge(false).message("수업이 없습니다").build();}
-            }
-            log.info(sellPostId.toString());
-            log.info(String.valueOf(sellers.size()));
-            PostFeignRes postFeignRes = postFeign.SoldOut(PostFeignReq.builder()
+        if (purchaseDto.getTotal_point()>consumer.get().getPoint()){
+            return PaymentsRes.builder()
+                    .charge(true)
+                    .point(Math.abs(consumerPoint))
+                    .message("포인트 충전 필요")
+                    .build();
+        }
+
+
+        for (PaymentsReq req : purchaseDto.getPayments_list()){
+            req.setConsumer(purchaseDto.getEmail());
+            if(purchaseOne(req, sellers, sellPostId)){return PaymentsRes.builder().charge(false).message("수업이 없습니다").build();}
+        }
+
+        PostFeignRes postFeignRes = postFeign.SoldOut(PostFeignReq.builder()
                     .post_id(sellPostId)
                     .email(email)
                     .build());
 
-            if (postFeignRes.isSuccess()){
-                memberRepository.updatePoint(consumerPoint,email);
-                for (String sellerEmail : sellers.keySet()){
-                    log.info(sellerEmail);
-                    log.info(String.valueOf(sellers.get(sellerEmail)));
-                    memberRepository.updatePoint(sellers.get(sellerEmail),sellerEmail);
-                }
-                purchaseFeign.saveOrder(purchaseDto.getPayments_list());
-                if (consumer.get().getSocialType() == 1) //카카오
-                {
+        if (postFeignRes.isSuccess()){
+            memberRepository.updatePoint(consumerPoint,email);
+            for (String sellerEmail : sellers.keySet()){
+                log.info(sellerEmail);
+                log.info(String.valueOf(sellers.get(sellerEmail)));
+                memberRepository.updatePoint(sellers.get(sellerEmail),sellerEmail);
+            }
+            purchaseFeign.saveOrder(purchaseDto.getPayments_list());
+            if (consumer.get().getSocial_type() == 1) //카카오
+                 {
                     for (PaymentsReq paymentsReq: purchaseDto.getPayments_list()){
                         log.info("카카오 회원");
                         sendMessage(paymentsReq.getPost_id());
                     }
                     postFeign.SendEmailToSeller(purchaseDto.getPayments_list());
                 }
-                else if (consumer.get().getSocialType() == 0 ) //일반 회원가입 유저라면
+            else if (consumer.get().getSocial_type() == 0 ) //일반 회원가입
                 {
                     log.info("일반 회원");
                     postFeign.SendEmail(purchaseDto.getPayments_list(),email);//이메일 전송
                 }
                 return PaymentsRes.builder().charge(false).message("예약 성공").build();
-            }
-            else {
-                log.info(String.valueOf(postFeignRes.getSoldOutIds()));
-                memberRepository.updatePoint(consumer.get().getPoint(),email);
-                return PaymentsRes.builder()
-                        .charge(null)
-                        .message("예약하시려는 수업중 마감된 수업이있습니다")
-                        .build();
-            }
         }
+        else {
+            log.info(String.valueOf(postFeignRes.getSoldOutIds()));
+            memberRepository.updatePoint(consumer.get().getPoint(),email);
+            return PaymentsRes.builder()
+                    .charge(null)
+                    .message("예약하시려는 수업중 마감된 수업입니다.")
+                    .build();
+        }
+
 
     }
 
