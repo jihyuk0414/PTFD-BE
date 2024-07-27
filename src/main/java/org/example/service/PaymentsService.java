@@ -70,7 +70,7 @@ public class PaymentsService {
                 }
                 postFeign.SendEmailToSeller(purchaseDto.getPayments_list());
             }
-            else if (consumer.get().getSocial_type() == 0 ) {postFeign.SendEmail(purchaseDto.getPayments_list(),email);}
+            //else if (consumer.get().getSocial_type() == 0 ) {postFeign.SendEmail(purchaseDto.getPayments_list(),email);}
             return PaymentsRes.builder().charge(false).message("예약 성공").build();
         }
         else {
@@ -104,17 +104,13 @@ public class PaymentsService {
             updateSellerPoint(sellers);
             purchaseFeign.saveOrder(purchaseDto.getPayments_list());
 
-            if (consumer.get().getSocialType() == 1) //카카오 라면
-            {
+            if (consumer.get().getSocialType() == 1) {
                 for (PaymentsReq paymentsReq: purchaseDto.getPayments_list()){
                     sendMessage(paymentsReq.getPost_id());
                 }
                 postFeign.SendEmailToSeller(purchaseDto.getPayments_list());
             }
-            else if (consumer.get().getSocialType() == 0 ) //일반 회원가입 유저라면
-            {
-                postFeign.SendEmail(purchaseDto.getPayments_list(),purchaseDto.getEmail()); //이메일 전송
-            }
+            //else if (consumer.get().getSocialType() == 0 ) {postFeign.SendEmail(purchaseDto.getPayments_list(),purchaseDto.getEmail());}
             return PaymentsRes.builder().charge(false).message("예약 성공").build();
         }
         else {
