@@ -38,8 +38,9 @@ public class PaymentsService {
     public PaymentsRes purchase(PurchaseDto purchaseDto, String email) throws JsonProcessingException {
         HashMap<String,Integer> sellers = new HashMap<>();
         List<Long> sellPostId = new ArrayList<>();
-        Optional<MemberForPay> consumer = memberRepository.findPointAndTypeByEmail(email);
+        Optional<MemberForPay> consumer = searchConsumer(email);
         consumer.orElseThrow();
+
         int consumerPoint=consumer.get().getPoint() - purchaseDto.getTotal_point();
 
         if (purchaseDto.getTotal_point()>consumer.get().getPoint()){
@@ -122,7 +123,7 @@ public class PaymentsService {
         }
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public boolean purchaseOne(PaymentsReq req,HashMap<String,Integer> sellers,List<Long> sellPostId){
         Optional<Member> seller = memberRepository.findByEmail(req.getSeller());
         if (seller.isEmpty()){return true;}
@@ -162,5 +163,10 @@ public class PaymentsService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateConsumerPoint(int consumerPoint, String email){
         memberRepository.updatePoint(consumerPoint,email);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public Optional<MemberForPay> searchConsumer(String email){
+        return memberRepository.findPointAndTypeByEmail(email);
     }
 }
