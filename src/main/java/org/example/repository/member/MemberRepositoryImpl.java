@@ -6,6 +6,7 @@ import org.example.entity.Member;
 import org.example.entity.QMember;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -61,6 +62,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     public void updatePoint(int point,String email) {
         QMember qMember = QMember.member;

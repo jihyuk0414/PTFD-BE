@@ -60,29 +60,20 @@ public class PaymentsService {
                     .build());
 
         if (postFeignRes.isSuccess()){
-            memberRepository.updatePoint(consumerPoint,email);
-            for (String sellerEmail : sellers.keySet()){
-                log.info(sellerEmail);
-                log.info(String.valueOf(sellers.get(sellerEmail)));
-                memberRepository.updatePoint(sellers.get(sellerEmail),sellerEmail);
-            }
+            updateConsumerPoint(consumerPoint,email);
+            updateSellerPoint(sellers);
             purchaseFeign.saveOrder(purchaseDto.getPayments_list());
-            if (consumer.get().getSocial_type() == 1) //카카오
-            {
+
+            if (consumer.get().getSocial_type() == 1) {
                 for (PaymentsReq paymentsReq: purchaseDto.getPayments_list()){
                     sendMessage(paymentsReq.getPost_id());
                 }
                 postFeign.SendEmailToSeller(purchaseDto.getPayments_list());
             }
-            else if (consumer.get().getSocial_type() == 0 ) //일반 회원가입
-             {
-                 postFeign.SendEmail(purchaseDto.getPayments_list(),email);//이메일 전송
-             }
+            else if (consumer.get().getSocial_type() == 0 ) {postFeign.SendEmail(purchaseDto.getPayments_list(),email);}
             return PaymentsRes.builder().charge(false).message("예약 성공").build();
         }
         else {
-            log.info(String.valueOf(postFeignRes.getSoldOutIds()));
-            memberRepository.updatePoint(consumer.get().getPoint(),email);
             return PaymentsRes.builder()
                     .charge(null)
                     .message("예약하시려는 수업중 마감된 수업입니다.")
@@ -98,7 +89,7 @@ public class PaymentsService {
         List<Long> sellPostId = new ArrayList<>();
         Optional<Member> consumer = memberRepository.findByEmail(purchaseDto.getEmail());
         consumer.orElseThrow();
-        memberRepository.updatePoint(0,purchaseDto.getEmail());
+
         for (PaymentsReq req : purchaseDto.getPayments_list()){
             req.setConsumer(purchaseDto.getEmail());
             if(purchaseOne(req, sellers, sellPostId)){return PaymentsRes.builder().charge(false).message("수업이 없습니다").build();}
@@ -109,11 +100,8 @@ public class PaymentsService {
                 build());
 
         if (postFeignRes.isSuccess()){
-            for (String email : sellers.keySet()){
-                log.info("포인트 update 쿼리문");
-                memberRepository.updatePoint(sellers.get(email),email);
-            }
-
+            updateConsumerPoint(0,purchaseDto.getEmail());
+            updateSellerPoint(sellers);
             purchaseFeign.saveOrder(purchaseDto.getPayments_list());
 
             if (consumer.get().getSocialType() == 1) //카카오 라면
@@ -130,8 +118,6 @@ public class PaymentsService {
             return PaymentsRes.builder().charge(false).message("예약 성공").build();
         }
         else {
-            log.info(postFeignRes.getSoldOutIds()+"개가 sold out 됨");
-            memberRepository.updatePoint(consumer.get().getPoint(),consumer.get().getEmail());
             return PaymentsRes.builder()
                     .charge(null)
                     .message("예약하시려는 수업중 마감된 수업이있습니다")
@@ -160,12 +146,24 @@ public class PaymentsService {
         Content content = Content.builder()
                 .title("test")
                 .image_url(Post.getImage_real())
-                .link(Link.builder().web_url("http://localhost:3000").build())
+                .link(Link.builder().web_url("http://default-front-84485-25569413-20a094b6a545.kr.lb.naverncp.com:30").build())
                 .description("예약되었습니다.")
                 .build();
         TemplateObject templateObject = TemplateObject.builder()
                 .content(content)
                 .build();
         kakaoService.sendRealImage(templateObject);
+    }
+
+    @Transactional
+    public void updateSellerPoint(HashMap<String,Integer> sellers){
+        for (String sellerEmail : sellers.keySet()){
+            memberRepository.updatePoint(sellers.get(sellerEmail),sellerEmail);
+        }
+    }
+
+    @Transactional
+    public void updateConsumerPoint(int consumerPoint, String email){
+        memberRepository.updatePoint(consumerPoint,email);
     }
 }
