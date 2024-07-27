@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 
 public interface MemberRepository extends JpaRepository<Member,Long>, MemberRepositoryCustom {
-    int findPointByEmail(String email);
+
     Optional<Member> findByEmail(String email);
     Optional<Member> findByNickName(String nickName);
     Optional<Member> findEmailByNickName(String nickName);
@@ -28,4 +28,7 @@ public interface MemberRepository extends JpaRepository<Member,Long>, MemberRepo
             "m.point, m.socialType)"+
             "from Member m where m.email= :email")
     Optional<MemberForPay> findPointAndTypeByEmail(@Param("email") String email);
+
+    @Query("SELECT m.point FROM Member m WHERE m.email = :email")
+    Integer findPointByEmail(@Param("email") String email);
 }
