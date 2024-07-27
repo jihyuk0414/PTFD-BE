@@ -10,5 +10,4 @@ import lombok.RequiredArgsConstructor;
 public class MemberForPay {
     private int point;
     private int social_type;
-    private String email;
 }
