@@ -16,6 +16,7 @@ import org.example.service.kakao.KakaoService;
 import org.example.service.purchase.PostFeign;
 import org.example.service.purchase.PurchaseFeign;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -151,14 +152,14 @@ public class PaymentsService {
         kakaoService.sendRealImage(templateObject);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateSellerPoint(HashMap<String,Integer> sellers){
         for (String sellerEmail : sellers.keySet()){
             memberRepository.updatePoint(sellers.get(sellerEmail),sellerEmail);
         }
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateConsumerPoint(int consumerPoint, String email){
         memberRepository.updatePoint(consumerPoint,email);
     }
