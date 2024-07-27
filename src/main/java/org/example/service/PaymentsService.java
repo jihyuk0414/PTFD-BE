@@ -123,13 +123,12 @@ public class PaymentsService {
         }
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+
     public boolean purchaseOne(PaymentsReq req,HashMap<String,Integer> sellers,List<Long> sellPostId){
         Optional<Member> seller = memberRepository.findByEmail(req.getSeller());
         if (seller.isEmpty()){return true;}
         if (sellers.containsKey(seller.get().getEmail())){
             int total = sellers.get(seller.get().getEmail())+ req.getPost_point();
-            log.info(String.valueOf(total));
             sellers.put(seller.get().getEmail(),total);
         }
         else {sellers.put(seller.get().getEmail(),seller.get().getPoint()+ req.getPost_point());}
