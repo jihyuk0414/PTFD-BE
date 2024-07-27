@@ -72,7 +72,7 @@ public class PaymentsService {
                 }
                 postFeign.SendEmailToSeller(purchaseDto.getPayments_list());
             }
-            //else if (consumer.get().getSocial_type() == 0 ) {postFeign.SendEmail(purchaseDto.getPayments_list(),email);}
+            else if (consumer.get().getSocial_type() == 0 ) {postFeign.SendEmail(purchaseDto.getPayments_list(),email);}
             return PaymentsRes.builder().charge(false).message("예약 성공").build();
         }
         else {
@@ -112,7 +112,7 @@ public class PaymentsService {
                 }
                 postFeign.SendEmailToSeller(purchaseDto.getPayments_list());
             }
-            //else if (consumer.get().getSocialType() == 0 ) {postFeign.SendEmail(purchaseDto.getPayments_list(),purchaseDto.getEmail());}
+            else if (consumer.get().getSocialType() == 0 ) {postFeign.SendEmail(purchaseDto.getPayments_list(),purchaseDto.getEmail());}
             return PaymentsRes.builder().charge(false).message("예약 성공").build();
         }
         else {
@@ -132,7 +132,6 @@ public class PaymentsService {
         }
         else {sellers.put(req.getSeller(),sellerPoint+ req.getPost_point());}
         sellPostId.add(req.getPost_id());
-
     }
 
     public void sendMessage(Long postId) throws JsonProcessingException {
