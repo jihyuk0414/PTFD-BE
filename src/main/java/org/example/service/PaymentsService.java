@@ -53,7 +53,7 @@ public class PaymentsService {
 
         for (PaymentsReq req : purchaseDto.getPayments_list()){
             req.setConsumer(purchaseDto.getEmail());
-            if(purchaseOne(req, sellers, sellPostId)){return PaymentsRes.builder().charge(false).message("수업이 없습니다").build();}
+            purchaseOne(req, sellers, sellPostId);
         }
 
         PostFeignRes postFeignRes = postFeign.SoldOut(PostFeignReq.builder()
@@ -94,7 +94,7 @@ public class PaymentsService {
 
         for (PaymentsReq req : purchaseDto.getPayments_list()){
             req.setConsumer(purchaseDto.getEmail());
-            if(purchaseOne(req, sellers, sellPostId)){return PaymentsRes.builder().charge(false).message("수업이 없습니다").build();}
+            purchaseOne(req, sellers, sellPostId);
         }
         PostFeignRes postFeignRes = postFeign.SoldOut(PostFeignReq.builder()
                 .post_id(sellPostId)
@@ -124,16 +124,15 @@ public class PaymentsService {
     }
 
 
-    public boolean purchaseOne(PaymentsReq req,HashMap<String,Integer> sellers,List<Long> sellPostId){
-        Optional<Member> seller = memberRepository.findByEmail(req.getSeller());
-        if (seller.isEmpty()){return true;}
-        if (sellers.containsKey(seller.get().getEmail())){
-            int total = sellers.get(seller.get().getEmail())+ req.getPost_point();
-            sellers.put(seller.get().getEmail(),total);
+    public void purchaseOne(PaymentsReq req,HashMap<String,Integer> sellers,List<Long> sellPostId){
+        int sellerPoint = memberRepository.findPointByEmail(req.getSeller());
+        if (sellers.containsKey(req.getSeller())){
+            int total = sellers.get(req.getSeller())+ req.getPost_point();
+            sellers.put(req.getSeller(),total);
         }
-        else {sellers.put(seller.get().getEmail(),seller.get().getPoint()+ req.getPost_point());}
+        else {sellers.put(req.getSeller(),sellerPoint+ req.getPost_point());}
         sellPostId.add(req.getPost_id());
-        return false;
+
     }
 
     public void sendMessage(Long postId) throws JsonProcessingException {
