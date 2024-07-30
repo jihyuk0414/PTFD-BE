@@ -31,17 +31,17 @@ public class SearchService {
     }
 
     @TimeCheck
-    public Page<PostWishListCountDto> searchPost(String postName, int page, int category_id, char gender, String location) {
+    public Page<PostWishListCountDto> searchPost(String postName, int page, int category_id, String location) {
         int pageSize = (page == 0 ? 16 : 8);
         Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Sort.Direction.ASC, "postName"));
         List<PostWishListCountDto> resultList = findMorePosts(postName, category_id, location, pageable);
-        if (gender != 'X') {
-            List<String> emaillist = memberFeign.getEmailListByGender(gender);
-            log.info(emaillist.toString());
-            resultList = resultList.stream()
-                    .filter(dto -> emaillist.contains(dto.getEmail()))
-                    .collect(Collectors.toList());
-        }
+//        if (gender != 'X') {
+//            List<String> emaillist = memberFeign.getEmailListByGender(gender);
+//            log.info(emaillist.toString());
+//            resultList = resultList.stream()
+//                    .filter(dto -> emaillist.contains(dto.getEmail()))
+//                    .collect(Collectors.toList());
+//        }
         log.info(resultList.toString());
         log.info(String.valueOf(resultList.size()));
         int start ;
