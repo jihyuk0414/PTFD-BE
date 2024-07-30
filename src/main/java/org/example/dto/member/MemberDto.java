@@ -28,10 +28,9 @@ public class MemberDto {
     private int socialType;
     private String memberInfo;
     private String role;
-    private char gender;
 
     @Builder
-    public MemberDto(String role,String memberInfo,String email, String nickName, String profileImage, String userName, String password, int follower, int following, int point, int socialType,char gender){
+    public MemberDto(String role,String memberInfo,String email, String nickName, String profileImage, String userName, String password, int follower, int following, int point, int socialType){
         this.email=email;
         this.nickName=nickName;
         this.profileImage = profileImage;
@@ -43,7 +42,6 @@ public class MemberDto {
         this.socialType = socialType;
         this.memberInfo= memberInfo;
         this.role=role;
-        this.gender=gender;
     }
 
 }

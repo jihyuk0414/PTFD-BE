@@ -154,8 +154,8 @@ public class MemberService {
         return member.map(Member::getEmail).orElse(null);
     }
 
-    public List<String> getnickNameList(char gender)
-    {
-        return memberRepository.findDistinctNickNamesByGender(gender);
-    }
+//    public List<String> getnickNameList(char gender)
+//    {
+//        return memberRepository.findDistinctNickNamesByGender(gender);
+//    }
 }

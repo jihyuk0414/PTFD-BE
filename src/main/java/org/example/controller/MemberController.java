@@ -97,11 +97,11 @@ public class MemberController {
     public EmailDto getEmailByNickname(@RequestParam("nick_name") String nickName){
         return EmailDto.builder().email(memberService.getEmail(nickName)).build();
     }
-
-    @GetMapping("/genderlist")
-    public List<String> getEmailListByGender(@RequestParam("gender") char gender)
-    {
-        return memberService.getnickNameList(gender);
-    }
+//
+//    @GetMapping("/genderlist")
+//    public List<String> getEmailListByGender(@RequestParam("gender") char gender)
+//    {
+//        return memberService.getnickNameList(gender);
+//    }
 
 }
