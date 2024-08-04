@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-service
+  template:
+    metadata:
+      labels:
+        app: chat-service
+    spec:
+      containers:
+        - name: chat-service
+          image: stophyeon/graduate:chat
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5080
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config/application.yml
+              subPath: application.yml
+          env:
+            - name: SPRING_CONFIG_LOCATION
+              value: "optional:file:/config/application.yml"
+
+      volumes:
+        - name: config-volume
+          configMap:
+            name: chat-config
+            items:
+              - key: application.yml
+                path: application.yml
