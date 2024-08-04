@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: chat-service
-          image: stophyeon/graduate:chat
+          image: contest16-chatting.kr.ncr.ntruss.com/chatting:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 5080
