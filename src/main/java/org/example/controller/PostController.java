@@ -64,9 +64,9 @@ public class PostController {
     }
     // 페이징 형태로 변경
     @GetMapping("/page")
-    public ResponseEntity<Page<PostWishListCountDto>> getPostPage(@RequestParam(value = "page",required = false, defaultValue = "1") int page,
+    public ResponseEntity<Page<PostWishListCountDto>> getPostPage(@RequestParam(value = "page",required = false, defaultValue = "0") int page,
                                                                   @RequestParam(value = "nick_name",required = false) String nick_name) {
-        return ResponseEntity.ok(postService.findPostPage(page-1,nick_name));
+        return ResponseEntity.ok(postService.findPostPage(page,nick_name));
     }
 
     @GetMapping("/mypage")
@@ -118,7 +118,6 @@ public class PostController {
             (@RequestBody SearchDto searchDto,
              @RequestParam(name = "page",required = false,defaultValue = "1") int page,
              @RequestParam(name = "category_id", required = false, defaultValue = "0") int category_id,
-//             @RequestParam(name = "gender", required = false, defaultValue = "X") char gender,
             @RequestParam(name = "location", required = false, defaultValue = "X") String location){
         return ResponseEntity.ok(searchService.searchPost(searchDto.getPost_name(), page-1,category_id, location));
     }

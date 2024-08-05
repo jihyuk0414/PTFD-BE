@@ -12,9 +12,7 @@ import java.time.LocalDate;
 
 public class PostDto {
     private Long post_id;
-
     private String post_name;
-
     private int price;
     private String email;
     private String image_post;
