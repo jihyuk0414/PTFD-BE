@@ -28,7 +28,7 @@ public class ChatService {
     public void pubMsgChannel(String channel ,Message message) {
         //1. 요청한 Channel 을 구독.
         log.info("구독");
-        redisMessageListenerContainer.addMessageListener(redisSubscriber, new ChannelTopic(channel));
+        redisMessageListenerContainer.addMessageListener(redisSubscriber, new ChannelTopic("chatroom:"+channel));
         //2. Message 전송
         log.info("전송");
         redisPublisher.publish(new ChannelTopic(channel), message.getContent());
