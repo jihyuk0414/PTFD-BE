@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class Message implements Serializable {
     private String sender;
     private String content;
-    private MessageType type; // ENTER,TALK
+    private String type; // ENTER,TALK
     private String chatRoomId;
 
     public static Chatting toEntity(Message message){
