@@ -19,6 +19,6 @@ public interface MemberFeign {
     public Optional<EmailDto> getEmail(@RequestParam("nick_name") String nickName);
     @GetMapping("/user_info")
     public Optional<String> getProfile(@RequestParam("email") String email);
-    @GetMapping("/genderlist")
-    List<String> getEmailListByGender(@RequestParam("gender") char gender);
+//    @GetMapping("/genderlist")
+//    List<String> getEmailListByGender(@RequestParam("gender") char gender);
 }

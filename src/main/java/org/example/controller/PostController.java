@@ -122,9 +122,9 @@ public class PostController {
             (@RequestBody SearchDto searchDto,
              @RequestParam(name = "page",required = false,defaultValue = "1") int page,
              @RequestParam(name = "category_id", required = false, defaultValue = "0") int category_id,
-             @RequestParam(name = "gender", required = false, defaultValue = "X") char gender,
+//             @RequestParam(name = "gender", required = false, defaultValue = "X") char gender,
             @RequestParam(name = "location", required = false, defaultValue = "X") String location){
-        return ResponseEntity.ok(searchService.searchPost(searchDto.getPost_name(), page-1,category_id, gender, location));
+        return ResponseEntity.ok(searchService.searchPost(searchDto.getPost_name(), page-1,category_id, location));
     }
 
     @PostMapping("/image")
