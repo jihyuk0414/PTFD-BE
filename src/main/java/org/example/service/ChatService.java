@@ -18,6 +18,6 @@ public class ChatService {
         chatRepository.save(chatting);
     }
     public List<Message> getChat(String room){
-        return chatRepository.findByChatRoomId(room).stream().map(Chatting::toDto).toList();
+        return chatRepository.findByRoomId(room).stream().map(Chatting::toDto).toList();
     }
 }
