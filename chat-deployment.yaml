@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: chat-service
-          image: contest16-member.kr.ncr.ntruss.com/chat:latest
+          image: contest16-member.kr.ncr.ntruss.com/chatting:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 5080
