@@ -65,7 +65,7 @@ public class PostService {
                 posts.forEach(p -> p.setLike(wishs.contains(p)));
             }
             wishlistCnt= wishListRepository.countByPost_PostId(post.getPost_id());
-            return PostWishListCountDto.fromPostDto(post, wishlistCnt) ;
+            return PostWishListCountDto.fromPostDto(post, wishlistCnt);
         });
         return postWishListCountDtos;
     }

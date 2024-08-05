@@ -64,7 +64,7 @@ public class PostController {
     }
     // 페이징 형태로 변경
     @GetMapping("/page")
-    public ResponseEntity<Page<PostWishListCountDto>> getPostPage(@RequestParam(value = "page",required = false, defaultValue = "0") int page,
+    public ResponseEntity<Page<PostWishListCountDto>> getPostPage(@RequestParam(value = "page",required = false, defaultValue = "1") int page,
                                                                   @RequestParam(value = "nick_name",required = false) String nick_name) {
         return ResponseEntity.ok(postService.findPostPage(page-1,nick_name));
     }
