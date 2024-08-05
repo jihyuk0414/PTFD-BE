@@ -6,6 +6,7 @@ import org.example.dto.RoomDto;
 import org.example.entity.ChatRoom;
 import org.example.repository.CustomRoomRepository;
 import org.example.repository.RoomRepository;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
@@ -27,6 +28,10 @@ public class RoomService {
     private final RedisMessageListenerContainer redisMessage;
     private final RedisSubscriber redisSubscriber;
 
+
+    public ChannelTopic channelTopic(String room) {
+        return new ChannelTopic("chatroom:"+room);
+    }
     public String createRoom(RoomDto roomDto,String email){
         List<String> users = new ArrayList<>();
         users.add(email);
@@ -45,8 +50,6 @@ public class RoomService {
         redisTemplate.opsForSet().add("chatroom:" + roomId, email);
     }
     public void enterMessageRoom(String roomId) {
-        ChannelTopic topic = new ChannelTopic(roomId);
-        redisMessage.addMessageListener(redisSubscriber, topic);
-
+        redisMessage.addMessageListener(redisSubscriber, channelTopic(roomId));
     }
 }

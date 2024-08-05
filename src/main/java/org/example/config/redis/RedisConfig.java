@@ -37,10 +37,6 @@ public class RedisConfig {
         return new LettuceConnectionFactory(redisHost, redisPort);
     }
 
-    @Bean
-    public ChannelTopic channelTopic(String room) {
-        return new ChannelTopic("chatroom:"+room);
-    }
 
     @Bean
     public MessageListenerAdapter listenerAdapterChatMessage(RedisSubscriber subscriber) {
