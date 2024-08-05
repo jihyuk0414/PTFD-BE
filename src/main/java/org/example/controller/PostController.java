@@ -64,8 +64,8 @@ public class PostController {
     }
     // 페이징 형태로 변경
     @GetMapping("/page")
-    public ResponseEntity<Page<PostWishListCountDto>> getPostPage(@RequestParam(value = "page",required = false, defaultValue = "0") int page,
-                                                                  @RequestParam(value = "nick_name",required = false) String nick_name) {
+    public ResponseEntity<Page<PostDto>> getPostPage(@RequestParam(value = "page",required = false, defaultValue = "0") int page,
+                                                                  @RequestParam(value = "nick_name",required = false, defaultValue = "null") String nick_name) {
         return ResponseEntity.ok(postService.findPostPage(page,nick_name));
     }
 
@@ -114,12 +114,13 @@ public class PostController {
 
 
     @PostMapping("/search")
-    public ResponseEntity<Page<PostWishListCountDto>> searchFullWord
+    public ResponseEntity<Page<PostDto>> searchFullWord
             (@RequestBody SearchDto searchDto,
-             @RequestParam(name = "page",required = false,defaultValue = "1") int page,
+             @RequestParam(name = "page",required = false,defaultValue = "0") int page,
              @RequestParam(name = "category_id", required = false, defaultValue = "0") int category_id,
-            @RequestParam(name = "location", required = false, defaultValue = "X") String location){
-        return ResponseEntity.ok(searchService.searchPost(searchDto.getPost_name(), page-1,category_id, location));
+            @RequestParam(name = "location", required = false, defaultValue = "X") String location,
+            @RequestParam(name = "nick_name", required = false, defaultValue = "null") String nickName){
+        return ResponseEntity.ok(searchService.searchPost(searchDto.getPost_name(), page,category_id, location,nickName));
     }
 
     @PostMapping("/image")

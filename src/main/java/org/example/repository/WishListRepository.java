@@ -14,5 +14,5 @@ public interface WishListRepository extends JpaRepository<WishList,Long> {
     Optional<List<WishList>> findAllByEmail(String email);
     void deleteByEmailAndPost(String email,  Post post);
     void deleteByPostIn(List<Post> posts);
-    int countByPost_PostId(Long postId);
+    boolean existsByEmailAndPost(String email, Post post);
 }

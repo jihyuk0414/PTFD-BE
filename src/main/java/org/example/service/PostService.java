@@ -49,25 +49,19 @@ public class PostService {
     }
 
     @Transactional
-    public Page<PostWishListCountDto> findPostPage (int page,String nickName){
+    public Page<PostDto> findPostPage (int page,String nickName){
         Pageable pageable;
         if(page==0) {pageable = PageRequest.of(page, 16, Sort.by(Sort.Direction.ASC, "postId"));}
         else{pageable = PageRequest.of(page, 8, Sort.by(Sort.Direction.ASC, "postId"));}
         Page<Post> postPage = postRepository.findAll(pageable);
         Page<PostDto> posts=postPage.map(PostDto::ToDto);
-        Page<PostWishListCountDto> postWishListCountDtos = posts.map(post -> {
-            int wishlistCnt = 0;
-            if (nickName != null) {
-                Optional<EmailDto> email = memberFeign.getEmail(nickName);
-                email.orElseThrow();
-                List<PostDto> wishs = wishListRepository.findAllByEmail(email.get().getEmail()).get().stream().map(WishList::getPost).toList()
-                        .stream().map(PostDto::ToDto).toList();
-                posts.forEach(p -> p.setLike(wishs.contains(p)));
-            }
-            wishlistCnt= wishListRepository.countByPost_PostId(post.getPost_id());
-            return PostWishListCountDto.fromPostDto(post, wishlistCnt);
-        });
-        return postWishListCountDtos;
+        if (nickName!=null) {
+            Optional<EmailDto> email = memberFeign.getEmail(nickName);
+            List<PostDto> wishs = wishListRepository.findAllByEmail(email.get().getEmail()).get().stream().map(WishList::getPost).toList()
+                    .stream().map(PostDto::ToDto).toList();
+            posts.forEach(p -> p.setLike(wishs.contains(p)));
+        }
+        return posts;
     }
 
     @Transactional
@@ -163,30 +157,7 @@ public class PostService {
                 .build();
     }
 
-    //무한스크롤 조회 부
-    @Transactional
-    public Page<PostWishListCountDto> findPostPageInfiniteScroll (int page,String nickName,int pagesize){
-        Pageable pageable = PageRequest.of(page, pagesize, Sort.by(Sort.Direction.ASC, "postId"));
-        Page<Post> postPage = postRepository.findAll(pageable);
-        Page<PostDto> posts=postPage.map(PostDto::ToDto);
-        Page<PostWishListCountDto> postWishListCountDtos = posts.map(post -> {
-            int wishlistCnt = 0;
-            if (nickName != null) {
-                Optional<EmailDto> email = memberFeign.getEmail(nickName);
-                email.orElseThrow();
-                List<PostDto> wishs = wishListRepository.findAllByEmail(email.get().getEmail()).get().stream().map(WishList::getPost).toList()
-                        .stream().map(PostDto::ToDto).toList();
-                posts.forEach(p -> p.setLike(wishs.contains(p)));
-            }
-            wishlistCnt= wishListRepository.countByPost_PostId(post.getPost_id());
-            log.info("postid"+post.getPost_id());
-            log.info(""+wishlistCnt);
 
-            return PostWishListCountDto.fromPostDto(post, wishlistCnt) ;
-        });
-
-        return postWishListCountDtos;
-    }
 
 
 }
