@@ -24,14 +24,7 @@ public class RoomService {
     private final RedisTemplate<String, Object> redisTemplate;
     private final RoomRepository roomRepository;
     private final CustomRoomRepository customRoomRepository;
-    @Resource(name = "redisMessage")
-    private final RedisMessageListenerContainer redisMessage;
-    private final RedisSubscriber redisSubscriber;
 
-
-    public ChannelTopic channelTopic(String room) {
-        return new ChannelTopic("chatroom:"+room);
-    }
     public String createRoom(RoomDto roomDto,String email){
         List<String> users = new ArrayList<>();
         users.add(email);
@@ -49,7 +42,5 @@ public class RoomService {
         customRoomRepository.updateUsers(roomId,users,userCount);
         redisTemplate.opsForSet().add("chatroom:" + roomId, email);
     }
-    public void enterMessageRoom(String roomId) {
-        redisMessage.addMessageListener(redisSubscriber, channelTopic(roomId));
-    }
+
 }

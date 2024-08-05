@@ -26,9 +26,7 @@ public class ChatController {
     @MessageMapping("/chat/message/{email}")
     public void message(Message message, @PathVariable("email") String email) {
         message.setSender(email);
-        roomService.enterMessageRoom(message.getChatRoomId());
-        chatService.saveChat(Message.toEntity(message));
-        redisPublisher.publish("chatroom:"+message.getChatRoomId(),message.getContent()); //RedisPublisher 호출
+        chatService.pubMsgChannel(message.getChatRoomId(), message);
     }
 
     @GetMapping("/room/{roomId}")
