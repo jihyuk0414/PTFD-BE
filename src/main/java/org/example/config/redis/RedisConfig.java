@@ -53,10 +53,9 @@ public class RedisConfig {
 
 
     @Bean
-    public RedisTemplate<String, Object> chatRoomRedisTemplate(RedisConnectionFactory connectionFactory) {
+    public RedisTemplate<String, Object> chatRoomRedisTemplate() {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
-        template.setConnectionFactory(connectionFactory);
-
+        template.setConnectionFactory(redisConnectionFactory());
         // Use StringRedisSerializer for keys
         template.setKeySerializer(new StringRedisSerializer());
         template.setHashKeySerializer(new StringRedisSerializer());
@@ -65,7 +64,6 @@ public class RedisConfig {
         Jackson2JsonRedisSerializer<ChatRoom> serializer = new Jackson2JsonRedisSerializer<>(ChatRoom.class);
         template.setValueSerializer(serializer);
         template.setHashValueSerializer(serializer);
-
         return template;
     }
 

@@ -17,7 +17,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping(value = "/chat")
 public class ChatController {
     private final ChatService chatService;
     private final RedisPublisher redisPublisher;
@@ -29,7 +28,7 @@ public class ChatController {
         chatService.pubMsgChannel(message.getChatRoomId(), message);
     }
 
-    @GetMapping("/room/{roomId}")
+    @GetMapping("/chat/{roomId}")
     public List<Message> getAllMessage(@PathVariable("roomId")String roomId){
         return chatService.getChat(roomId);
     }
