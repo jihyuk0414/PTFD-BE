@@ -50,7 +50,9 @@ public class PostService {
 
     @Transactional
     public Page<PostWishListCountDto> findPostPage (int page,String nickName){
-        Pageable pageable = PageRequest.of(page, 9, Sort.by(Sort.Direction.ASC, "postId"));
+        Pageable pageable;
+        if(page==0) {pageable = PageRequest.of(page, 16, Sort.by(Sort.Direction.ASC, "postId"));}
+        else{pageable = PageRequest.of(page, 8, Sort.by(Sort.Direction.ASC, "postId"));}
         Page<Post> postPage = postRepository.findAll(pageable);
         Page<PostDto> posts=postPage.map(PostDto::ToDto);
         Page<PostWishListCountDto> postWishListCountDtos = posts.map(post -> {
@@ -63,12 +65,8 @@ public class PostService {
                 posts.forEach(p -> p.setLike(wishs.contains(p)));
             }
             wishlistCnt= wishListRepository.countByPost_PostId(post.getPost_id());
-            log.info("postid"+post.getPost_id());
-            log.info(""+wishlistCnt);
-
             return PostWishListCountDto.fromPostDto(post, wishlistCnt) ;
         });
-
         return postWishListCountDtos;
     }
 

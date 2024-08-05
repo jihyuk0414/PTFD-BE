@@ -64,7 +64,7 @@ public class PostController {
     }
     // 페이징 형태로 변경
     @GetMapping("/page")
-    public ResponseEntity<Page<PostWishListCountDto>> getPostPage(@RequestParam(value = "page",required = false, defaultValue = "1") int page,
+    public ResponseEntity<Page<PostWishListCountDto>> getPostPage(@RequestParam(value = "page",required = false, defaultValue = "0") int page,
                                                                   @RequestParam(value = "nick_name",required = false) String nick_name) {
         return ResponseEntity.ok(postService.findPostPage(page-1,nick_name));
     }
@@ -112,10 +112,6 @@ public class PostController {
         return ResponseEntity.ok(searchService.autoComplete(searchDto.getWord()));
     }
 
-//    @PostMapping("/search")
-//    public ResponseEntity<Page<PostDto>> searchFullWord(@RequestBody SearchDto searchDto, @RequestParam(name = "page",required = false,defaultValue = "1") int page){
-//        return ResponseEntity.ok(searchService.searchPost(searchDto.getPost_name(), page-1));
-//    }
 
     @PostMapping("/search")
     public ResponseEntity<Page<PostWishListCountDto>> searchFullWord
@@ -141,19 +137,6 @@ public class PostController {
     public ResponseEntity<String> SendEmailToSell(@RequestBody List<PaymentsReq> paymentsReqList)
     {
         return ResponseEntity.ok(mailService.sendEmailToSeller(paymentsReqList));
-    }
-
-    //무한스크롤 최초 검색 부
-    @GetMapping("/page_post/default")
-    public ResponseEntity<Page<PostWishListCountDto>> getDefaultPostPage(@RequestParam(value = "nick_name",required = false) String nick_name) {
-        return ResponseEntity.ok(postService.findPostPageInfiniteScroll(0,nick_name,16));
-    }
-
-    @GetMapping("/page_post/scroll")
-    public ResponseEntity<Page<PostWishListCountDto>> getScrollPostPage(
-            @RequestParam(value = "page") int page_number,
-            @RequestParam(value = "nick_name",required = false) String nick_name) {
-        return ResponseEntity.ok(postService.findPostPageInfiniteScroll(page_number,nick_name,8));
     }
 
     @GetMapping("/notices")
