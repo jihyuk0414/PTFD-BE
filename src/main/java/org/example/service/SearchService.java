@@ -52,6 +52,7 @@ public class SearchService {
             List<PostDto> pageContent = posts.subList(0, Math.min(11,posts.size()));
             return new PageImpl<>(pageContent, PageRequest.of(page, 16), posts.size());
         }
+
         else{
             Pageable pageable = PageRequest.of(page, 8, Sort.by(Sort.Direction.ASC, "postName"));
             List<Post> postsName = postRepository.findAllByPostName(postName);

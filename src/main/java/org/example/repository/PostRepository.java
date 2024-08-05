@@ -27,7 +27,10 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     //lock을 update 시만 사용하게 바꿔보았습니다.
 
     Post findByPostId(Long id);
-    List<Post> findAllByPostName(String postName);
+
+    @Query("SELECT p FROM Post p WHERE p.postName Like %:post_name% ")
+    List<Post> findAllByPostName(@Param("post_name") String postName);
+
     Post findImagePostAndPostNameByPostId(Long postId);
 
     @Modifying
