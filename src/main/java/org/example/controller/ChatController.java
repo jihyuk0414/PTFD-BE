@@ -19,9 +19,10 @@ public class ChatController {
     private final RedisPublisher redisPublisher;
     private final RoomService roomService;
 
-    @MessageMapping("/chat/message/{email}")
-    public void message(@RequestBody Message message, @PathVariable("email") String email) {
-        message.setSender(email);
+    @MessageMapping("/chat/message")
+    public void message(@RequestBody Message message) {
+        log.info("메시지 동작");
+        message.setSender("email");
         chatService.pubMsgChannel(message.getChatRoomId(), message);
     }
 
