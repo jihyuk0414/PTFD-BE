@@ -33,7 +33,6 @@ public class RoomService {
         ChatRoom chatRoom=roomRepository.save(ChatRoom.builder().room(roomDto.getRoom_id()).roomName(roomDto.getRoomName()).users(users).userCount(1).build());
         return chatRoom.getRoomName()+" 채팅방 생성";
     }
-
     public List<RoomDto> getChatRoom(String email){
         return roomRepository.findByUsersContaining(email).stream().map(ChatRoom::toDto).toList();
     }
