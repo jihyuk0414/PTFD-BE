@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Document(collection="chatting")
 @Getter
 @ToString
+
 @RequiredArgsConstructor
 public class Chatting {
     @Id
@@ -29,6 +30,7 @@ public class Chatting {
         this.sendDate = sendDate;
         this.readCount = readCount;
     }
+    public Chatting(String content){this.content=content;}
     public static Message toDto(Chatting chatting){
         return Message.builder()
                 .sender(chatting.getSenderName())
