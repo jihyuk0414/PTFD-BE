@@ -25,7 +25,6 @@ spec:
           env:
             - name: SPRING_CONFIG_LOCATION
               value: "optional:file:/config/application.yml"
-
       volumes:
         - name: config-volume
           configMap:
