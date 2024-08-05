@@ -7,10 +7,7 @@ import org.example.service.ChatService;
 import org.example.service.RedisPublisher;
 import org.example.service.RoomService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,7 +20,7 @@ public class ChatController {
     private final RoomService roomService;
 
     @MessageMapping("/chat/message/{email}")
-    public void message(Message message, @PathVariable("email") String email) {
+    public void message(@RequestBody Message message, @PathVariable("email") String email) {
         message.setSender(email);
         chatService.pubMsgChannel(message.getChatRoomId(), message);
     }
