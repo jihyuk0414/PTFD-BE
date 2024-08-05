@@ -7,6 +7,7 @@ import org.example.service.ChatService;
 import org.example.service.RedisPublisher;
 import org.example.service.RoomService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
