@@ -40,7 +40,7 @@ public class RoomService {
         int userCount = roomRepository.findUserCountByRoom(roomId);
         users.add(email);
         customRoomRepository.updateUsers(roomId,users,userCount);
-        redisTemplate.opsForSet().add("chatroom:" + roomId, email);
+        redisTemplate.opsForSet().add("room" + roomId, email);
     }
 
 }
