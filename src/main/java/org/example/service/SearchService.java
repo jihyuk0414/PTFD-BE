@@ -38,36 +38,26 @@ public class SearchService {
 
     @TimeCheck
     public Page<PostDto> searchPost(String postName, int page, int category_id, String location,String nickName) {
-        if (page == 0){
-            Pageable pageable = PageRequest.of(page, 16, Sort.by(Sort.Direction.ASC, "postName"));
-            List<Post> postsName = postRepository.findAllByPostName(postName);
-
-            List<PostDto> posts=findMorePosts(postsName,category_id,location);
-            if (nickName!=null) {
-                Optional<EmailDto> email = memberFeign.getEmail(nickName);
-                List<PostDto> wishs = wishListRepository.findAllByEmail(email.get().getEmail()).get().stream().map(WishList::getPost).toList()
-                        .stream().map(PostDto::ToDto).toList();
-                posts.forEach(p -> p.setLike(wishs.contains(p)));
-            }
-            List<PostDto> pageContent = posts.subList(0, Math.min(11,posts.size()));
-            return new PageImpl<>(pageContent, PageRequest.of(page, 16), posts.size());
+        int pageSize;
+        int start;
+        if (page==0) {pageSize=16;start=0;}
+        else{pageSize=8;start=16+(page-1)*8;}
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Sort.Direction.ASC, "postName"));
+        List<Post> postsName = postRepository.findAllByPostName(postName);
+        List<PostDto> posts=findMorePosts(postsName,category_id,location);
+        if (nickName!=null) {
+            Optional<EmailDto> email = memberFeign.getEmail(nickName);
+            List<PostDto> wishs = wishListRepository.findAllByEmail(email.get().getEmail()).get().stream().map(WishList::getPost).toList()
+                    .stream().map(PostDto::ToDto).toList();
+            posts.forEach(p -> p.setLike(wishs.contains(p)));
         }
+        List<PostDto> pageContent = posts.subList(start, Math.min(start+pageSize-1,posts.size()));
+        return new PageImpl<>(pageContent, PageRequest.of(page, pageSize), posts.size());
 
-        else{
-            Pageable pageable = PageRequest.of(page, 8, Sort.by(Sort.Direction.ASC, "postName"));
-            List<Post> postsName = postRepository.findAllByPostName(postName);
 
-            List<PostDto> posts=findMorePosts(postsName,category_id,location);
-            if (nickName!=null) {
-                Optional<EmailDto> email = memberFeign.getEmail(nickName);
-                List<PostDto> wishs = wishListRepository.findAllByEmail(email.get().getEmail()).get().stream().map(WishList::getPost).toList()
-                        .stream().map(PostDto::ToDto).toList();
-                posts.forEach(p -> p.setLike(wishs.contains(p)));
-            }
-            int start = 16 + ( (page)*8);
-            List<PostDto> pageContent = posts.subList(start, Math.min(start+8-1, posts.size()));
-            return new PageImpl<>(pageContent, PageRequest.of(page, 8), posts.size());
-        }
+
+
+
     }
 
     private List<PostDto> findMorePosts( List<Post> postsName,int category_id, String location) {
