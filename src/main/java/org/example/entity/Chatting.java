@@ -16,26 +16,23 @@ public class Chatting {
     @Id
     private String id;
     private String roomId;
-    private String senderName;
+    private String sender;
     private String content;
-    private LocalDateTime sendDate;
-    private long readCount;
+    private String type;
 
     @Builder
-    public Chatting(String id, String roomId, String senderName, String content, LocalDateTime sendDate, long readCount) {
-        this.id = id;
+    public Chatting( String roomId, String senderName, String content, String type) {
         this.roomId=roomId;
-        this.senderName = senderName;
+        this.sender = senderName;
         this.content = content;
-        this.sendDate = sendDate;
-        this.readCount = readCount;
+        this.type=type;
     }
-    public Chatting(String content){this.content=content;}
+
     public static Message toDto(Chatting chatting){
         return Message.builder()
-                .sender(chatting.getSenderName())
+                .sender(chatting.getSender())
                 .content(chatting.getContent())
-                .chatRoomId(chatting.getRoomId())
+                .roomId(chatting.getRoomId())
                 .build();
     }
 }

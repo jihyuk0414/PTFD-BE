@@ -19,14 +19,13 @@ public class RedisSubscriber  implements MessageListener {
 
     private final ObjectMapper objectMapper;
     @Resource(name = "chatRoomRedisTemplate")
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate redisTemplate;
     private final SimpMessageSendingOperations messagingTemplate;
 
 
     @Override
     public void onMessage(Message message, byte[] pattern) {
         try {
-
             String publishMessage = (String) redisTemplate.getStringSerializer().deserialize(message.getBody());
             log.info("Received message: {}", publishMessage);
             log.info(publishMessage);
@@ -34,7 +33,7 @@ public class RedisSubscriber  implements MessageListener {
 
             log.info("Deserialized message: {}", roomMessage.getContent());
             log.info(roomMessage.getRoomId());
-            messagingTemplate.convertAndSend("/chatroom:1" , roomMessage.getContent());
+            messagingTemplate.convertAndSend("/sub/room/"+roomMessage.getRoomId() , roomMessage.getContent());
         } catch (Exception e) {
             log.error(e.getMessage());
         }

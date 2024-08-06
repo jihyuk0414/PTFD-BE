@@ -61,7 +61,7 @@ public class RedisConfig {
         template.setHashKeySerializer(new StringRedisSerializer());
 
         // Use Jackson2JsonRedisSerializer for ChatRoom values
-        Jackson2JsonRedisSerializer<ChatRoom> serializer = new Jackson2JsonRedisSerializer<>(ChatRoom.class);
+        Jackson2JsonRedisSerializer<String> serializer = new Jackson2JsonRedisSerializer<>(String.class);
         template.setValueSerializer(serializer);
         template.setHashValueSerializer(serializer);
         return template;

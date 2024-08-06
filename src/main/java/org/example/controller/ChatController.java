@@ -22,9 +22,8 @@ public class ChatController {
 
     @MessageMapping("/chat/message")
     public void message(@RequestBody Message message) {
-        log.info("메시지 동작");
         message.setSender("email");
-        chatService.pubMsgChannel(message.getChatRoomId(), message);
+        chatService.pubMsgChannel(message.getRoomId(), message);
     }
 
     @GetMapping("/chat/{roomId}")
