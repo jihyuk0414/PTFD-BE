@@ -54,7 +54,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                        @Param("post_info")String postIfo);
 
     Page<Post> findAll(Pageable pageable);
-
+    Page<Post> findAllByPostName(Pageable pageable,String name);
     @Query("select new org.example.dto.post.PostWishListCountDto(" +
             "p.postId, p.nickName, p.postName, p.price, p.startAt, p.endAt, p.imagePost, p.postInfo, " +
             "p.totalNumber, p.categoryId, p.userProfile, p.state, p.email, count(w), p.location) " +

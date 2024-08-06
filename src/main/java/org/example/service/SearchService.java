@@ -15,6 +15,7 @@ import org.example.service.member.MemberFeign;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -51,6 +52,8 @@ public class SearchService {
                     .stream().map(PostDto::ToDto).toList();
             posts.forEach(p -> p.setLike(wishs.contains(p)));
         }
+        if(posts.size()<start){start-=8;}
+        if(start>posts.size()){return new PageImpl<>(Collections.emptyList(), pageable, 0);}
         List<PostDto> pageContent = posts.subList(start, Math.min(start+pageSize-1,posts.size()));
         return new PageImpl<>(pageContent, PageRequest.of(page, pageSize), posts.size());
 
