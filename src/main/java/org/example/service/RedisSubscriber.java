@@ -33,7 +33,7 @@ public class RedisSubscriber  implements MessageListener {
 
             log.info("Deserialized message: {}", roomMessage.getContent());
             log.info(roomMessage.getRoomId());
-            messagingTemplate.convertAndSend("/sub/room/"+roomMessage.getRoomId() , roomMessage.getContent());
+            messagingTemplate.convertAndSend("/sub/room"+roomMessage.getRoomId() , roomMessage.getContent());
         } catch (Exception e) {
             log.error(e.getMessage());
         }
