@@ -2,16 +2,23 @@ package org.example.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
+
+import java.util.List;
 
 @Data
-public class RoomDto {
+@RequiredArgsConstructor
+public class ChatRoomMessage {
     private String roomName;
     private String roomId;
     private int userCount;
+    private List<Message> chats;
     @Builder
-    public RoomDto(String roomName,String room_id,int userCount){
+    public ChatRoomMessage(String roomName,String room_id,int userCount,List<Message> chats){
         this.roomName=roomName;
         this.roomId=room_id;
         this.userCount=userCount;
+        this.chats=chats;
     }
 }

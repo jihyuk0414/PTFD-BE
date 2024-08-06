@@ -12,6 +12,7 @@ import java.util.List;
 @Getter
 public class ChatRoom {
     @Id
+    private String id;
     private String room;
     private String roomName;
     private int userCount;
@@ -23,6 +24,7 @@ public class ChatRoom {
         this.room=room;
         this.userCount=userCount;
         this.users=users;
+
     }
 
     public static RoomDto toDto(ChatRoom chatRoom){
