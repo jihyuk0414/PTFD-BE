@@ -38,7 +38,6 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
-
     // Spring Cloud 의존성 관리
     dependencyManagement {
         imports {
