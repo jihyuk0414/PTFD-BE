@@ -1,6 +1,7 @@
 package org.example.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.dto.ChatRoomMessage;
 import org.example.dto.Message;
 import org.example.dto.RoomDto;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RoomService {
     private final ChatRepository chatRepository;
     private final RoomRepository roomRepository;
@@ -39,10 +41,12 @@ public class RoomService {
 
     public ChatRoomMessage insertUser(String roomId, String email){
         ChatRoom room = roomRepository.findByRoom(roomId);
+        log.info(room.getRoom());
         if(!room.getUsers().contains(email)){
-            int userCount = roomRepository.findUserCountByRoom(roomId);
+
+            log.info(String.valueOf(room.getUserCount()));
             room.getUsers().add(email);
-            customRoomRepository.updateUsers(roomId,room.getUsers(),userCount);
+            customRoomRepository.updateUsers(roomId,room.getUsers(),room.getUserCount());
             redisMessageListenerContainer.addMessageListener(redisSubscriber, new ChannelTopic("room"+roomId));
         }
         ChatRoom room1=roomRepository.findByRoom(roomId);

@@ -18,7 +18,7 @@ public class CustomRoomRepository {
     public void updateUsers(String roomId, List<String> users,int userCount) {
         Query query = new Query(Criteria.where("id").is(roomId));
         Update update = new Update().set("users", users);
-        Update update1 = new Update().set("userCount",userCount);
+        Update update1 = new Update().set("userCount",userCount+1);
         mongoTemplate.updateFirst(query, update, ChatRoom.class);
         mongoTemplate.updateFirst(query,update1, ChatRoom.class);
     }
