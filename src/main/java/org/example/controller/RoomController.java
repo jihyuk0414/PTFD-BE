@@ -24,9 +24,9 @@ public class RoomController {
         return roomService.getChatRooms(email);
     }
 
-    @PostMapping("/enter/{email}")
-    public ChatRoomMessage enterRoom(@RequestBody RoomDto roomDto, @PathVariable("email") String email){
-        return roomService.insertUser(roomDto.getRoomId(),email);
+    @PostMapping("/enter/{room_id}/{email}")
+    public ChatRoomMessage enterRoom(@PathVariable("roomId") String roomId, @PathVariable("email") String email){
+        return roomService.insertUser(roomId,email);
     }
 
 }

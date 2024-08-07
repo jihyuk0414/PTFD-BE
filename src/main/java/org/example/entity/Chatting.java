@@ -5,7 +5,6 @@ import lombok.*;
 import org.example.dto.Message;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
 
 @Document(collection="chatting")
 @Getter
