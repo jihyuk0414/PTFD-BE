@@ -5,6 +5,8 @@ import lombok.*;
 import org.example.dto.Message;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
+
 
 @Document(collection="chatting")
 @Getter
@@ -18,13 +20,15 @@ public class Chatting {
     private String sender;
     private String content;
     private String type;
+    private LocalDateTime sendAt;
 
     @Builder
-    public Chatting( String roomId, String senderName, String content, String type) {
+    public Chatting( String roomId, String senderName, String content, String type, LocalDateTime sendAt) {
         this.roomId=roomId;
         this.sender = senderName;
         this.content = content;
         this.type=type;
+        this.sendAt=sendAt;
     }
 
     public static Message toDto(Chatting chatting){
@@ -32,6 +36,7 @@ public class Chatting {
                 .sender(chatting.getSender())
                 .content(chatting.getContent())
                 .roomId(chatting.getRoomId())
+                .sendAt(chatting.getSendAt())
                 .build();
     }
 }
