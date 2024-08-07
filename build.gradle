@@ -32,6 +32,7 @@ dependencies{
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.webjars:stomp-websocket:2.3.3-1'
     implementation 'org.webjars:sockjs-client:1.5.1'
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.3")
 }
 dependencyManagement {
     imports {
