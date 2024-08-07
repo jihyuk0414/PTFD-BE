@@ -34,7 +34,6 @@ dependencies {
     configurations {
         all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-web'
     }
-
     // Lombok 및 개발 툴 의존성
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
