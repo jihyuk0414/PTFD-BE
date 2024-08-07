@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.gym.GymsDto;
 import org.example.dto.post.PostDetailRes;
 import org.example.dto.post.PostDto;
 import org.example.dto.post.PostForMessage;
@@ -20,6 +21,7 @@ import org.example.service.MailService;
 import org.example.service.SearchService;
 import org.example.service.WishListService;
 import org.example.service.PostService;
+import org.example.service.gyms.GymService;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +41,7 @@ public class PostController {
     private final WishListService wishListService;
     private final SearchService searchService;
     private final MailService mailService;
+    private final GymService gymService;
     // 게시글 작성 - email 필요
 
     @PostMapping("/{email}")
@@ -156,4 +159,23 @@ public class PostController {
         }
         return ResponseEntity.ok(notices);
     }
+
+    //여기서 부터 변경 부
+    @GetMapping("/gyms/main")
+    public ResponseEntity<GymsDto> getGyms()
+    {
+        return ResponseEntity.ok(gymService.getGymsForMain());
+    }
+
+
+    @GetMapping("/gyms/all")
+    public ResponseEntity<GymsDto> getGymsAll(
+            @RequestParam(name = "location",required = false) String location
+    )
+    {
+        return ResponseEntity.ok(gymService.getGymsAllWithFilter(location));
+    }
+
+
+
 }
