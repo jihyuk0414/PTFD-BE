@@ -19,9 +19,8 @@ public class ChatService {
     private final RedisSubscriber redisSubscriber;
     private final ChatRepository chatRepository;
 
-    public void pubMsgChannel(String channel ,Message message,String email) {
-        Optional<String> nickName = memberFeign.getNickName(email);
-        message.setSender(nickName.get());
+    public void pubMsgChannel(String channel ,Message message) {
+
         redisMessageListenerContainer.addMessageListener(redisSubscriber, new ChannelTopic("room"+channel));
         redisPublisher.publish(new ChannelTopic("room"+channel), message);
         chatRepository.save(Message.toEntity(message));

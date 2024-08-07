@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.*;
 public class ChatController {
     private final ChatService chatService;
 
-    @MessageMapping("/chat/message/{email}")
-    public void message(@RequestBody Message message, @DestinationVariable("email") String email) {
-        chatService.pubMsgChannel(message.getRoomId(), message,email);
+    @MessageMapping("/chat/message")
+    public void message(@RequestBody Message message) {
+        chatService.pubMsgChannel(message.getRoomId(), message);
     }
 
 
