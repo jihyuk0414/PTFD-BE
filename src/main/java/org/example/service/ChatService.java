@@ -7,32 +7,23 @@ import org.example.repository.ChatRepository;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class ChatService {
-
-
+    private final MemberFeign memberFeign;
     private final RedisMessageListenerContainer redisMessageListenerContainer;
     private final RedisPublisher redisPublisher;
     private final RedisSubscriber redisSubscriber;
     private final ChatRepository chatRepository;
 
-
-    public void pubMsgChannel(String channel ,Message message) {
-        //1. 요청한 Channel 을 구독.
-        log.info("구독");
+    public void pubMsgChannel(String channel ,Message message,String email) {
+        Optional<String> nickName = memberFeign.getNickName(email);
+        message.setSender(nickName.get());
         redisMessageListenerContainer.addMessageListener(redisSubscriber, new ChannelTopic("room"+channel));
-        //2. Message 전송
-        log.info("전송");
         redisPublisher.publish(new ChannelTopic("room"+channel), message);
-        log.info("저장");
         chatRepository.save(Message.toEntity(message));
     }
-
-
-
 }
