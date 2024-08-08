@@ -1,9 +1,11 @@
 package org.example.entity;
 
+
 import jakarta.persistence.Id;
 import lombok.*;
 import org.example.dto.Message;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -20,6 +22,7 @@ public class Chatting {
     private String sender;
     private String content;
     private String type;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime sendAt;
 
     @Builder

@@ -1,8 +1,9 @@
 package org.example.dto;
 
+
 import lombok.*;
 import org.example.entity.Chatting;
-
+import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -16,6 +17,7 @@ public class Message implements Serializable {
     private String content;
     private String type;
     private String roomId;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime sendAt;
 
     public static Chatting toEntity(Message message){
