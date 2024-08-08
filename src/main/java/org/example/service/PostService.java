@@ -108,12 +108,29 @@ public class PostService {
             PostDetailRes.setMe(selectedPost.getEmail().equals(email));
             if (topPosts.isEmpty()) {
                 List<Post> categoryPostList = postRepository.findByPostCategory(selectedPost.getCategoryId(), postId,PageRequest.of(0,9)) ;
+
+                //추가 부 - post dto list로 변경
+                List<PostDto> categoryPostDtoList = categoryPostList.stream().map(PostDto::ToDto).toList();
+                //각 dto list들에 대해, 접속자가 좋아요를 눌렀나 확인
+                List<PostDto> wishs = wishListRepository.findAllByEmail(email).get().stream().map(WishList::getPost).toList()
+                        .stream().map(PostDto::ToDto).toList();
+                categoryPostDtoList.forEach(p -> p.setLike(wishs.contains(p)));
+
                 PostDetailRes.setPost(selectedPost);
-                PostDetailRes.setPostList(categoryPostList);
+                PostDetailRes.setPostList(categoryPostDtoList);
             }
             else {
                 PostDetailRes.setPost(selectedPost);
-                PostDetailRes.setPostList(topPosts);
+
+                //추가 부 - topposts -> detail로 변경
+                List<PostDto> topPostsDto = topPosts.stream().map(PostDto::ToDto).toList();
+
+                //좋아요 확인
+                List<PostDto> wishs = wishListRepository.findAllByEmail(email).get().stream().map(WishList::getPost).toList()
+                        .stream().map(PostDto::ToDto).toList();
+                topPostsDto.forEach(p -> p.setLike(wishs.contains(p)));
+
+                PostDetailRes.setPostList(topPostsDto);
             }
             return PostDetailRes;
             // builder 패턴으로 객체 생성 코드 변경
