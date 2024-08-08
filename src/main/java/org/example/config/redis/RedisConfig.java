@@ -1,10 +1,6 @@
 package org.example.config.redis;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.example.dto.Message;
-import org.example.entity.ChatRoom;
+
 import org.example.service.RedisSubscriber;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
@@ -65,7 +61,7 @@ public class RedisConfig {
         template.setHashKeySerializer(new StringRedisSerializer());
 
 
-        Jackson2JsonRedisSerializer<Message> serializer = new Jackson2JsonRedisSerializer<>(Message.class);
+        Jackson2JsonRedisSerializer<String> serializer = new Jackson2JsonRedisSerializer<>(String.class);
 
         template.setValueSerializer(serializer);
         template.setHashValueSerializer(serializer);

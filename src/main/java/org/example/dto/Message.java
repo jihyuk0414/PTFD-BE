@@ -18,8 +18,8 @@ public class Message implements Serializable {
     private String content;
     private String type;
     private String roomId;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-    private LocalDateTime sendAt;
+
+    private String sendAt;
 
     public static Chatting toEntity(Message message){
         return Chatting.builder()

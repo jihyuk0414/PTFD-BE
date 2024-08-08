@@ -23,11 +23,11 @@ public class Chatting {
     private String sender;
     private String content;
     private String type;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-    private LocalDateTime sendAt;
+
+    private String sendAt;
 
     @Builder
-    public Chatting( String roomId, String senderName, String content, String type, LocalDateTime sendAt) {
+    public Chatting( String roomId, String senderName, String content, String type, String sendAt) {
         this.roomId=roomId;
         this.sender = senderName;
         this.content = content;

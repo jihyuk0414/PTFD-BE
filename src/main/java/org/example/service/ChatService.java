@@ -21,7 +21,7 @@ public class ChatService {
     private final ChatRepository chatRepository;
 
     public void pubMsgChannel(String channel ,Message message) {
-        message.setSendAt(LocalDateTime.now());
+        message.setSendAt(LocalDateTime.now().toString());
         redisMessageListenerContainer.addMessageListener(redisSubscriber, new ChannelTopic("room"+channel));
         redisPublisher.publish(new ChannelTopic("room"+channel), message);
         chatRepository.save(Message.toEntity(message));
