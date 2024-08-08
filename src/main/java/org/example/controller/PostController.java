@@ -73,7 +73,7 @@ public class PostController {
     }
 
     @GetMapping("/mypage")
-    public ResponseEntity<Page<PostWishListCountDto>> getMyPostPage(@RequestParam(value = "page",required = false, defaultValue = "1") int page,@RequestParam("nick_name") String nickName) {
+    public ResponseEntity<Page<PostDto>> getMyPostPage(@RequestParam(value = "page",required = false, defaultValue = "1") int page,@RequestParam("nick_name") String nickName) {
         return ResponseEntity.ok(postService.findMyPostPage(nickName,page-1));
     }
     //게시글 1개 검색

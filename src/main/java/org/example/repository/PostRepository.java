@@ -55,13 +55,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Page<Post> findAll(Pageable pageable);
     Page<Post> findAllByPostName(Pageable pageable,String name);
-    @Query("select new org.example.dto.post.PostWishListCountDto(" +
-            "p.postId, p.nickName, p.postName, p.price, p.startAt, p.endAt, p.imagePost, p.postInfo, " +
-            "p.totalNumber, p.categoryId, p.userProfile, p.state, p.email, count(w), p.location) " +
-            "from Post p left join WishList w on p.postId = w.post.postId " +
-            "where p.nickName = %:nickName% " +
-            "group by p.postId order by p.startAt desc")
-    Page<PostWishListCountDto> findAllByNickName(Pageable pageable,@Param("nickName") String nickName) ;
+
+    Page<Post> findAllByNickName(Pageable pageable, String nickName) ;
 
     @Query("SELECT p FROM Post p WHERE p.postName Like %:keyword% and p.postId != :post_id")
     List<Post> findByPostNameKeyword(@Param("keyword") String keyword,@Param("post_id") Long postId);
