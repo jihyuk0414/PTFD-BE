@@ -89,6 +89,13 @@ public class PostService {
     public PostDetailRes findPostDetail(Long postId,String email)
     {
         Post selectedPost = postRepository.findByPostId(postId);
+        PostDto selectedPostDto = PostDto.ToDto(selectedPost);
+
+        List<PostDto> wishsforselectpost = wishListRepository.findAllByEmail(email).get().stream().map(WishList::getPost).toList()
+                .stream().map(PostDto::ToDto).toList();
+        selectedPostDto.setLike(wishsforselectpost.contains(selectedPostDto));
+
+
         // 아래 null 값 반환을 빈 객체로 변경
         if (selectedPost.getState()==-1||selectedPost.getState()==0){return new PostDetailRes();}
         else {
@@ -116,11 +123,11 @@ public class PostService {
                         .stream().map(PostDto::ToDto).toList();
                 categoryPostDtoList.forEach(p -> p.setLike(wishs.contains(p)));
 
-                PostDetailRes.setPost(selectedPost);
+                PostDetailRes.setPost(selectedPostDto);
                 PostDetailRes.setPostList(categoryPostDtoList);
             }
             else {
-                PostDetailRes.setPost(selectedPost);
+                PostDetailRes.setPost(selectedPostDto);
 
                 //추가 부 - topposts -> detail로 변경
                 List<PostDto> topPostsDto = topPosts.stream().map(PostDto::ToDto).toList();
