@@ -1,6 +1,7 @@
 package org.example.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Id;
 import lombok.*;
 import org.example.dto.Message;
@@ -22,7 +23,7 @@ public class Chatting {
     private String sender;
     private String content;
     private String type;
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime sendAt;
 
     @Builder
