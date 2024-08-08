@@ -1,34 +1,7 @@
-server:
-  port: 8080
-  spring:
-    profiles:
-      active: local
-    servlet:
-      multipart:
-        max-file-size: 128MB
-        max-request-size: 128MB
+spring:
+  cloud:
+    kubernetes:
+      config:
         enabled: true
-    datasource:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://127.0.0.1:3306/darakbang?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-      username: root
-      password : 990531
-    application:
-      name: member-api
-    s3:
-      accessKey: 38F622CB2CE7257CD472
-      secretKey: 8AD3992D3D09C965081B0B4687B4D6B017E4D915
-      bucket: contest16-objectstorage-imagebucket
-    jpa:
-      hibernate:
-        ddl-auto: update
-      properties:
-        hibernate:
-          show_sql: true
-  management:
-    endpoints:
-      web:
-        exposure:
-          include: ['refresh','beans','env']
-  jwt:
-    secret: c3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LXR1dG9yaWFsLWppd29vbi1zcHJpbmctYm9vdC1zZWN1cml0eS1qd3QtdHV0b3JpYWwK
+        sources:
+          - name: member-config
