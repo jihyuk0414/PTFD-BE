@@ -1,5 +1,9 @@
 package org.example.config.redis;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.example.dto.Message;
 import org.example.entity.ChatRoom;
 import org.example.service.RedisSubscriber;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,12 +60,13 @@ public class RedisConfig {
     public RedisTemplate<String, Object> chatRoomRedisTemplate() {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory());
-        // Use StringRedisSerializer for keys
+
         template.setKeySerializer(new StringRedisSerializer());
         template.setHashKeySerializer(new StringRedisSerializer());
 
-        // Use Jackson2JsonRedisSerializer for ChatRoom values
-        Jackson2JsonRedisSerializer<String> serializer = new Jackson2JsonRedisSerializer<>(String.class);
+
+        Jackson2JsonRedisSerializer<Message> serializer = new Jackson2JsonRedisSerializer<>(Message.class);
+
         template.setValueSerializer(serializer);
         template.setHashValueSerializer(serializer);
         return template;
