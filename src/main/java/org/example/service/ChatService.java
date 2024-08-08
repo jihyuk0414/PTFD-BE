@@ -8,6 +8,7 @@ import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 
@@ -22,7 +23,7 @@ public class ChatService {
     private final ChatRepository chatRepository;
 
     public void pubMsgChannel(String channel ,Message message) {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         message.setSendAt(now.format(formatter));
         redisMessageListenerContainer.addMessageListener(redisSubscriber, new ChannelTopic("room"+channel));
