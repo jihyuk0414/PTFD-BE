@@ -4,6 +4,7 @@ package org.example.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dto.ProfileDto;
+import org.example.dto.chat.ChatMember;
 import org.example.dto.login.LoginSuccessDto;
 import org.example.dto.member.MemberDto;
 import org.example.dto.RefreshDto;
@@ -154,8 +155,7 @@ public class MemberService {
         return member.map(Member::getEmail).orElse(null);
     }
 
-//    public List<String> getnickNameList(char gender)
-//    {
-//        return memberRepository.findDistinctNickNamesByGender(gender);
-//    }
+    public ChatMember forChatting(String nickName){
+        return memberRepository.findChatMemberByNickName(nickName);
+    }
 }
