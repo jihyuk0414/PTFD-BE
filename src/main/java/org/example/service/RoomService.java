@@ -3,7 +3,7 @@ package org.example.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dto.ChatRoomMessage;
-import org.example.dto.Message;
+import org.example.dto.MessageReq;
 import org.example.dto.RoomDto;
 import org.example.entity.ChatRoom;
 import org.example.entity.Chatting;
@@ -52,7 +52,7 @@ public class RoomService {
             redisMessageListenerContainer.addMessageListener(redisSubscriber, new ChannelTopic("room"+roomId));
         }
         ChatRoom room1=roomRepository.findByRoom(roomId);
-        List<Message> chats = chatRepository.findByRoomId(roomId).stream().map(Chatting::toDto).toList();
+        List<MessageReq> chats = chatRepository.findByRoomId(roomId).stream().map(Chatting::toDto).toList();
         return ChatRoomMessage.builder()
                 .chats(chats)
                 .room_id(room1.getRoom())

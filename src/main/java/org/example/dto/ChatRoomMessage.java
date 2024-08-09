@@ -13,9 +13,9 @@ public class ChatRoomMessage {
     private String roomName;
     private String roomId;
     private int userCount;
-    private List<Message> chats;
+    private List<MessageReq> chats;
     @Builder
-    public ChatRoomMessage(String roomName,String room_id,int userCount,List<Message> chats){
+    public ChatRoomMessage(String roomName,String room_id,int userCount,List<MessageReq> chats){
         this.roomName=roomName;
         this.roomId=room_id;
         this.userCount=userCount;

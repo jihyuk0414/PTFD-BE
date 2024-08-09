@@ -4,7 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.entity.Chatting;
+import org.example.dto.MessageReq;
+import org.example.dto.MessageRes;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -28,11 +29,10 @@ public class RedisSubscriber  implements MessageListener {
             String publishMessage = (String) redisTemplate.getStringSerializer().deserialize(message.getBody());
             log.info("Received message: {}", publishMessage);
             log.info(publishMessage);
-            Chatting roomMessage = objectMapper.readValue(publishMessage, Chatting.class);
-
+            MessageRes roomMessage= objectMapper.readValue(publishMessage, MessageRes.class);
             log.info("Deserialized message: {}", roomMessage.getContent());
             log.info(roomMessage.getRoomId());
-            messagingTemplate.convertAndSend("/sub/room"+roomMessage.getRoomId() , roomMessage.getContent());
+            messagingTemplate.convertAndSend("/sub/room"+ roomMessage.getRoomId() , roomMessage);
         } catch (Exception e) {
             log.error(e.getMessage());
         }
