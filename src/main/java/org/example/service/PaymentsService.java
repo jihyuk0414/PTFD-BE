@@ -8,7 +8,7 @@ import org.example.dto.send.Link;
 import org.example.dto.send.TemplateObject;
 import org.example.dto.post.PostFeignReq;
 import org.example.dto.post.PostFeignRes;
-import org.example.dto.post.MessageRe
+import org.example.dto.post.MessageRes;
 import org.example.dto.purchase.*;
 import org.example.entity.Member;
 import org.example.repository.member.MemberRepository;
