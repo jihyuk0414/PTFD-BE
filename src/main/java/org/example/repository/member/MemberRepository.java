@@ -32,7 +32,7 @@ public interface MemberRepository extends JpaRepository<Member,Long>, MemberRepo
 
 
     @Query("select new org.example.dto.chat.ChatMember("+
-            "m.role, m.userName,m.profileImage,m.email,m.nickName)"+
+            "m.email,m.nickName,m.role,m.profileImage,m.userName)"+
             "from Member m where m.nickName= :nick_name")
     ChatMember findChatMemberByNickName(@Param("nick_name") String nickName);
 }
