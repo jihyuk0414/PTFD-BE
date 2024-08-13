@@ -21,7 +21,6 @@ public interface MemberRepository extends JpaRepository<Member,Long>, MemberRepo
     Optional<Member> findEmailByNickName(String nickName);
     boolean existsByEmail(String email);
 
-
     @Query("select new org.example.dto.purchase.MemberForPay("+
             "m.point, m.socialType)"+
             "from Member m where m.email= :email")
