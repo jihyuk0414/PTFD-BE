@@ -15,6 +15,4 @@ public class MessageReq implements Serializable {
     private String sender;
     private String content;
     private String roomId;
-
-
 }

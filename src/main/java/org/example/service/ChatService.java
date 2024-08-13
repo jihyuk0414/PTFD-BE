@@ -3,6 +3,7 @@ package org.example.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.bridge.Message;
+import org.example.dto.ChatMember;
 import org.example.dto.MessageReq;
 import org.example.dto.MessageRes;
 import org.example.repository.ChatRepository;
@@ -27,11 +28,12 @@ public class ChatService {
     public void pubMsgChannel(String channel , MessageReq messageReq) {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        ChatMember member=memberfeign.getProfile(messageReq.getSender());
         MessageRes res =MessageRes.builder()
                 .sendAt(now.format(formatter))
                 .content(messageReq.getContent())
                 .roomId(channel)
-                .sender(memberfeign.getProfile(messageReq.getSender()))
+                .sender(member)
                 .build();
         redisMessageListenerContainer.addMessageListener(redisSubscriber, new ChannelTopic("room"+channel));
         redisPublisher.publish(new ChannelTopic("room"+channel), res);
