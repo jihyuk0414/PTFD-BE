@@ -29,7 +29,6 @@ public interface MemberRepository extends JpaRepository<Member,Long>, MemberRepo
     @Query("SELECT m.point FROM Member m WHERE m.email = :email")
     Integer findPointByEmail(@Param("email") String email);
 
-
     @Query("select new org.example.dto.chat.ChatMember("+
             "m.email,m.nickName,m.role,m.profileImage,m.userName)"+
             "from Member m where m.nickName= :nick_name")
