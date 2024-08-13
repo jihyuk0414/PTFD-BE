@@ -78,7 +78,7 @@ public class PaymentsService {
         else {
             return PaymentsRes.builder()
                     .charge(null)
-                    .message("예약하시려는 수업중 마감된 수업입니다.")
+                    .message("예약하시려는 수업중 마감된 수업이있습니다")
                     .build();
         }
 
