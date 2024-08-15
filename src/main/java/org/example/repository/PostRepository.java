@@ -4,6 +4,7 @@ import jakarta.persistence.LockModeType;
 
 import org.example.dto.mail.PostForMail;
 import org.example.dto.post.PostDto;
+import org.example.dto.post.PostForChat;
 import org.example.dto.post.PostWishListCountDto;
 import org.example.entity.Post;
 import org.springframework.data.domain.Page;
@@ -97,4 +98,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "p.imagePost, p.postName)" +
             "from Post p where p.postId = :post_id")
     PostForMail findImageAndNamePostByPostId(@Param("post_id") Long post_id);
+
+    @Query("select new org.example.dto.post.PostForChat(" +
+            "p.imagePost, p.postName, p.userProfile, p.postInfo, p.nickName, p.price)" +
+            "from Post p where p.postId = :post_id")
+    PostForChat findPostForChatByPostId(@Param("post_id") Long post_id);
 }

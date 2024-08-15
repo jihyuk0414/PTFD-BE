@@ -2,10 +2,7 @@ package org.example.service;
 
 import org.example.annotation.TimeCheck;
 import org.example.dto.SuccessRes;
-import org.example.dto.post.PostDetailRes;
-import org.example.dto.post.PostDto;
-import org.example.dto.post.PostForMessage;
-import org.example.dto.post.PostWishListCountDto;
+import org.example.dto.post.*;
 import org.example.dto.wish_list.EmailDto;
 import org.example.entity.Post;
 import org.example.entity.WishList;
@@ -183,6 +180,9 @@ public class PostService {
                 .build();
     }
 
+    public PostForChat getPostForChatting(String postId){
+        return postRepository.findPostForChatByPostId(Long.parseLong(postId));
+    }
 
 
 

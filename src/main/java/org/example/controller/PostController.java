@@ -8,10 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.gym.GymsDto;
-import org.example.dto.post.PostDetailRes;
-import org.example.dto.post.PostDto;
-import org.example.dto.post.PostForMessage;
-import org.example.dto.post.PostWishListCountDto;
+import org.example.dto.post.*;
 import org.example.dto.purchase.PaymentsReq;
 import org.example.dto.purchase.PurchaseDto;
 import org.example.dto.purchase.SellDto;
@@ -144,15 +141,10 @@ public class PostController {
 
     @GetMapping("/notices")
     public ResponseEntity<JsonNode> getNotices() throws IOException {
-        //공지사항 전달 부 입니다.
-        //정적인걸 전달하는걸 service로 분리해서 의존성을 하나 올리는 것보다
-        //실제 동작 없이 파싱만 진행하므로 서비스 부 분리 없이 controller부에서 즉시 작성해 보았습니다.
         ClassPathResource resource = new ClassPathResource("notice.json");
         InputStream inputStream = resource.getInputStream();
-
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode notices = objectMapper.readTree(inputStream);
-
         String baseUrl = "/thumbnailfinal.jpg";
         for (JsonNode notice : notices) {
             ((ObjectNode) notice).put("thumbnail", baseUrl);
@@ -169,13 +161,12 @@ public class PostController {
 
 
     @GetMapping("/gyms/all")
-    public ResponseEntity<GymsDto> getGymsAll(
-            @RequestParam(name = "location",required = false) String location
-    )
-    {
-        return ResponseEntity.ok(gymService.getGymsAllWithFilter(location));
+    public ResponseEntity<GymsDto> getGymsAll(@RequestParam(name = "location",required = false) String location)
+    {return ResponseEntity.ok(gymService.getGymsAllWithFilter(location));}
+
+    @GetMapping("/chat")
+    public PostForChat getPostForChat(String postId){
+        return postService.getPostForChatting(postId);
     }
-
-
 
 }
