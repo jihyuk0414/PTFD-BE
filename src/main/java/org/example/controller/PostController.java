@@ -164,8 +164,8 @@ public class PostController {
     public ResponseEntity<GymsDto> getGymsAll(@RequestParam(name = "location",required = false) String location)
     {return ResponseEntity.ok(gymService.getGymsAllWithFilter(location));}
 
-    @GetMapping("/chat")
-    public PostForChat getPostForChat(String postId){
+    @GetMapping("/chat/{post_id}")
+    public PostForChat getPostForChat(@PathVariable("post_id") String postId){
         return postService.getPostForChatting(postId);
     }
 
