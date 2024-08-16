@@ -15,7 +15,7 @@ public class RoomController {
 
     private final RoomService roomService;
 
-    @PostMapping("/make/{post_id}/{email}")
+    @PostMapping("/make/post/{post_id}/{email}")
     public String makeRoomPost(@PathVariable("email") String email,@PathVariable(value = "post_id") String postId){
         return roomService.createRoomPost(postId,email);
     }
