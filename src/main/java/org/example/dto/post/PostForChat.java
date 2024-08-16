@@ -11,10 +11,10 @@ import lombok.RequiredArgsConstructor;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @AllArgsConstructor
 public class PostForChat {
-    private String postName;
-    private int price;
     private String imagePost;
-    private String nickName;
+    private String postName;
     private String userProfile;
     private String postInfo;
+    private String nickName;
+    private int price;
 }
