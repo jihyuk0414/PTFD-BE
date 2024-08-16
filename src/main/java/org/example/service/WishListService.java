@@ -3,6 +3,7 @@ package org.example.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.dto.post.PostDto;
 import org.example.dto.wish_list.EmailDto;
 import org.example.dto.wish_list.WishListDto;
 import org.example.dto.SuccessRes;
@@ -11,6 +12,10 @@ import org.example.entity.Post;
 import org.example.repository.WishListRepository;
 import org.example.repository.PostRepository;
 import org.example.service.member.MemberFeign;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -39,18 +44,16 @@ public class WishListService {
                     .build();
         }
     }
-    public WishListDto showLikePost(String nickName){
+    public Page<PostDto> showLikePost(String nickName, int page){
+        Pageable pageable;
+        if(page==0) {pageable = PageRequest.of(page, 16, Sort.by(Sort.Direction.ASC, "postId"));}
+        else{pageable = PageRequest.of(page, 8, Sort.by(Sort.Direction.ASC, "postId"));}
         Optional<EmailDto> email = memberFeign.getEmail(nickName);
-        if (email.get().getEmail()==null){return WishListDto.builder().message("존재하지 않는 회원입니다").build();}
-
         log.info(email.get().getEmail());
-        Optional<List<WishList>> likePosts = wishListRepository.findAllByEmail(email.get().getEmail());
-        likePosts.orElseThrow();
-        List<Post> Posts = likePosts.get().stream().map(WishList::getPost).toList();
-        return WishListDto.builder()
-                .message("등록 상품 조회")
-                .likePosts(Posts)
-                .build();
+        Page<Post> likePosts = wishListRepository.findPostByEmail(pageable,email.get().getEmail());
+        Page<PostDto> posts = likePosts.map(PostDto::ToDto);
+        posts.forEach(p->p.setLike(true));
+        return posts;
     }
 
     @Transactional

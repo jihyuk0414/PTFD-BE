@@ -2,6 +2,8 @@ package org.example.repository;
 
 import org.example.entity.Post;
 import org.example.entity.WishList;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +17,5 @@ public interface WishListRepository extends JpaRepository<WishList,Long> {
     void deleteByEmailAndPost(String email,  Post post);
     void deleteByPostIn(List<Post> posts);
     boolean existsByEmailAndPost(String email, Post post);
+    Page<Post> findPostByEmail(Pageable pageable,String email);
 }
