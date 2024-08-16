@@ -50,7 +50,7 @@ public class WishListService {
         else{pageable = PageRequest.of(page, 8, Sort.by(Sort.Direction.ASC, "postId"));}
         Optional<EmailDto> email = memberFeign.getEmail(nickName);
         log.info(email.get().getEmail());
-        Page<Post> likePosts = wishListRepository.findPostByEmail(pageable,email.get().getEmail());
+        Page<Post> likePosts = wishListRepository.findAllByEmail(pageable,email.get().getEmail()).map(WishList::getPost);
         Page<PostDto> posts = likePosts.map(PostDto::ToDto);
         posts.forEach(p->p.setLike(true));
         return posts;

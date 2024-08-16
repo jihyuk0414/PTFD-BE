@@ -67,8 +67,7 @@ public class PostService {
         if(page==0) {pageable = PageRequest.of(page, 16, Sort.by(Sort.Direction.ASC, "postId"));}
         else{pageable = PageRequest.of(page, 8, Sort.by(Sort.Direction.ASC, "postId"));}
         Page<Post> PostPage = postRepository.findAllByNickName(pageable,nickName);
-        Page<PostDto> PostPageDto = PostPage.map(PostDto::ToDto);
-        return PostPageDto;
+        return PostPage.map(PostDto::ToDto);
     }
 
     @Transactional
