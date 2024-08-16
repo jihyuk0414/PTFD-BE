@@ -29,45 +29,59 @@ public class RoomService {
     private final MemberFeign memberFeign;
     private final PostFeign postFeign;
 
-    public String createRoom(String postId,String email){
+    public String createRoomPost(String postId,String email){
         List<String> users = new ArrayList<>();
-        ChatRoom chatRoom;
-
-        if(postId.equals("X")){
-            Optional<String> nickName= memberFeign.getNickName(email);
-            users.add(nickName.get());
-            chatRoom=roomRepository.save(ChatRoom.builder().room(nickName.get()).roomName(nickName.get()).users(users).build());
+        if(roomRepository.existsByRoom(postId)){
+            return "채팅방이 있습니다.";
         }
+        PostForChat post = postFeign.getPostInfo(postId);
+        Optional<String> nickName = memberFeign.getNickName(email);
+        users.add(post.getNickName());
+        users.add(nickName.get());
+        ChatRoom chatRoom=roomRepository.save(ChatRoom.builder().room(postId).roomName(post.getPostName()).users(users).post(post).build());
 
-        else{
-            PostForChat post = postFeign.getPostInfo(postId);
-            users.add(post.getNickName());
-            chatRoom=roomRepository.save(ChatRoom.builder().room(postId).roomName(post.getPostName()).users(users).post(post).build());
-        }
         return chatRoom.getRoomName()+" 채팅방 생성";
     }
 
-    public List<RoomDto> getChatRooms(String email){
+    public String createRoom(String nickName,String email){
+        List<String> users = new ArrayList<>();
+        Optional<String> nickName1 = memberFeign.getNickName(email);
+        if(roomRepository.existsByRoom(nickName1.get()+","+nickName)){
+            return "채팅방이 있습니다.";
+        }
+        users.add(nickName);
+        users.add(nickName1.get());
+        ChatRoom chatRoom = roomRepository.save(ChatRoom.builder().room(nickName1.get()+","+nickName).roomName(nickName1.get()+","+nickName).users(users).build());
+        return chatRoom.getRoomName()+" 채팅방 생성";
+    }
+
+    public List<ChattingRoomRes> getChatRooms(String email){
         Optional<String> nickName= memberFeign.getNickName(email);
-        return roomRepository.findByUsersContaining(nickName.get()).stream().map(ChatRoom::toDto).toList();
+        List<ChatRoom> rooms =roomRepository.findByUsersContaining(nickName.get());
+        List<ChattingRoomRes> res = new ArrayList<>();
+        for (ChatRoom room : rooms){
+            ChattingRoomRes roomRes;
+            if (room.getPost()==null){
+                String other = room.getUsers().stream().filter(u->!nickName.get().equals(u)).toList().get(0);
+                String profile = memberFeign.getProfile(other).getProfile_image();
+                roomRes = ChatRoom.toDto(room,other,profile);
+            }
+            else {
+                roomRes = ChatRoom.toDtoPost(room);
+            }
+            roomRes.setLastMsg(chatRepository.findFirstContentByRoomIdOrderBySendAtDesc(room.getRoom()));
+            res.add(roomRes);
+        }
+        return res;
     }
 
     public ChatRoomMessage insertUser(String roomId, String email){
-        ChatRoom room = roomRepository.findByRoom(roomId);
-        Optional<String> nickName= memberFeign.getNickName(email);
-        if(!room.getUsers().contains(nickName.get())){
-            room.getUsers().add(nickName.get());
-            customRoomRepository.updateUsers(roomId,room.getUsers());
-            redisMessageListenerContainer.addMessageListener(redisSubscriber, new ChannelTopic("room"+roomId));
-        }
-
         ChatRoom room1=roomRepository.findByRoom(roomId);
         List<MessageRes> chats = chatRepository.findByRoomId(roomId).stream().map(Chatting::toDto).toList();
         return ChatRoomMessage.builder()
                 .chats(chats)
                 .room_id(room1.getRoom())
                 .roomName(room1.getRoomName())
-
                 .build();
     }
 

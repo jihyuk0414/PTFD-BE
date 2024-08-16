@@ -3,6 +3,7 @@ package org.example.entity;
 import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
+import org.example.dto.ChattingRoomRes;
 import org.example.dto.PostForChat;
 import org.example.dto.RoomDto;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -27,10 +28,22 @@ public class ChatRoom {
         this.post=post;
     }
 
-    public static RoomDto toDto(ChatRoom chatRoom){
-        return RoomDto.builder()
+    public static ChattingRoomRes toDtoPost(ChatRoom chatRoom){
+        return ChattingRoomRes.builder()
                 .room_id(chatRoom.getRoom())
                 .roomName(chatRoom.getRoomName())
+                .post(chatRoom.getPost())
+                .userProfile(chatRoom.getPost().getUserProfile())
+                .nickName(chatRoom.getPost().getNickName())
+                .build();
+    }
+
+    public static ChattingRoomRes toDto(ChatRoom chatRoom,String nickName,String userProfile){
+        return ChattingRoomRes.builder()
+                .room_id(chatRoom.getRoom())
+                .roomName(chatRoom.getRoomName())
+                .userProfile(userProfile)
+                .nickName(nickName)
                 .build();
     }
 }
