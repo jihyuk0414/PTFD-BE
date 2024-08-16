@@ -62,7 +62,7 @@ public class RoomService {
         for (ChatRoom room : rooms){
             ChattingRoomRes roomRes;
             if (room.getPost()==null){
-                String other = room.getUsers().stream().filter(u->!nickName.get().equals(u)).toList().get(0);
+                String other = room.getUsers().stream().filter(u->!u.equals(nickName.get())).findFirst().get();
                 String profile = memberFeign.getProfile(other).getProfile_image();
                 roomRes = ChatRoom.toDto(room,other,profile);
             }
