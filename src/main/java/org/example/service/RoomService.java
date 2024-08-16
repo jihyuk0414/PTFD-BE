@@ -62,18 +62,15 @@ public class RoomService {
         for (ChatRoom room : rooms){
             ChattingRoomRes roomRes;
             if (room.getPost()==null){
-                log.info(nickName.get());
-                List<String> list =  room.getUsers();
-                log.info(list.toString());
-                list.remove(nickName.get());
-                String other = list.get(0);
+
+                String other = room.getUsers().stream().filter(u->!u.equals(nickName.get())).findFirst().get();
                 String profile = memberFeign.getProfile(other).getProfile_image();
                 roomRes = ChatRoom.toDto(room,other,profile);
             }
             else {
                 roomRes = ChatRoom.toDtoPost(room);
             }
-            roomRes.setLastMsg(chatRepository.findFirstContentByRoomIdOrderBySendAtDesc(room.getRoom()));
+            roomRes.setLastMsg(chatRepository.findFirstContentByRoomIdOrderBySendAtDesc(room.getRoom()).getContent());
             res.add(roomRes);
         }
         return res;
