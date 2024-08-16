@@ -12,8 +12,8 @@ import java.util.List;
 @Document(collection="room")
 @Getter
 public class ChatRoom {
+
     @Id
-    private String id;
     private String room;
     private String roomName;
     private PostForChat post;
@@ -31,7 +31,6 @@ public class ChatRoom {
         return RoomDto.builder()
                 .room_id(chatRoom.getRoom())
                 .roomName(chatRoom.getRoomName())
-
                 .build();
     }
 }
