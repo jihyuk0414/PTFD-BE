@@ -15,11 +15,10 @@ import java.util.List;
 public class CustomRoomRepository {
     private final MongoTemplate mongoTemplate;
 
-    public void updateUsers(String roomId, List<String> users,int userCount) {
+    public void updateUsers(String roomId, List<String> users) {
         Query query = new Query(Criteria.where("room").is(roomId));
         Update update = new Update().set("users", users);
-        Update update1 = new Update().set("userCount",userCount+1);
         mongoTemplate.updateFirst(query, update, ChatRoom.class);
-        mongoTemplate.updateFirst(query,update1, ChatRoom.class);
+
     }
 }

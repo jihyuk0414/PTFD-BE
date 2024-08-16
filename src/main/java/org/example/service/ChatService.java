@@ -6,6 +6,7 @@ import org.aspectj.bridge.Message;
 import org.example.dto.ChatMember;
 import org.example.dto.MessageReq;
 import org.example.dto.MessageRes;
+import org.example.entity.Chatting;
 import org.example.repository.ChatRepository;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
@@ -37,6 +38,7 @@ public class ChatService {
                 .build();
         redisMessageListenerContainer.addMessageListener(redisSubscriber, new ChannelTopic("room"+channel));
         redisPublisher.publish(new ChannelTopic("room"+channel), res);
-        chatRepository.save(MessageRes.toEntity(res));
+        Chatting chat=chatRepository.save(MessageRes.toEntity(res));
+        log.info(chat.toString());
     }
 }

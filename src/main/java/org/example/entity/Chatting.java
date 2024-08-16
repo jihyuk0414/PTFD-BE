@@ -12,7 +12,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection="chatting")
 @Getter
 @ToString
-
 @RequiredArgsConstructor
 public class Chatting {
     @Id

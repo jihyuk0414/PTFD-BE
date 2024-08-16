@@ -12,13 +12,12 @@ import java.util.List;
 public class ChatRoomMessage {
     private String roomName;
     private String roomId;
-    private int userCount;
     private List<MessageRes> chats;
+
     @Builder
-    public ChatRoomMessage(String roomName,String room_id,int userCount,List<MessageRes> chats){
+    public ChatRoomMessage(String roomName,String room_id,List<MessageRes> chats){
         this.roomName=roomName;
         this.roomId=room_id;
-        this.userCount=userCount;
         this.chats=chats;
     }
 }

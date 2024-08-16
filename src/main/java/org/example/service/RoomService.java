@@ -2,10 +2,7 @@ package org.example.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.dto.ChatRoomMessage;
-import org.example.dto.MessageReq;
-import org.example.dto.MessageRes;
-import org.example.dto.RoomDto;
+import org.example.dto.*;
 import org.example.entity.ChatRoom;
 import org.example.entity.Chatting;
 import org.example.repository.ChatRepository;
@@ -30,12 +27,23 @@ public class RoomService {
     private final RedisSubscriber redisSubscriber;
     private final RedisMessageListenerContainer redisMessageListenerContainer;
     private final MemberFeign memberFeign;
+    private final PostFeign postFeign;
 
-    public String createRoom(RoomDto roomDto,String email){
+    public String createRoom(String postId,String email){
         List<String> users = new ArrayList<>();
-        Optional<String> nickName= memberFeign.getNickName(email);
-        users.add(nickName.get());
-        ChatRoom chatRoom=roomRepository.save(ChatRoom.builder().room(roomDto.getRoomId()).roomName(roomDto.getRoomName()).users(users).userCount(1).build());
+        ChatRoom chatRoom;
+
+        if(postId.equals("X")){
+            Optional<String> nickName= memberFeign.getNickName(email);
+            users.add(nickName.get());
+            chatRoom=roomRepository.save(ChatRoom.builder().room(nickName.get()).roomName(nickName.get()).users(users).build());
+        }
+
+        else{
+            PostForChat post = postFeign.getPostInfo(postId);
+            users.add(post.getNickName());
+            chatRoom=roomRepository.save(ChatRoom.builder().room(postId).roomName(post.getPostName()).users(users).post(post).build());
+        }
         return chatRoom.getRoomName()+" 채팅방 생성";
     }
 
@@ -49,16 +57,17 @@ public class RoomService {
         Optional<String> nickName= memberFeign.getNickName(email);
         if(!room.getUsers().contains(nickName.get())){
             room.getUsers().add(nickName.get());
-            customRoomRepository.updateUsers(roomId,room.getUsers(),room.getUserCount());
+            customRoomRepository.updateUsers(roomId,room.getUsers());
             redisMessageListenerContainer.addMessageListener(redisSubscriber, new ChannelTopic("room"+roomId));
         }
+
         ChatRoom room1=roomRepository.findByRoom(roomId);
         List<MessageRes> chats = chatRepository.findByRoomId(roomId).stream().map(Chatting::toDto).toList();
         return ChatRoomMessage.builder()
                 .chats(chats)
                 .room_id(room1.getRoom())
                 .roomName(room1.getRoomName())
-                .userCount(room1.getUserCount())
+
                 .build();
     }
 

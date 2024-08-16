@@ -10,11 +10,13 @@ import lombok.Data;
 public class RoomDto {
     private String roomName;
     private String roomId;
-    private int userCount;
+    private PostForChat post;
+
+
     @Builder
-    public RoomDto(String roomName,String room_id,int userCount){
+    public RoomDto(String roomName,String room_id,PostForChat post){
         this.roomName=roomName;
         this.roomId=room_id;
-        this.userCount=userCount;
+        this.post=post;
     }
 }

@@ -27,7 +27,6 @@ public class MessageRes {
                 .roomId(messageRes.getRoomId())
                 .sendAt(messageRes.getSendAt())
                 .sender(messageRes.getSender())
-
                 .build();
     }
 

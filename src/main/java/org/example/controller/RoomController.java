@@ -15,8 +15,8 @@ public class RoomController {
     private final RoomService roomService;
 
     @PostMapping("/make/{email}")
-    public String makeRoom(@RequestBody RoomDto roomDto,@PathVariable("email") String email){
-        return roomService.createRoom(roomDto,email);
+    public String makeRoom(@PathVariable("email") String email,@RequestParam(value = "post_id",required = false,defaultValue = "X") String postId){
+        return roomService.createRoom(postId,email);
     }
 
     @GetMapping("/search/{email}")
