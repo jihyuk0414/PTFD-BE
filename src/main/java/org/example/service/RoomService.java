@@ -70,7 +70,8 @@ public class RoomService {
             else {
                 roomRes = ChatRoom.toDtoPost(room);
             }
-            roomRes.setLastMsg(chatRepository.findFirstByRoomIdOrderBySendAtDesc(room.getRoom()).getContent());
+            Optional<Chatting> last = chatRepository.findFirstByRoomIdOrderBySendAtDesc(room.getRoom());
+            last.ifPresent(chatting -> roomRes.setLastMsg(chatting.getContent()));
             res.add(roomRes);
         }
         return res;
