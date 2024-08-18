@@ -46,8 +46,8 @@ public class WishListService {
     }
     public Page<PostDto> showLikePost(String nickName, int page){
         Pageable pageable;
-        if(page==0) {pageable = PageRequest.of(page, 16, Sort.by(Sort.Direction.ASC, "postId"));}
-        else{pageable = PageRequest.of(page, 8, Sort.by(Sort.Direction.ASC, "postId"));}
+        if(page==0) {pageable = PageRequest.of(page, 16, Sort.by(Sort.Direction.ASC, "wishListId"));}
+        else{pageable = PageRequest.of(page, 8, Sort.by(Sort.Direction.ASC, "wishListId"));}
         Optional<EmailDto> email = memberFeign.getEmail(nickName);
         log.info(email.get().getEmail());
         Page<Post> likePosts = wishListRepository.findAllByEmail(pageable,email.get().getEmail()).map(WishList::getPost);
