@@ -29,7 +29,7 @@ public class RoomController {
         return roomService.getChatRooms(email);
     }
 
-    @PostMapping("/enter/{room_id}/{email}")
+    @GetMapping("/enter/{room_id}/{email}")
     public ChatRoomMessage enterRoom(@PathVariable("room_id") String roomId, @PathVariable("email") String email){
         return roomService.insertUser(roomId,email);
     }

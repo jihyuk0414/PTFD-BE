@@ -2,7 +2,7 @@ package org.example.dto;
 
 
 import lombok.*;
-import org.example.entity.Chatting;
+
 
 import java.io.Serializable;
 
