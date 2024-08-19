@@ -34,7 +34,7 @@ public class NaverService {
     private final AuthenticationProvider authenticationProvider;
     private final PasswordEncoder passwordEncoder;
     private final String client_id="rIplkSnE1AiVy4P8_7Xh";
-    private final String redirect_uri="http://default-front-84485-25569413-20a094b6a545.kr.lb.naverncp.com:30";
+    private final String redirect_uri="http://default-front-84485-25569413-20a094b6a545.kr.lb.naverncp.com:30/oauth2/user/login/oauth2/naver";
     private final String client_secret="xE9HjxeSCp";
     private final String grant_type="authorization_code";
     private final String state="default1234";
