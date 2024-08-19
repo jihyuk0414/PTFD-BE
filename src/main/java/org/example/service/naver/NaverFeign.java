@@ -11,7 +11,8 @@ public interface NaverFeign {
     public String getToken(@RequestParam("client_id") String client_id,
                       @RequestParam("client_secret") String secret,
                       @RequestParam("grant_type") String grant,
-                      @RequestParam("code") String code);
+                      @RequestParam("code") String code,
+                           @RequestParam("state") String state);
 
     @PostMapping("/token")
     public String delToken(@RequestParam("client_id") String client_id,
