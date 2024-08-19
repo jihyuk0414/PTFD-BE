@@ -40,6 +40,8 @@ public class NaverService {
     private final String state="default1234";
     private NaverToken naverToken_user;
     public JwtDto GenerateToken(String code) throws ParseException, IOException, org.json.simple.parser.ParseException {
+        log.info("네이버 로그인");
+        log.info(code);
         String email = OAuthSignUp(code);
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(email,"default1234");
         Authentication authentication = authenticationProvider.authenticate(token);
