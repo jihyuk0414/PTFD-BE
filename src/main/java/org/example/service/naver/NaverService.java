@@ -68,6 +68,8 @@ public class NaverService {
                 .email(response.get("email").toString())
                 .profileImage(response.get("profile_image").toString())
                 .userName(response.get("name").toString())
+                .role("ROLE_MEMBER")
+                .nickName(response.get("nickname").toString())
                 .password(passwordEncoder.encode("default1234"))
                 .socialType(0)
                 .build();
