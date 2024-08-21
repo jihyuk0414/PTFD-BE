@@ -69,7 +69,8 @@ public class NaverService {
                 .profileImage(response.get("profile_image").toString())
                 .userName(response.get("name").toString())
                 .role("ROLE_MEMBER")
-                .nickName(response.get("nickname").toString())
+                .memberInfo("안녕하세요 신규 회원입니다.")
+                .nickName(response.get("name").toString())
                 .password(passwordEncoder.encode("default1234"))
                 .socialType(0)
                 .build();

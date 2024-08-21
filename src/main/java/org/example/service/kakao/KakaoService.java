@@ -80,6 +80,7 @@ public class KakaoService {
                 .nickName(properties.get("nickname").toString())
                 .userName(properties.get("nickname").toString())
                 .password(passwordEncoder.encode("default1234"))
+                .memberInfo("안녕하세요 신규 회원입니다.")
                 .socialType(1)
                 .role("ROLE_TEACHER")
                 .build();
