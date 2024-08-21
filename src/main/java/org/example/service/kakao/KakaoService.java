@@ -84,8 +84,6 @@ public class KakaoService {
                 .socialType(1)
                 .role("ROLE_TEACHER")
                 .build();
-        log.info(memberDto.getRole());
-        log.info(passwordEncoder.encode("default1234"));
         Optional<Member> member = memberRepository.findByEmail(memberDto.getEmail());
         Member member1 = Member.builder()
                 .memberDto(memberDto)

@@ -70,7 +70,7 @@ public class NaverService {
                 .userName(response.get("name").toString())
                 .role("ROLE_MEMBER")
                 .memberInfo("안녕하세요 신규 회원입니다.")
-                .nickName(response.get("name").toString())
+                .nickName("네이버 로그인"+response.get("name").toString())
                 .password(passwordEncoder.encode("default1234"))
                 .socialType(0)
                 .build();
