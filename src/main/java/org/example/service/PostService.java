@@ -51,16 +51,20 @@ public class PostService {
         if(page==0) {pageable = PageRequest.of(page, 16, Sort.by(Sort.Direction.ASC, "postId"));}
         else{pageable = PageRequest.of(page, 8, Sort.by(Sort.Direction.ASC, "postId"));}
         Page<Post> postPage;
-        if(categoryIds.isEmpty() && locations.isEmpty()){
+        if(categoryIds==null && locations==null){
             postPage = postRepository.findAll(pageable);
         }
-        else if(categoryIds.isEmpty()){
+        else if(categoryIds==null){
+            locations.forEach(System.out::println);
             postPage = postRepository.findAllByLocations(pageable,locations);
         }
-        else if(locations.isEmpty()){
+        else if(locations==null){
+            categoryIds.forEach(System.out::println);
             postPage = postRepository.findAllByCategoryIds(pageable,categoryIds);
         }
         else{
+            locations.forEach(System.out::println);
+            categoryIds.forEach(System.out::println);
             postPage = postRepository.findAllByCategoryIdsAndLocations(pageable,categoryIds,locations);
         }
         Page<PostDto> posts=postPage.map(PostDto::ToDto);
