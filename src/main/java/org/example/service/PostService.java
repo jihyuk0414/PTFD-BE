@@ -46,11 +46,23 @@ public class PostService {
     }
 
     @Transactional
-    public Page<PostDto> findPostPage (int page,String nickName){
+    public Page<PostDto> findPostPage (int page,String nickName,List<Integer> categoryIds, List<String> locations){
         Pageable pageable;
         if(page==0) {pageable = PageRequest.of(page, 16, Sort.by(Sort.Direction.ASC, "postId"));}
         else{pageable = PageRequest.of(page, 8, Sort.by(Sort.Direction.ASC, "postId"));}
-        Page<Post> postPage = postRepository.findAll(pageable);
+        Page<Post> postPage;
+        if(categoryIds.isEmpty() && locations.isEmpty()){
+            postPage = postRepository.findAll(pageable);
+        }
+        else if(categoryIds.isEmpty()){
+            postPage = postRepository.findAllByLocations(pageable,locations);
+        }
+        else if(locations.isEmpty()){
+            postPage = postRepository.findAllByCategoryIds(pageable,categoryIds);
+        }
+        else{
+            postPage = postRepository.findAllByCategoryIdsAndLocations(pageable,categoryIds,locations);
+        }
         Page<PostDto> posts=postPage.map(PostDto::ToDto);
         if (nickName!=null) {
             Optional<EmailDto> email = memberFeign.getEmail(nickName);

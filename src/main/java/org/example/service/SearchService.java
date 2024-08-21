@@ -42,7 +42,7 @@ public class SearchService {
         int pageSize;
         int start;
         if (page==0) {pageSize=16;start=0;}
-        else{pageSize=8;start=16+(page-1)*8;}
+        else{pageSize=8; start=16+(page-1)*8;}
         Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Sort.Direction.ASC, "postName"));
         List<Post> postsName = postRepository.findAllByPostName(postName);
         List<PostDto> posts=findMorePosts(postsName,category_id,location);
@@ -56,14 +56,9 @@ public class SearchService {
         if(start>posts.size()){return new PageImpl<>(Collections.emptyList(), pageable, 0);}
         List<PostDto> pageContent = posts.subList(start, Math.min(start+pageSize-1,posts.size()));
         return new PageImpl<>(pageContent, PageRequest.of(page, pageSize), posts.size());
-
-
-
-
-
     }
 
-    private List<PostDto> findMorePosts( List<Post> postsName,int category_id, String location) {
+    private List<PostDto> findMorePosts(List<Post> postsName,int category_id, String location) {
         if (category_id == 0 && location.equals("X")) {
             return postsName.stream().map(PostDto::ToDto).toList();
         } else if (category_id == 0) {

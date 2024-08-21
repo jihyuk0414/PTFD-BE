@@ -1,11 +1,8 @@
 package org.example.repository;
 
 import jakarta.persistence.LockModeType;
-
 import org.example.dto.mail.PostForMail;
-import org.example.dto.post.PostDto;
 import org.example.dto.post.PostForChat;
-import org.example.dto.post.PostWishListCountDto;
 import org.example.entity.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +12,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -55,7 +51,15 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                        @Param("post_info")String postIfo);
 
     Page<Post> findAll(Pageable pageable);
-    Page<Post> findAllByPostName(Pageable pageable,String name);
+
+    @Query("SELECT p FROM Post p WHERE p.categoryId IN :category_id")
+    Page<Post> findAllByCategoryIds(Pageable pageable,@Param("category_id") List<Integer> categoryIds);
+
+    @Query("SELECT p FROM Post p WHERE p.location IN :locations")
+    Page<Post> findAllByLocations(Pageable pageable,@Param("locations") List<String> locations);
+
+    @Query("SELECT p FROM Post p WHERE p.categoryId IN :category_id AND p.location IN :locations")
+    Page<Post> findAllByCategoryIdsAndLocations(Pageable pageable,@Param("category_id") List<Integer> categoryIds, @Param("locations") List<String> locations);
 
     Page<Post> findAllByNickName(Pageable pageable, String nickName) ;
 

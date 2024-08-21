@@ -1,9 +1,5 @@
 package org.example.controller;
 
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -13,20 +9,16 @@ import org.example.dto.purchase.PaymentsReq;
 import org.example.dto.purchase.PurchaseDto;
 import org.example.dto.purchase.SellDto;
 import org.example.dto.search.SearchDto;
-import org.example.dto.wish_list.WishListDto;
 import org.example.service.MailService;
 import org.example.service.SearchService;
 import org.example.service.WishListService;
 import org.example.service.PostService;
 import org.example.service.gyms.GymService;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 @RestController
@@ -39,7 +31,7 @@ public class PostController {
     private final SearchService searchService;
     private final MailService mailService;
     private final GymService gymService;
-    // 게시글 작성 - email 필요
+
 
     @PostMapping("/{email}")
     public ResponseEntity<SuccessRes> savePost(@PathVariable("email") String email,
@@ -65,8 +57,10 @@ public class PostController {
     // 페이징 형태로 변경
     @GetMapping("/page")
     public ResponseEntity<Page<PostDto>> getPostPage(@RequestParam(value = "page",required = false, defaultValue = "0") int page,
-                                                     @RequestParam(value = "nick_name",required = false, defaultValue = "null") String nick_name) {
-        return ResponseEntity.ok(postService.findPostPage(page,nick_name));
+                                                     @RequestParam(value = "nick_name",required = false, defaultValue = "null") String nick_name,
+                                                    @RequestParam(name = "category_id", required = false) List<Integer> category_id,
+                                                    @RequestParam(name = "location", required = false) List<String> location) {
+        return ResponseEntity.ok(postService.findPostPage(page,nick_name,category_id,location));
     }
 
     @GetMapping("/mypage")
