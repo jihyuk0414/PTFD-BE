@@ -75,7 +75,7 @@ public class MailService {
         }
     }
 
-    //이메일 하나에게 보내는 부분
+    //이메일 하나에게 보내는 부분(소비자)
     public void sendOneEmailToconsumer(String consumerEmail, String postName, DataSource imageDataSource) throws MessagingException
     {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -100,6 +100,7 @@ public class MailService {
         javaMailSender.send(mimeMessage);
     }
 
+    //판매자 한명에게만 보내기(판매자)
     public void sendOneEmailToSeller(String sellerEmail, String postName, DataSource imageDataSource) throws MessagingException
     {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
