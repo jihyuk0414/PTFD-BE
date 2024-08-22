@@ -47,9 +47,9 @@ public class PostService {
 
     @Transactional
     public Page<PostDto> findPostPage (int page,String nickName,List<Integer> categoryIds, List<String> locations){
-        Pageable pageable;
-        if(page==0) {pageable = PageRequest.of(page, 16, Sort.by(Sort.Direction.ASC, "postId"));}
-        else{pageable = PageRequest.of(page, 8, Sort.by(Sort.Direction.ASC, "postId"));}
+        page = (page==0)? 0 :page+1;
+        int pageSize = (page == 0) ? 16 : 8;
+        Pageable pageable = PageRequest.of(page, 16, Sort.by(Sort.Direction.ASC, "postId"));
         Page<Post> postPage;
         if(categoryIds==null && locations==null){
             postPage = postRepository.findAll(pageable);
