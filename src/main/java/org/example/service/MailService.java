@@ -52,7 +52,7 @@ public class MailService {
 
                 String htmlContentWithInlineImage = "<html><body>"
                         + "<img src='cid:image_reservation' style='width: 100px; height: auto;'/>"
-                        +"<h1>"+ name +"를(을) 예약하셨습니다."+"</h1>"
+                        +"<h1>"+ name +"가 예약 되었습니다."+"</h1>"
                         + "<p>사이트를 이용해주셔서 감사합니다.</p>"
                         + "<p>대표 전화번호: 010-8852-6778</p>"
                         + "<p>대표 이메일: 5-stars16@naver.com</p>"
@@ -108,8 +108,19 @@ public class MailService {
                 mimeMessageHelper.setFrom(new InternetAddress(mailSenderId+"@naver.com"));
                 // 이메일 보내기
                 javaMailSender.send(mimeMessage);
+
                 mimeMessageHelper.setTo(paymentReq.getSeller());
                 mimeMessageHelper.setSubject("게시하신 PT를 다른 고객님이 예약하셨습니다.");
+
+                //강사일시 메세지 포멧 변경
+                htmlContentWithInlineImage = "<html><body>"
+                        + "<img src='cid:image_reservation' style='width: 100px; height: auto;'/>"
+                        +"<h1>"+ name +"가 예약 되었습니다."+"</h1>"
+                        + "<p>사이트를 이용해주셔서 감사합니다.</p>"
+                        + "<p>대표 전화번호: 010-8852-6778</p>"
+                        + "<p>대표 이메일: 5-stars16@naver.com</p>"
+                        + "<p>행복한 PT 되시기를 기원하겠습니다.</p>"
+                        + "</body></html>";
                 // 본문
                 javaMailSender.send(mimeMessage);
             }
