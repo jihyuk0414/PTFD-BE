@@ -111,9 +111,9 @@ public class PostController {
     public ResponseEntity<Page<PostDto>> searchFullWord
             (@RequestBody SearchDto searchDto,
              @RequestParam(name = "page",required = false,defaultValue = "0") int page,
-             @RequestParam(name = "category_id", required = false, defaultValue = "0") int category_id,
-            @RequestParam(name = "location", required = false, defaultValue = "X") String location,
-            @RequestParam(name = "nick_name", required = false, defaultValue = "null") String nickName){
+             @RequestParam(name = "category_id", required = false) List<Integer> category_id,
+             @RequestParam(name = "location", required = false) List<String> location,
+             @RequestParam(name = "nick_name", required = false) String nickName){
         return ResponseEntity.ok(searchService.searchPost(searchDto.getPost_name(), page,category_id, location,nickName));
     }
 

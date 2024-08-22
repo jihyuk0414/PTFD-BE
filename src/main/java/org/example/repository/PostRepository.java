@@ -82,8 +82,24 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p FROM Post p WHERE p.postName LIKE %:postName%")
     List<Post> findByPostName(@Param("postName") String PostName);
+    //자동완성부에서 해당 jpa를 사용하므로, 해당 부는 유지했습니다.
 
-    
+    //이 두 부분이 변경 부 입니다.
+    @Query("SELECT p FROM Post p WHERE p.postName LIKE %:postName%")
+    Page<Post> findByPostNamePage(@Param("postName") String PostName,Pageable pageable);
+
+    @Query("SELECT p FROM Post p WHERE " +
+            "(p.categoryId IN :categoryIds OR :categoryIds IS NULL) " +
+            "AND (p.location IN :locations OR :locations IS NULL) " +
+            "AND p.postName LIKE %:postName% " +
+            "ORDER BY p.postId ASC")
+    Page<Post> findPostsByCategoryAndLocation(
+            @Param("postName") String postName,
+            @Param("categoryIds") List<Integer> categoryIds,
+            @Param("locations") List<String> locations,
+            Pageable pageable);
+
+
     @Modifying
     @Query("UPDATE Post p SET p.totalNumber = :totalNumber where p.postId = :postId")
     void updateTotalNumber(@Param("totalNumber")int totalNumber,@Param("postId")Long postId);
