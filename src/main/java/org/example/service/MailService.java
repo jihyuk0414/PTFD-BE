@@ -115,6 +115,8 @@ public class MailService {
                 MimeMessage mimeMessage2 = javaMailSender.createMimeMessage();
                 MimeMessageHelper mimeMessageHelper2 = new MimeMessageHelper(mimeMessage2, true, "UTF-8");
                 mimeMessageHelper2.setTo(paymentReq.getSeller());
+                mimeMessageHelper2.setSubject("게시하신 PT를 다른 고객님이 예약하셨습니다.");
+
                 htmlContentWithInlineImage = "<html><body>"
                         + "<img src='cid:image_reservation' style='width: 100px; height: auto;'/>"
                         +"<h1>"+ name +"을(를) 다른 분이 예약하셨습니다."+"</h1>"
@@ -124,12 +126,11 @@ public class MailService {
                         + "<p>행복한 PT 되시기를 기원하겠습니다.</p>"
                         + "</body></html>";
 
-                mimeMessageHelper2.setSubject("게시하신 PT를 다른 고객님이 예약하셨습니다.");
                 mimeMessageHelper2.addInline("image_reservation", dataSource);
                 mimeMessageHelper2.setText(htmlContentWithInlineImage, true);
                 mimeMessageHelper2.setFrom(new InternetAddress(mailSenderId+"@naver.com"));
                 // 본문
-                javaMailSender.send(mimeMessage);
+                javaMailSender.send(mimeMessage2);
             }
             return "메일 전송 완료되었습니다.";
         } catch (Exception e) {
