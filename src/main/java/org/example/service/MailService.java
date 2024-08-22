@@ -109,10 +109,12 @@ public class MailService {
                 // 이메일 보내기
                 javaMailSender.send(mimeMessage);
 
-                mimeMessageHelper.setTo(paymentReq.getSeller());
-                mimeMessageHelper.setSubject("게시하신 PT를 다른 고객님이 예약하셨습니다.");
+                // 판매자에게 메일 보내기
+                // mimemessage 객체는 전송 후 변경이 불가능. (내용이 서버에 포함)
 
-                //강사일시 메세지 포멧 변경
+                MimeMessage mimeMessage2 = javaMailSender.createMimeMessage();
+                MimeMessageHelper mimeMessageHelper2 = new MimeMessageHelper(mimeMessage2, true, "UTF-8");
+                mimeMessageHelper2.setTo(paymentReq.getSeller());
                 htmlContentWithInlineImage = "<html><body>"
                         + "<img src='cid:image_reservation' style='width: 100px; height: auto;'/>"
                         +"<h1>"+ name +"가 예약 되었습니다."+"</h1>"
@@ -121,6 +123,11 @@ public class MailService {
                         + "<p>대표 이메일: 5-stars16@naver.com</p>"
                         + "<p>행복한 PT 되시기를 기원하겠습니다.</p>"
                         + "</body></html>";
+
+                mimeMessageHelper2.setSubject("게시하신 PT를 다른 고객님이 예약하셨습니다.");
+                mimeMessageHelper2.addInline("image_reservation", dataSource);
+                mimeMessageHelper2.setText(htmlContentWithInlineImage, true);
+                mimeMessageHelper2.setFrom(new InternetAddress(mailSenderId+"@naver.com"));
                 // 본문
                 javaMailSender.send(mimeMessage);
             }
