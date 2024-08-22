@@ -52,7 +52,7 @@ public class MailService {
 
                 String htmlContentWithInlineImage = "<html><body>"
                         + "<img src='cid:image_reservation' style='width: 100px; height: auto;'/>"
-                        +"<h1>"+ name +"가 예약 되었습니다."+"</h1>"
+                        +"<h1>"+ name +"을(를) 다른 분이 예약하셨습니다."+"</h1>"
                         + "<p>사이트를 이용해주셔서 감사합니다.</p>"
                         + "<p>대표 전화번호: 010-8852-6778</p>"
                         + "<p>대표 이메일: 5-stars16@naver.com</p>"
@@ -117,7 +117,7 @@ public class MailService {
                 mimeMessageHelper2.setTo(paymentReq.getSeller());
                 htmlContentWithInlineImage = "<html><body>"
                         + "<img src='cid:image_reservation' style='width: 100px; height: auto;'/>"
-                        +"<h1>"+ name +"가 예약 되었습니다."+"</h1>"
+                        +"<h1>"+ name +"을(를) 다른 분이 예약하셨습니다."+"</h1>"
                         + "<p>사이트를 이용해주셔서 감사합니다.</p>"
                         + "<p>대표 전화번호: 010-8852-6778</p>"
                         + "<p>대표 이메일: 5-stars16@naver.com</p>"
