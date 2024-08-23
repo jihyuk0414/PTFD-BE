@@ -34,6 +34,7 @@ public class Chatting {
                 .sender(chatting.getSender())
                 .content(chatting.getContent())
                 .roomId(chatting.getRoomId())
+                .sendAt(chatting.getSendAt())
                 .build();
     }
 }
