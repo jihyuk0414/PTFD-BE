@@ -28,7 +28,7 @@ public class ChatService {
 
     public void pubMsgChannel(String channel , MessageReq messageReq) {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ");
         ChatMember member=memberfeign.getProfile(messageReq.getSender());
         MessageRes res =MessageRes.builder()
                 .sendAt(now.format(formatter))
