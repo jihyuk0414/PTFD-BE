@@ -96,14 +96,13 @@ public class PaymentService {
             //portone에서 제공하는 날짜 type에 따른 교환
             Timestamp purchaseAt = changeDateFormat(portOnePaymentRecords.getRequestedAt()) ;
 
-            log.info("payment email check at deploy: {}", useremail);
-
             Payment payment = Payment.builder()
                     .paymentid(paymentId)
                     .status(portOnePaymentRecords.getStatus())
                     .purchaseat(purchaseAt) // 변환 필요
                     .ordername(portOnePaymentRecords.getOrderName())
                     .totalamount(frontPaymentClaim)
+                    .useremail(useremail)
                     .build();
 
             paymentRepository.save(payment) ; // 검증 정보가 문제 없을시, 결제 완료된걸 저장.
@@ -194,6 +193,7 @@ public class PaymentService {
                                 .purchaseat(purchaseAt)
                                 .ordername(orderName)
                                 .totalamount(totalAmount)
+                                .useremail(useremail)
                                 .build();
 
                         paymentRepository.save(cancelpayment);

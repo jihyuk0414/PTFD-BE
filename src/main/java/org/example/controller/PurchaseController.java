@@ -15,7 +15,6 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@Slf4j
 public class PurchaseController {
     private final PaymentService paymentService;
     private final OrderService orderService ;
@@ -29,7 +28,6 @@ public class PurchaseController {
     public Mono<PaymentsRes> validatepaymentone(@PathVariable(value = "useremail") String useremail,
                                                 @RequestBody ValidationRequest validation)
     {
-        log.info("emailreceive at controller: {}", useremail);
         return paymentService.getPortOneToken()
                 .flatMap(PortOnetoken -> paymentService.getPaymentRecordsByPortOne(validation.getPayment_id(), PortOnetoken)
                         .flatMap(purchasecheckresponsewebclient ->
