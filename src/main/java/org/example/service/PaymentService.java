@@ -96,7 +96,7 @@ public class PaymentService {
             //portone에서 제공하는 날짜 type에 따른 교환
             Timestamp purchaseAt = changeDateFormat(portOnePaymentRecords.getRequestedAt()) ;
 
-            log.info("payment email check at deploy", useremail);
+            log.info("payment email check at deploy: {}", useremail);
 
             Payment payment = Payment.builder()
                     .paymentid(paymentId)
