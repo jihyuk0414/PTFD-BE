@@ -96,6 +96,8 @@ public class PaymentService {
             //portone에서 제공하는 날짜 type에 따른 교환
             Timestamp purchaseAt = changeDateFormat(portOnePaymentRecords.getRequestedAt()) ;
 
+            log.info("payment email check at deploy", useremail);
+
             Payment payment = Payment.builder()
                     .paymentid(paymentId)
                     .status(portOnePaymentRecords.getStatus())
@@ -113,7 +115,7 @@ public class PaymentService {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");//결제 취소시간
 
             cancelPayment(paymentId,currentDateTime.format(formatter), portOnePaymentRecords.getOrderName(),
-                    frontPaymentClaim, "결제 금액과 DB 확인 결과 맞지 않습니다", "DENIED",portOneToken) ;
+                    frontPaymentClaim, "결제 금액과 DB 확인 결과 맞지 않습니다", "DENIED",portOneToken, useremail) ;
             //결제 취소 완료. 이후 exception 유발 필요-
             throw new PaymentClaimAmountMismatchException();
 
@@ -138,7 +140,7 @@ public class PaymentService {
                 .onErrorResume(WebClientRequestException.class, ex -> {
                     OffsetDateTime currentDateTime = OffsetDateTime.now();
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-                    return cancelPayment(validationRequest.getPayment_id(), currentDateTime.format(formatter), orderName, validationRequest.getTotal_point(), "Failed to send payment request", "CANCELLED", portOneToken)
+                    return cancelPayment(validationRequest.getPayment_id(), currentDateTime.format(formatter), orderName, validationRequest.getTotal_point(), "Failed to send payment request", "CANCELLED", portOneToken,email)
                             .then(Mono.error(new MemberContainerException()));
                     //MSA구조에선, 상대 서버가 안켜져도 결제엔 문제가 없어야 된다고 생각했습니다.
                     //Member server가 켜지지 않아도. 결제 했던건 취소됩니다.
@@ -151,7 +153,7 @@ public class PaymentService {
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 
                         return cancelPayment(validationRequest.getPayment_id(), currentDateTime.format(formatter), orderName, validationRequest.getTotal_point(),
-                                "이미 마감된 수업입니다.", "CANCELLED", portOneToken)
+                                "이미 마감된 수업입니다.", "CANCELLED", portOneToken,email)
                                 .then(Mono.error(new AlreadySoldOutException()));
                     } else {
                         return Mono.just(paymentsRes);
@@ -162,7 +164,7 @@ public class PaymentService {
     }
 
     //결제 취소 PORTONE에게 요청
-    public Mono<Void> cancelPayment (String paymentId, String requestedAt, String orderName, int totalAmount, String cancelReason, String paymentStatus, String portOneToken )
+    public Mono<Void> cancelPayment (String paymentId, String requestedAt, String orderName, int totalAmount, String cancelReason, String paymentStatus, String portOneToken, String useremail )
     {
         WebClient cancelwebClient = WebClient.builder().baseUrl("https://api.portone.io").build();
         CancelRequest cancelRequest = new CancelRequest(cancelReason) ;
