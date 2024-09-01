@@ -23,4 +23,8 @@ public interface PostFeign {
 
     @PostMapping("/emails")
     public String SendEmailToSeller(@RequestBody List<PaymentsReq> paymentsReqList);
+
+    //추가
+    @PostMapping("/update/nick_name")
+    public String changeNicknameByEmail(@RequestParam("nick_name") String nickName, @RequestParam("email") String email);
 }

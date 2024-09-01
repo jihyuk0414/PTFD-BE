@@ -17,6 +17,7 @@ import org.example.jwt.JwtProvider;
 import org.example.repository.follow.FollowRepository;
 import org.example.repository.member.MemberRepository;
 import org.example.repository.token.TokenRepository;
+import org.example.service.purchase.PostFeign;
 import org.example.service.storage.NcpStorageService;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -40,6 +41,7 @@ public class MemberService {
     private final JwtProvider jwtProvider;
     private final TokenRepository tokenRepository;
     private final NcpStorageService ncpStorageService;
+    private final PostFeign postFeign;
 
 
     @Transactional
@@ -140,6 +142,7 @@ public class MemberService {
         //주석 처리 부는, ncp로 기존 gcp를 변경한 것입니다.
         ncpStorageService.imageDelete(email);
         memberRepository.updateInfo(Member.builder().memberDto(memberDto).build());
+        postFeign.changeNicknameByEmail(memberDto.getNickName() ,email);
         return ExceptionResponse.builder()
                 .state("success")
                 .message("회원 정보 수정에 성공했습니다.")
