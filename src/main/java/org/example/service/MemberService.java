@@ -142,7 +142,11 @@ public class MemberService {
         //주석 처리 부는, ncp로 기존 gcp를 변경한 것입니다.
         ncpStorageService.imageDelete(email);
         memberRepository.updateInfo(Member.builder().memberDto(memberDto).build());
-        postFeign.changeNicknameByEmail(memberDto.getNickName() ,email);
+        String changeresult = postFeign.changeNicknameByEmail(memberDto.getNickName() ,email);
+        if(changeresult.equals("changefail"))
+        {
+            throw new IOException("회원 정보 변경 실패, 재요청해주세요");
+        }
         return ExceptionResponse.builder()
                 .state("success")
                 .message("회원 정보 수정에 성공했습니다.")
