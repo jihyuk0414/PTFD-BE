@@ -123,4 +123,10 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "p.imagePost, p.postName, p.userProfile, p.postInfo, p.nickName, p.price)" +
             "from Post p where p.postId = :post_id")
     PostForChat findPostForChatByPostId(@Param("post_id") Long post_id);
+
+    //추가
+    @Modifying
+    @Query("UPDATE Post p SET p.nickName = :nickname WHERE p.email = :email")
+    void updateNicknameByEmail(@Param("nickname") String nickname, @Param("email") String email);
+
 }

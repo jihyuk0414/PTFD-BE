@@ -200,4 +200,15 @@ public class PostService {
         return postRepository.findPostForChatByPostId(Long.parseLong(postId));
     }
 
+    //추가
+    @Transactional
+    public String changeNicknameByEmail(String nickName, String email) {
+        try {
+            postRepository.updateNicknameByEmail(nickName, email);
+            return "changesuccess";
+        } catch (Exception e) {
+            return "changefail";
+        }
+    }
+
 }

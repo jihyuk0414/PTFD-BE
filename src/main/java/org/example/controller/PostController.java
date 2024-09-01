@@ -156,5 +156,11 @@ public class PostController {
         return postService.getPostForChatting(postId);
     }
 
+    //추가
+    @PostMapping("/update/nick_name")
+    public ResponseEntity<String> ChangeNicknameByEmail(@RequestParam("nick_name") String nickName, @RequestParam("email") String email)
+    {
+        return ResponseEntity.ok(postService.changeNicknameByEmail(nickName, email));
+    }
 
 }
