@@ -160,15 +160,27 @@ public class PostService {
     }
 
     @Transactional
-    public SuccessRes updatePost(Long postId, PostDto postDto,String email) throws IOException {
+    public SuccessRes updatePost(MultipartFile img_post,Long postId, PostDto postDto,String email) throws IOException {
         Post post=postRepository.findByPostIdWithLock(postId); //이떄만 lock 메소드 활용했습니다.
         if (post.getState()==-1 ||post.getState()==0){return new SuccessRes("","해당 상품이 없습니다");}
         else {
             if (post.getEmail().equals(email)){
-                postRepository.updatePost(postId,postDto.getPost_name(),postDto.getPrice(),
-                        postDto.getCategory_id(), postDto.getEnd_at(), postDto.getTotal_number(), post.getLocation(),
-                        post.getImagePost(), post.getPostInfo());
-                return new SuccessRes(post.getPostName(),"수정 성공");
+                String Post_file_name = ncpStorageService.imageUpload(img_post);
+                ncpStorageService.imageDelete(postId);
+                postRepository.updatePost(
+                        postId,
+                        postDto.getPost_name(),
+                        postDto.getPrice(),
+                        postDto.getCategory_id(),
+                        postDto.getEnd_at(),
+                        postDto.getStart_at(),
+                        postDto.getTotal_number(),
+                        postDto.getLocation(),
+                        Post_file_name,
+                        postDto.getPost_info()
+                );
+                log.info(Post_file_name);
+                return new SuccessRes(postDto.getPost_name(),"수정 성공");
             }
             else {return new SuccessRes(post.getPostName(),"등록한 이메일과 일치하지않습니다.");}
         }

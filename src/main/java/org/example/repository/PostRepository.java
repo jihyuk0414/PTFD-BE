@@ -37,18 +37,20 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "p.postInfo = :post_info, " +
             "p.categoryId = :category_id, " +
             "p.endAt = :end_at, " +
-            "p.location= :location, "+
-            "p.totalNumber= :total_number "+
+            "p.startAt = :start_at, " +
+            "p.totalNumber = :total_number, " +
+            "p.location = :location " +
             "where p.postId = :post_id")
     void updatePost(@Param("post_id") Long postId,
-                       @Param("post_name") String postName,
-                       @Param("price") int price,
-                       @Param("category_id") int categoryId,
-                       @Param("end_at") LocalDate expireAt,
-                       @Param(("total_number")) int totalNumber,
-                       @Param("location") String location,
-                       @Param("image_post") String imagePost,
-                       @Param("post_info")String postIfo);
+                    @Param("post_name") String postName,
+                    @Param("price") int price,
+                    @Param("category_id") int categoryId,
+                    @Param("end_at") LocalDate endAt,
+                    @Param("start_at") LocalDate startAt,
+                    @Param("total_number") int totalNumber,
+                    @Param("location") String location,
+                    @Param("image_post") String imagePost,
+                    @Param("post_info") String postInfo);
 
     Page<Post> findAll(Pageable pageable);
 

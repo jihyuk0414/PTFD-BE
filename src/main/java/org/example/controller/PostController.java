@@ -50,9 +50,11 @@ public class PostController {
     // 게시글 수정 , email 필요, email 활용 검증 필요
     @PutMapping("/{post_id}/{email}")
     public ResponseEntity<SuccessRes> changePost(@PathVariable("email") String email,
-                                           @PathVariable("post_id") Long postId,
-                                           @RequestBody PostDto postDto) throws IOException {
-        return ResponseEntity.ok(postService.updatePost(postId,postDto,email));
+                                                 @PathVariable("post_id") Long postId,
+                                                 @RequestPart("img") MultipartFile img_post,
+                                                 @RequestPart("req")  PostDto postDto
+    ) throws IOException {
+        return ResponseEntity.ok(postService.updatePost(img_post,postId,postDto,email));
     }
     // 페이징 형태로 변경
     @GetMapping("/page")
