@@ -211,4 +211,15 @@ public class PostService {
         }
     }
 
+
+    @Transactional
+    public String changeprofileImgByEmail(String profileImg, String email) {
+        try {
+            postRepository.updateprofileImgByEmail(profileImg,email);
+            return "changesuccess";
+        } catch (Exception e) {
+            return "changefail";
+        }
+    }
+
 }

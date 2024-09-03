@@ -129,4 +129,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("UPDATE Post p SET p.nickName = :nickname WHERE p.email = :email")
     void updateNicknameByEmail(@Param("nickname") String nickname, @Param("email") String email);
 
+    @Modifying
+    @Query("UPDATE Post p SET p.userProfile = :userprofile WHERE p.email = :email")
+    void updateprofileImgByEmail(@Param("userprofile") String userprofile, @Param("email") String email);
+
 }
