@@ -28,6 +28,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .set(qMember.userName, member.getUserName())
                 .set(qMember.profileImage, member.getProfileImage())
                 .set(qMember.nickName,member.getNickName())
+                .set(qMember.memberInfo,member.getMemberInfo())
 
                 .where(qMember.email.eq(member.getEmail())).execute();
     }
