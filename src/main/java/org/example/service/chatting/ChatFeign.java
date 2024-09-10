@@ -4,10 +4,10 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "chatApi",url = "http://chat-service:50/post")
+@FeignClient(name = "chatApi",url = "http://chat-service:50/chat")
 public interface ChatFeign {
 
-    @PostMapping("/chat/nick_name")
+    @PostMapping("/nick_name")
     public void changeNickName(@RequestParam("new_nick_name") String new_nick_name,
                                @RequestParam("before_nick_name") String before_nick_name);
 
