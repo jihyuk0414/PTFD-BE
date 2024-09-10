@@ -17,6 +17,7 @@ import org.example.jwt.JwtProvider;
 import org.example.repository.follow.FollowRepository;
 import org.example.repository.member.MemberRepository;
 import org.example.repository.token.TokenRepository;
+import org.example.service.chatting.ChatFeign;
 import org.example.service.purchase.PostFeign;
 import org.example.service.storage.NcpStorageService;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -42,6 +43,7 @@ public class MemberService {
     private final TokenRepository tokenRepository;
     private final NcpStorageService ncpStorageService;
     private final PostFeign postFeign;
+    private final ChatFeign chatFeign;
 
 
     @Transactional
@@ -145,6 +147,10 @@ public class MemberService {
         String changenicknameresult = postFeign.changeNicknameByEmail(memberDto.getNickName() ,email);
         //바뀐 img도 전송
         String changeprofileresult = postFeign.changeProfileImgByEmail(file_name,email);
+
+        String beforeNickName = member.get().getNickName();
+        String newNickName = memberDto.getNickName();
+        chatFeign.changeNickName(newNickName,beforeNickName);
 
         if(changenicknameresult.equals("changefail") || changeprofileresult.equals("changefail"))
         {
