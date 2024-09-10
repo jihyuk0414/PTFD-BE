@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.dto.ChatRoomMessage;
 import org.example.dto.ChattingRoomRes;
 import org.example.dto.RoomDto;
@@ -11,6 +12,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("chatroom")
+@Slf4j
 public class RoomController {
 
     private final RoomService roomService;
@@ -33,5 +35,13 @@ public class RoomController {
     public ChatRoomMessage enterRoom(@PathVariable("room_id") String roomId, @PathVariable("email") String email){
         return roomService.insertUser(roomId,email);
     }
+    @PostMapping("/nick_name")
+    public void changeNickName(@RequestParam("new_nick_name") String new_nick_name,
+                               @RequestParam("before_nick_name") String before_nick_name)
+    {
+        //nickname before인거를 new로 바꿔주기
+        log.info("chat으로 요청 잘옴"+new_nick_name+"새거고"+before_nick_name) ;
+
+    };
 
 }

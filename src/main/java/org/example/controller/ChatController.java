@@ -19,12 +19,5 @@ public class ChatController {
         chatService.pubMsgChannel(messageReq.getRoomId(), messageReq);
     }
 
-    @PostMapping("/chat/nick_name")
-    public void changeNickName(@RequestParam("new_nick_name") String new_nick_name,
-                                 @RequestParam("before_nick_name") String before_nick_name)
-    {
-        //nickname before인거를 new로 바꿔주기
-        log.info("chat으로 요청 잘옴"+new_nick_name+"새거고"+before_nick_name) ;
 
-    };
 }
