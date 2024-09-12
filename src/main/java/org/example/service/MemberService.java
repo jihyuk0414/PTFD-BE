@@ -136,6 +136,7 @@ public class MemberService {
 
     }
 
+    @Transactional
     public ExceptionResponse updateProfile(MultipartFile profileImg, MemberDto memberDto, String email) throws IOException {
         Optional<Member> member = memberRepository.findByEmail(email);
         member.orElseThrow();
