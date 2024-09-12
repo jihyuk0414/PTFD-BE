@@ -20,7 +20,7 @@ public class CustomChatRepository {
         Update update = new Update();
         update.set("sender.nick_name", newNickName);
         update.set("sender.profile_image", newProfileImage);
-        mongoTemplate.updateFirst(query, update, Chatting.class);
+        mongoTemplate.updateMulti(query, update, Chatting.class);
     }
 
 }
