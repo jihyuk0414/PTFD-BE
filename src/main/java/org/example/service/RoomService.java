@@ -6,6 +6,7 @@ import org.example.dto.*;
 import org.example.entity.ChatRoom;
 import org.example.entity.Chatting;
 import org.example.repository.ChatRepository;
+import org.example.repository.CustomChatRepository;
 import org.example.repository.CustomRoomRepository;
 import org.example.repository.RoomRepository;
 import org.springframework.data.redis.listener.ChannelTopic;
@@ -28,6 +29,7 @@ public class RoomService {
     private final RedisMessageListenerContainer redisMessageListenerContainer;
     private final MemberFeign memberFeign;
     private final PostFeign postFeign;
+    private final CustomChatRepository customChatRepository;
 
     public String createRoomPost(String postId,String email){
         List<String> users = new ArrayList<>();
@@ -93,6 +95,7 @@ public class RoomService {
         {
             customRoomRepository.updateUserNickNameInUsers(beforeNickName, newNickName);
             customRoomRepository.updateUserNickNameInPost(beforeNickName,newNickName,new_profile_img);
+            customChatRepository.updateChatDetails(beforeNickName,newNickName,new_profile_img);
             return true;
         } catch(Exception e)
         {
