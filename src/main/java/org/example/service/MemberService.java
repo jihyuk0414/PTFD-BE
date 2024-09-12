@@ -150,9 +150,10 @@ public class MemberService {
 
         String beforeNickName = member.get().getNickName();
         String newNickName = memberDto.getNickName();
-        chatFeign.changeNickName(newNickName,beforeNickName,memberDto.getProfileImage());
+        boolean nickNameUpdateResult = chatFeign.changeNickName(newNickName,beforeNickName,memberDto.getProfileImage());
 
-        if(changenicknameresult.equals("changefail") || changeprofileresult.equals("changefail"))
+        if(changenicknameresult.equals("changefail") || changeprofileresult.equals("changefail") ||
+                !nickNameUpdateResult)
         {
             throw new IOException("회원 정보 변경 실패, 재요청해주세요");
         }
