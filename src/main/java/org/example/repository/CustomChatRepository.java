@@ -1,6 +1,7 @@
 package org.example.repository;
 
 import lombok.RequiredArgsConstructor;
+import org.example.entity.ChatRoom;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -19,7 +20,7 @@ public class CustomChatRepository {
         Update update = new Update();
         update.set("sender.nick_name", newNickName);
         update.set("sender.profile_image", newProfileImage);
-        mongoTemplate.updateFirst(query, update, "chatting");
+        mongoTemplate.updateFirst(query, update, ChatRoom.class);
     }
 
 }
