@@ -150,7 +150,7 @@ public class MemberService {
 
         String beforeNickName = member.get().getNickName();
         String newNickName = memberDto.getNickName();
-        chatFeign.changeNickName(newNickName,beforeNickName);
+        chatFeign.changeNickName(newNickName,beforeNickName,memberDto.getProfileImage());
 
         if(changenicknameresult.equals("changefail") || changeprofileresult.equals("changefail"))
         {

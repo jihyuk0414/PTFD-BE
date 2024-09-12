@@ -9,6 +9,7 @@ public interface ChatFeign {
 
     @PostMapping("/nick_name")
     public void changeNickName(@RequestParam("new_nick_name") String new_nick_name,
-                               @RequestParam("before_nick_name") String before_nick_name);
+                               @RequestParam("before_nick_name") String before_nick_name,
+                               @RequestParam("new_profile_img") String new_profile_img);
 
 }
