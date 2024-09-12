@@ -97,6 +97,7 @@ public class RoomService {
         } catch(Exception e)
         {
             log.info(e.getMessage() + "update fail, Exception");
+
             return false;
         }
     }

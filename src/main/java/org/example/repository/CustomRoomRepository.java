@@ -26,6 +26,7 @@ public class CustomRoomRepository {
         Query query = new Query(Criteria.where("users").is(beforeNickName));
         Update update = new Update().set("users.$", newNickName);
         mongoTemplate.updateMulti(query, update, ChatRoom.class);
+
     }
 
     public void updateUserNickNameInPost(String beforeNickName, String newNickName, String newUserProfile) {

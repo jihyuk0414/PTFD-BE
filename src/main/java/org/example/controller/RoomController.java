@@ -40,6 +40,7 @@ public class RoomController {
                                @RequestParam("before_nick_name") String before_nick_name,
                                   @RequestParam("new_profile_img") String new_profile_img)
     {
+
         return roomService.updateUserNickName(new_nick_name, before_nick_name,new_profile_img);
     };
 
