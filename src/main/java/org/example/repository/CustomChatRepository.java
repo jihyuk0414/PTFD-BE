@@ -13,7 +13,6 @@ public class CustomChatRepository {
 
     private final MongoTemplate mongoTemplate;
 
-
     public void updateChatDetails(String beforeNickName, String newNickName, String newProfileImage) {
         Query query = new Query();
         query.addCriteria(Criteria.where("sender.nick_name").is(beforeNickName));
