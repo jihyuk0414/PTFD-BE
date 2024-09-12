@@ -21,4 +21,18 @@ public class CustomRoomRepository {
         mongoTemplate.updateFirst(query, update, ChatRoom.class);
 
     }
+
+    public void updateUserNickNameInUsers(String beforeNickName, String newNickName) {
+        Query query = new Query(Criteria.where("users").is(beforeNickName));
+        Update update = new Update().set("users.$", newNickName);
+        mongoTemplate.updateMulti(query, update, ChatRoom.class);
+    }
+
+    public void updateUserNickNameInPost(String beforeNickName, String newNickName, String newUserProfile) {
+        Query query = new Query(Criteria.where("post.nickName").is(beforeNickName));
+        Update update = new Update()
+                .set("post.nickName", newNickName)
+                .set("post.userProfile", newUserProfile);
+        mongoTemplate.updateMulti(query, update, ChatRoom.class);
+    }
 }

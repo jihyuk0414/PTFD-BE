@@ -87,4 +87,18 @@ public class RoomService {
                 .build();
     }
 
+    public boolean updateUserNickName(String newNickName, String beforeNickName, String new_profile_img)
+    {
+        try
+        {
+            customRoomRepository.updateUserNickNameInUsers(beforeNickName, newNickName);
+            customRoomRepository.updateUserNickNameInPost(beforeNickName,newNickName,new_profile_img);
+            return true;
+        } catch(Exception e)
+        {
+            log.info(e.getMessage() + "update fail, Exception");
+            return false;
+        }
+    }
+
 }
