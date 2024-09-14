@@ -2,6 +2,7 @@ package org.example.service;
 
 import org.example.annotation.TimeCheck;
 import org.example.dto.SuccessRes;
+import org.example.dto.exception.ChatException;
 import org.example.dto.post.*;
 import org.example.dto.wish_list.EmailDto;
 import org.example.entity.Post;
@@ -10,6 +11,7 @@ import org.example.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.repository.WishListRepository;
+import org.example.service.chat.ChattingFeign;
 import org.example.service.member.MemberFeign;
 import org.example.service.storage.NcpStorageService;
 import org.springframework.data.domain.Page;
@@ -30,6 +32,7 @@ public class PostService {
     private final WishListRepository wishListRepository;
     private final MemberFeign memberFeign;
     private final NcpStorageService ncpStorageService;
+    private final ChattingFeign chattingFeign;
 
     public SuccessRes addPost(PostDto postDto, String email, MultipartFile img_Post) throws IOException {
         Optional<String> nickName= memberFeign.getNickName(email);
@@ -167,6 +170,7 @@ public class PostService {
             if (post.getEmail().equals(email)){
                 String Post_file_name = ncpStorageService.imageUpload(img_post);
                 ncpStorageService.imageDelete(postId);
+                String beforepostname = post.getPostName();
                 postRepository.updatePost(
                         postId,
                         postDto.getPost_name(),
@@ -179,8 +183,16 @@ public class PostService {
                         Post_file_name,
                         postDto.getPost_info()
                 );
-                log.info(Post_file_name);
-                return new SuccessRes(postDto.getPost_name(),"수정 성공");
+
+                boolean changechatresult = chattingFeign.changePostInfo(
+                        beforepostname,postDto.getPost_name(),postDto.getPrice(),Post_file_name,postDto.getPost_info());
+
+                if (changechatresult)
+                {
+                    return new SuccessRes(postDto.getPost_name(),"수정 성공");
+                }else throw new ChatException(); //오류발생시 동기화 위해 강제 exception 호출
+
+
             }
             else {return new SuccessRes(post.getPostName(),"등록한 이메일과 일치하지않습니다.");}
         }

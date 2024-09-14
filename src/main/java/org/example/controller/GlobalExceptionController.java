@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.dto.exception.ChatException;
 import org.example.dto.exception.ExceptionRes;
 import org.example.dto.exception.CustomMailException;
 import org.slf4j.Logger;
@@ -40,6 +41,12 @@ public class GlobalExceptionController {
     @ExceptionHandler(CustomMailException.class)
     public ResponseEntity<ExceptionRes> MailException(CustomMailException m){
         ExceptionRes response = new ExceptionRes("메일 전송 과정에서 문제가 발생했습니다", m.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(ChatException.class)
+    public ResponseEntity<ExceptionRes> ChatException(ChatException m){
+        ExceptionRes response = new ExceptionRes("chat 내용 변경 중 문제가 발생했습니다", m.getMessage());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
