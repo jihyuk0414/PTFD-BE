@@ -12,6 +12,8 @@ import org.example.repository.RoomRepository;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -108,6 +110,25 @@ public class RoomService {
         {
             log.info(e.getMessage() + "update fail, Exception");
 
+            return false;
+        }
+    }
+
+    public boolean updatePostInfo(
+            String before_post_name,
+            String new_post_name,
+            int new_price,
+            String new_post_img,
+            String new_post_info
+    )
+    {
+        try
+        {
+            customRoomRepository.updatePostInfo(before_post_name, new_post_name, new_price, new_post_img, new_post_info);
+            return true;
+        } catch(Exception e)
+        {
+            log.info(e.getMessage() + "update fail, Exception");
             return false;
         }
     }

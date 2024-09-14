@@ -44,4 +44,15 @@ public class RoomController {
         return roomService.updateUserNickName(new_nick_name, before_nick_name,new_profile_img);
     };
 
+    @PostMapping("/post")
+    public boolean changePostInfo(
+            @RequestParam("before_post_name") String before_post_name,
+            @RequestParam("post_name") String new_post_name,
+                                  @RequestParam("price") int new_price,
+                                  @RequestParam("image_post") String new_post_img,
+                                  @RequestParam("post_info") String new_post_info)
+    {
+        return roomService.updatePostInfo(before_post_name, new_post_name, new_price, new_post_img, new_post_info);
+    }
+
 }

@@ -41,4 +41,14 @@ public class CustomRoomRepository {
         Update update = new Update().addToSet("users", nickName);
         mongoTemplate.updateFirst(query, update, ChatRoom.class);
     }
+
+    public void updatePostInfo(String beforePostName, String newPostName, int newPrice, String newPostImg, String newPostInfo) {
+        Query query = new Query(Criteria.where("post.postName").is(beforePostName));
+        Update update = new Update()
+                .set("post.postName", newPostName)
+                .set("post.price", newPrice)
+                .set("post.imagePost", newPostImg)
+                .set("post.postInfo", newPostInfo);
+        mongoTemplate.updateMulti(query, update, ChatRoom.class);
+    }
 }
