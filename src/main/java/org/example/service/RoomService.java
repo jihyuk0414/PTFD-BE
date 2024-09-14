@@ -82,6 +82,13 @@ public class RoomService {
     public ChatRoomMessage insertUser(String roomId, String email){
         ChatRoom room1=roomRepository.findByRoom(roomId);
         List<MessageRes> chats = chatRepository.findByRoomId(roomId).stream().map(Chatting::toDto).toList();
+        //해당 방에, 넣어줘야됨. (users안에, nickname을)
+        String nickName = memberFeign.getNickName(email).orElseThrow(
+                () -> new RuntimeException("해당 사용자 없음")
+        );
+        customRoomRepository.addUserToRoom(roomId,nickName);
+
+
         return ChatRoomMessage.builder()
                 .chats(chats)
                 .room_id(room1.getRoom())
