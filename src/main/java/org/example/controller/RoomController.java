@@ -47,7 +47,7 @@ public class RoomController {
     @PostMapping("/post")
     public boolean changePostInfo(
             @RequestParam("before_post_name") String before_post_name,
-            @RequestParam("post_name") String new_post_name,
+            @RequestParam("new_post_name") String new_post_name,
                                   @RequestParam("price") int new_price,
                                   @RequestParam("image_post") String new_post_img,
                                   @RequestParam("post_info") String new_post_info)
