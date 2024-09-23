@@ -101,10 +101,10 @@ public class KakaoService {
     public void sendRealImage(TemplateObject templateObject) throws JsonProcessingException {
 
         ObjectMapper objectMapper = new ObjectMapper();
-        String template = "template_object="+objectMapper.writeValueAsString(templateObject);;
-
+        String template = "template_object="+objectMapper.writeValueAsString(templateObject);
         kakaoApi.sendImage("Bearer "+ kakaoToken_user.getAccessToken(),"application/x-www-form-urlencoded",template);
     }
+
     public String kakaoLogOut(){
         return kakaoFeign.logOut(client_id,logout_redirect);
     }
