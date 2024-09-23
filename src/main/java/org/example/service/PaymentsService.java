@@ -139,7 +139,7 @@ public class PaymentsService {
         MessageRes Post= postFeign.getImage(postId);
 
         Content content = Content.builder()
-                .title(Post.getPost_name())
+                .title("test")
                 .image_url(Post.getImage_real())
                 .link(Link.builder().web_url("http://default-front-84485-25569413-20a094b6a545.kr.lb.naverncp.com:30").build())
                 .description("예약되었습니다.")
