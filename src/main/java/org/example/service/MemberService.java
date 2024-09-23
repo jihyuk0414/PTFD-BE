@@ -17,6 +17,7 @@ import org.example.jwt.JwtProvider;
 import org.example.repository.follow.FollowRepository;
 import org.example.repository.member.MemberRepository;
 import org.example.repository.token.TokenRepository;
+import org.example.service.chatting.ChatFeign;
 import org.example.service.purchase.PostFeign;
 import org.example.service.storage.NcpStorageService;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -42,6 +43,7 @@ public class MemberService {
     private final TokenRepository tokenRepository;
     private final NcpStorageService ncpStorageService;
     private final PostFeign postFeign;
+    private final ChatFeign chatFeign;
 
 
     @Transactional
@@ -134,6 +136,7 @@ public class MemberService {
 
     }
 
+    @Transactional
     public ExceptionResponse updateProfile(MultipartFile profileImg, MemberDto memberDto, String email) throws IOException {
         Optional<Member> member = memberRepository.findByEmail(email);
         member.orElseThrow();
@@ -142,8 +145,16 @@ public class MemberService {
         //주석 처리 부는, ncp로 기존 gcp를 변경한 것입니다.
         ncpStorageService.imageDelete(email);
         memberRepository.updateInfo(Member.builder().memberDto(memberDto).build());
-        String changeresult = postFeign.changeNicknameByEmail(memberDto.getNickName() ,email);
-        if(changeresult.equals("changefail"))
+        String changenicknameresult = postFeign.changeNicknameByEmail(memberDto.getNickName() ,email);
+        //바뀐 img도 전송
+        String changeprofileresult = postFeign.changeProfileImgByEmail(file_name,email);
+
+        String beforeNickName = member.get().getNickName();
+        String newNickName = memberDto.getNickName();
+        boolean nickNameUpdateResult = chatFeign.changeNickName(newNickName,beforeNickName,memberDto.getProfileImage());
+
+        if(changenicknameresult.equals("changefail") || changeprofileresult.equals("changefail") ||
+                !nickNameUpdateResult)
         {
             throw new IOException("회원 정보 변경 실패, 재요청해주세요");
         }
