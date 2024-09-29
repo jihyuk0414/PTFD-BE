@@ -19,7 +19,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class SearchService {
     private final PostRepository postRepository;
     private final MemberFeign memberFeign;
@@ -27,7 +26,6 @@ public class SearchService {
 
     @TimeCheck
     public List<String> autoComplete(String word) {
-        log.info(word);
         return postRepository.findByPostName(word).stream()
                 .map(Post::getPostName)
                 .toList();
@@ -39,9 +37,6 @@ public class SearchService {
         page = (page == 0) ? 0 : page+1;
         int pageSize = (page == 0) ? 16 : 8;
         //offset으로 시도해 보았으나,jpql 사용 x시 쿼리가 너무너무 길어짐
-        log.info("nickname="+nickName);
-        log.info("category_id="+category_id);
-        log.info("location="+location);
         Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Sort.Direction.ASC, "postId"));
         Page<Post> postPage;
 

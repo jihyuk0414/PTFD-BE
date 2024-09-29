@@ -22,7 +22,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class MailService {
 
     private final PostRepository postRepository;
@@ -36,10 +35,7 @@ public class MailService {
         try {
 
             for (PaymentsReq paymentReq : paymentsReqList) {
-                log.info("쿼리 시작");
                 PostForMail p=postRepository.findImageAndNamePostByPostId(paymentReq.getPost_id());
-                log.info(p.getImage_post());
-                log.info(p.getPost_name());
                 URL imageUrl = new URL(p.getImage_post());
                 String postname = p.getPost_name();
                 byte[] imageData = IOUtils.toByteArray(imageUrl);
@@ -70,7 +66,6 @@ public class MailService {
             }
             return "메일 전송 완료되었습니다.";
         } catch (Exception e) {
-            log.info(e.getMessage());
             throw new CustomMailException();
         }
     }

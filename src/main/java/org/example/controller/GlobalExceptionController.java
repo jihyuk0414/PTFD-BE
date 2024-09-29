@@ -13,20 +13,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionController {
-    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionController.class);
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<ExceptionRes> NullPointerException(NullPointerException n) {
-        log.error(n.getMessage());
         ExceptionRes response = new ExceptionRes("잘못된 형식의 요청", n.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(IOException.class)
     public ResponseEntity<ExceptionRes> IOException(IOException e){
-        logger.error(e.getMessage());
         ExceptionRes response = new ExceptionRes("현재 이미지 저장 공간 부족", e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.SERVICE_UNAVAILABLE);
     }

@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class GymService {
     private final GymFeign gymFeign;
 
@@ -22,7 +21,6 @@ public class GymService {
 
     public GymsDto getGymsForMain()
     {
-        log.info("sendgyms");
         return gymFeign.getGyms(1,5,keys);
     }
 

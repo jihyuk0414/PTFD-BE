@@ -27,7 +27,6 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class NcpStorageService {
 
@@ -75,7 +74,6 @@ public class NcpStorageService {
                             .withCannedAcl(CannedAccessControlList.PublicRead));
 
             uploadFileUrl = amazonS3Client.getUrl(bucketName, keyName).toString();
-            log.info("image save clear");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -93,7 +91,6 @@ public class NcpStorageService {
 
         String postImageUrl = post.getImagePost();
         if (postImageUrl == null || postImageUrl.isEmpty()) {
-            log.info("no Post Image");
             return;
         }
 
@@ -103,9 +100,7 @@ public class NcpStorageService {
             String keyName = Paths.get(uri.getPath()).getFileName().toString();
 
             amazonS3Client.deleteObject(new DeleteObjectRequest(bucketName, keyName));
-            log.info("Image delete clear");
         } catch (Exception e) {
-            log.error("can't delete image");
         }
     }
 

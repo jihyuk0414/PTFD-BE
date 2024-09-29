@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.util.*;
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class PostService {
 
     private final PostRepository postRepository ;
@@ -212,7 +211,6 @@ public class PostService {
 
     @Transactional
     public PostForMessage sendReservation(Long postId){
-        log.info("구매 상품 전송 로직");
         Post post=postRepository.findImagePostAndPostNameByPostId(postId);
         return PostForMessage.builder()
                 .postName(post.getPostName())

@@ -22,7 +22,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class WishListService {
 
     private final WishListRepository wishListRepository;
@@ -49,7 +48,6 @@ public class WishListService {
         if(page==0) {pageable = PageRequest.of(page, 16, Sort.by(Sort.Direction.ASC, "wishListId"));}
         else{pageable = PageRequest.of(page, 8, Sort.by(Sort.Direction.ASC, "wishListId"));}
         Optional<EmailDto> email = memberFeign.getEmail(nickName);
-        log.info(email.get().getEmail());
         Page<Post> likePosts = wishListRepository.findAllByEmail(pageable,email.get().getEmail()).map(WishList::getPost);
         Page<PostDto> posts = likePosts.map(PostDto::ToDto);
         posts.forEach(p->p.setLike(true));
@@ -78,7 +76,6 @@ public class WishListService {
         List<Post> posts = postRepository.findByPostIdIn(postIds).stream()
                 .filter(p -> p.getState()==0)
                 .toList();
-        log.info(postIds.toString());
         for (Post Post : posts){
             wishListRepository.deleteByEmailAndPost(email,Post);
         }
