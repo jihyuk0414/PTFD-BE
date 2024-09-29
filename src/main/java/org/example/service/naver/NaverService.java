@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class NaverService {
     private final NaverFeign naverFeign;
@@ -40,8 +39,6 @@ public class NaverService {
     private final String state="default1234";
     private NaverToken naverToken_user;
     public JwtDto GenerateToken(String code) throws ParseException, IOException, org.json.simple.parser.ParseException {
-        log.info("네이버 로그인");
-        log.info(code);
         String email = OAuthSignUp(code);
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(email,"default1234");
         Authentication authentication = authenticationProvider.authenticate(token);
@@ -63,7 +60,6 @@ public class NaverService {
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = (JSONObject) jsonParser.parse(user);
         JSONObject response=(JSONObject) jsonObject.get("response");
-        log.info(response.toJSONString());
         MemberDto memberDto =MemberDto.builder()
                 .email(response.get("email").toString())
                 .profileImage(response.get("profile_image").toString())
@@ -85,7 +81,6 @@ public class NaverService {
             memberRepository.save(member1);
         }
         else {memberRepository.updateInfo(member1);}
-        log.info("User DB 저장");
 
         return memberDto.getEmail();
     }

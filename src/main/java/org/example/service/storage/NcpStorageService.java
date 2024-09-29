@@ -3,7 +3,6 @@ package org.example.service.storage;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
-import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -12,7 +11,6 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.example.entity.Member;
 import org.example.repository.member.MemberRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +26,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class NcpStorageService {
 
@@ -76,7 +73,6 @@ public class NcpStorageService {
                             .withCannedAcl(CannedAccessControlList.PublicRead));
 
             uploadFileUrl = amazonS3Client.getUrl(bucketName, keyName).toString();
-            log.info("image save clear");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -95,7 +91,6 @@ public class NcpStorageService {
 
         String profileImageUrl = member.get().getProfileImage();
         if (profileImageUrl == null || profileImageUrl.isEmpty()) {
-            log.info("No profile image found,email: {}", email);
             return;
         }
 
@@ -104,9 +99,8 @@ public class NcpStorageService {
             String keyName = Paths.get(uri.getPath()).getFileName().toString();
 
             amazonS3Client.deleteObject(new DeleteObjectRequest(bucketName, keyName));
-            log.info("Image delete success!!, email: {}", email);
-        } catch (Exception e) {
-            log.error("Fail", e);
+
+        } catch (Exception ignored) {
         }
     }
 

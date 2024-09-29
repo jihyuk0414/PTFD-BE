@@ -17,7 +17,6 @@ import java.util.Optional;
 
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class FollowService {
     private final FollowRepository followRepository;

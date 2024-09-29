@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
@@ -87,7 +86,6 @@ public class MemberService {
         }
 
     public RefreshDto refreshToken(String refreshToken){
-        log.info(refreshToken);
         Token token = tokenRepository.findByRefreshToken(refreshToken);
         return RefreshDto.builder().access_token(jwtProvider.recreateToken(token.getEmail())).build();
     }
@@ -104,8 +102,6 @@ public class MemberService {
     }
 
     public ProfileDto profile(String nickName, String email) {
-        log.info(nickName);
-        log.info(email);
         Optional<Member> member = memberRepository.findByNickName(nickName);
         Optional<Member> me = memberRepository.findByEmail(email);
         member.orElseThrow();

@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class OAuth2Service implements OAuth2UserService<OAuth2UserRequest,OAuth2User> {
     private final MemberRepository memberRepository;
@@ -31,7 +30,7 @@ public class OAuth2Service implements OAuth2UserService<OAuth2UserRequest,OAuth2
 
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
-        log.info(oAuth2User.getName());
+
         Map<String, Object> originAttributes = oAuth2User.getAttributes();
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         String userNameAttributeName = userRequest.getClientRegistration()
@@ -44,7 +43,7 @@ public class OAuth2Service implements OAuth2UserService<OAuth2UserRequest,OAuth2
         oAuthMember.setProvider(registrationId);
 
         Map<String, Object> customAttribute = customAttribute(attrs, userNameAttributeName, oAuthMember, registrationId);
-        log.info(customAttribute.toString());
+
 
 
         return new DefaultOAuth2User(

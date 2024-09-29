@@ -28,7 +28,6 @@ import java.util.Optional;
 
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class KakaoService {
     private final KakaoApi kakaoApi;
@@ -58,7 +57,6 @@ public class KakaoService {
     public KakaoToken getToken(String code) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         KakaoToken kakaoToken=objectMapper.readValue(kakaoFeign.getAccessToken(Content_type,grant_type,client_id,login_redirect,code,secret), KakaoToken.class);
-        log.info(kakaoToken.toString());
         kakaoToken_user=kakaoToken;
         return kakaoToken;
     }
@@ -89,11 +87,9 @@ public class KakaoService {
                 .memberDto(memberDto)
                 .build();
         if (member.isEmpty()){
-            log.info(member1.getRole());
             memberRepository.save(member1);
         }
        else {memberRepository.updateInfo(member1);}
-       log.info("User DB 저장");
 
        return memberDto.getEmail();
     }
