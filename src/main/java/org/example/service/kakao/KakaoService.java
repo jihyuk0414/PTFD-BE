@@ -45,8 +45,8 @@ public class KakaoService {
     private final String logout_redirect ="http://default-front-07385-26867304-b1e33c76cd35.kr.lb.naverncp.com:30";
     private final String secret ="8VCVTZpYOA21l7wgaKiqQa74q02S6pYI";
     private KakaoToken kakaoToken_user;
-    public JwtDto GenerateToken(String code) throws ParseException, IOException, org.json.simple.parser.ParseException {
-        String email = OAuthSignUp(code);
+    public JwtDto GenerateToken(String code, String role) throws ParseException, IOException, org.json.simple.parser.ParseException {
+        String email = OAuthSignUp(code,role);
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(email,"default1234");
         Authentication authentication = authenticationProvider.authenticate(token);
         JwtDto jwtDto = jwtProvider.createToken(authentication);
@@ -66,7 +66,7 @@ public class KakaoService {
     }
 
     @Transactional
-    public String OAuthSignUp(String code) throws ParseException, IOException, org.json.simple.parser.ParseException {
+    public String OAuthSignUp(String code,String role) throws ParseException, IOException, org.json.simple.parser.ParseException {
         String user = getkakaoInfo(code);
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = (JSONObject) jsonParser.parse(user);
@@ -80,7 +80,7 @@ public class KakaoService {
                 .password(passwordEncoder.encode("default1234"))
                 .memberInfo("안녕하세요 신규 회원입니다.")
                 .socialType(1)
-                .role("ROLE_TEACHER")
+                .role(role)
                 .build();
         Optional<Member> member = memberRepository.findByEmail(memberDto.getEmail());
         Member member1 = Member.builder()

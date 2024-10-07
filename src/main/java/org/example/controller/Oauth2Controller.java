@@ -19,13 +19,13 @@ public class Oauth2Controller {
     private final NaverService naverService;
     private final MemberService memberService;
     @GetMapping("/oauth2/kakao")
-    public JwtDto kakaoToken(@RequestParam("code") String code) throws IOException, ParseException, org.json.simple.parser.ParseException {
-        return kakaoService.GenerateToken(code);
+    public JwtDto kakaoToken(@RequestParam("code") String code,@RequestParam("role") String role) throws IOException, ParseException, org.json.simple.parser.ParseException {
+        return kakaoService.GenerateToken(code,role);
     }
 
     @GetMapping("/oauth2/naver")
-    public JwtDto naverToken(@RequestParam("code") String code) throws IOException, ParseException, org.json.simple.parser.ParseException {
-        return naverService.GenerateToken(code);
+    public JwtDto naverToken(@RequestParam("code") String code,@RequestParam("role") String role) throws IOException, ParseException, org.json.simple.parser.ParseException {
+        return naverService.GenerateToken(code,role);
     }
     @PostMapping("/kakao/logout")
     public String kakaoLogOut(){

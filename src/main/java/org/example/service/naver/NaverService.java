@@ -38,8 +38,8 @@ public class NaverService {
     private final String grant_type="authorization_code";
     private final String state="default1234";
     private NaverToken naverToken_user;
-    public JwtDto GenerateToken(String code) throws ParseException, IOException, org.json.simple.parser.ParseException {
-        String email = OAuthSignUp(code);
+    public JwtDto GenerateToken(String code,String role) throws ParseException, IOException, org.json.simple.parser.ParseException {
+        String email = OAuthSignUp(code,role);
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(email,"default1234");
         Authentication authentication = authenticationProvider.authenticate(token);
         return jwtProvider.createToken(authentication);
@@ -55,7 +55,7 @@ public class NaverService {
         return naverApi.UserInfo("Bearer "+getAccessToken(code).getAccessToken());
     }
     @Transactional
-    public String OAuthSignUp(String code) throws ParseException, IOException, org.json.simple.parser.ParseException {
+    public String OAuthSignUp(String code, String role) throws ParseException, IOException, org.json.simple.parser.ParseException {
         String user = getNaverInfo(code);
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = (JSONObject) jsonParser.parse(user);
@@ -64,7 +64,7 @@ public class NaverService {
                 .email(response.get("email").toString())
                 .profileImage(response.get("profile_image").toString())
                 .userName(response.get("name").toString())
-                .role("ROLE_MEMBER")
+                .role(role)
                 .memberInfo("안녕하세요 신규 회원입니다.")
                 .nickName("네이버 로그인"+response.get("name").toString())
                 .password(passwordEncoder.encode("default1234"))
