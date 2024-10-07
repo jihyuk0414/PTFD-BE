@@ -80,7 +80,11 @@ public class NaverService {
         if (member.isEmpty()){
             memberRepository.save(member1);
         }
-        else {memberRepository.updateInfo(member1);}
+        else if(member.get().getRole().equals(memberDto.getRole()))
+        {
+            //잘 입력 했다면
+            memberRepository.updateInfo(member1);
+        }
 
         return memberDto.getEmail();
     }

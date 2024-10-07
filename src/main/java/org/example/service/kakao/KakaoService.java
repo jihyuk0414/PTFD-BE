@@ -88,8 +88,11 @@ public class KakaoService {
                 .build();
         if (member.isEmpty()){
             memberRepository.save(member1);
-        }
-       else {memberRepository.updateInfo(member1);}
+        } else if (member1.getRole().equals(member.get().getRole()))
+        {
+            //잘 입력 했다면 변경 정보
+            memberRepository.updateInfo(member1);
+        } //잘 입력 안하면 저장 X (이미 있던 것 사용)
 
        return memberDto.getEmail();
     }
