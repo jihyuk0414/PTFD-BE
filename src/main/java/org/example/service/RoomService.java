@@ -50,9 +50,18 @@ public class RoomService {
     public String createRoom(String nickName,String email){
         List<String> users = new ArrayList<>();
         Optional<String> nickName1 = memberFeign.getNickName(email);
-        if(roomRepository.existsByRoom(nickName1.get()+","+nickName)){
-            return "채팅방이 있습니다.";
+
+        String room1 = nickName1.get() + "," + nickName;
+        String room2 = nickName + "," + nickName1.get();
+
+        if (roomRepository.existsByRoom(room1)) {
+            ChatRoom existingRoom = roomRepository.findByRoom(room1);
+            return existingRoom.getRoom();
+        } else if (roomRepository.existsByRoom(room2)) {
+            ChatRoom existingRoom = roomRepository.findByRoom(room2);
+            return existingRoom.getRoom();
         }
+
         users.add(nickName);
         users.add(nickName1.get());
         ChatRoom chatRoom = roomRepository.save(ChatRoom.builder().room(nickName1.get()+","+nickName).roomName(nickName1.get()+","+nickName).users(users).build());
