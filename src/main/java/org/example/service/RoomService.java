@@ -54,15 +54,10 @@ public class RoomService {
         String room1 = nickName1.get() + "," + nickName;
         String room2 = nickName + "," + nickName1.get();
 
-        log.info("room1 " + room1);
-        log.info("room2 " + room2);
-
         if (roomRepository.existsByRoom(room1)) {
-            log.info("중복");
             ChatRoom existingRoom = roomRepository.findByRoom(room1);
             return "채팅방있음 " + existingRoom.getRoom();
         } else if (roomRepository.existsByRoom(room2)) {
-            log.info("중복");
             ChatRoom existingRoom = roomRepository.findByRoom(room2);
             return "채팅방있음 " + existingRoom.getRoom();
         }
