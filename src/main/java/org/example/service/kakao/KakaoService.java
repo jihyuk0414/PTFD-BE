@@ -29,6 +29,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class KakaoService {
     private final KakaoApi kakaoApi;
     private final KakaoFeign kakaoFeign;
@@ -87,13 +88,16 @@ public class KakaoService {
                 .memberDto(memberDto)
                 .build();
         if (member.isEmpty()){
+            log.info("첫 사용자");
             memberRepository.save(member1);
         } else if (member1.getRole().equals(member.get().getRole()))
         {
             //잘 입력 했다면 변경 정보
+            log.info(" 잘 입력했어요, 이전 멤버랑 같은 role로 입력");
             memberRepository.updateInfo(member1);
         } //잘 입력 안하면 저장 X (이미 있던 것 사용)
 
+        log.info("첫사용자나 잘 입력해썽요 없이 이것만 나오면, 이미 있는 role과 달라요");
        return memberDto.getEmail();
     }
 
