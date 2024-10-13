@@ -42,7 +42,6 @@ public class KakaoService {
     private final String Content_type ="application/x-www-form-urlencoded;charset=utf-8";
     private final String grant_type = "authorization_code";
     private final String client_id = "b9759cba8e0cdd5bcdb9d601f5a10ac1";
-    private final String login_redirect ="http://default-front-07385-26867304-b1e33c76cd35.kr.lb.naverncp.com:30/user/login/oauth2/kakao";
     private final String logout_redirect ="http://default-front-07385-26867304-b1e33c76cd35.kr.lb.naverncp.com:30";
     private final String secret ="8VCVTZpYOA21l7wgaKiqQa74q02S6pYI";
     private KakaoToken kakaoToken_user;
@@ -55,20 +54,23 @@ public class KakaoService {
         return jwtDto;
     }
 
-    public KakaoToken getToken(String code) throws JsonProcessingException {
+    public KakaoToken getToken(String code, String role) throws JsonProcessingException {
+        String login_redirect_member ="http://default-front-07385-26867304-b1e33c76cd35.kr.lb.naverncp.com:30/user/login/oauth2/kakao";
+        String login_redirect_teacher ="http://default-front-07385-26867304-b1e33c76cd35.kr.lb.naverncp.com:30/user/teacherlogin/oauth2/kakao";
+        String login_redirect = role.equals("ROLE_MEMBER")?login_redirect_member : login_redirect_teacher;
         ObjectMapper objectMapper = new ObjectMapper();
         KakaoToken kakaoToken=objectMapper.readValue(kakaoFeign.getAccessToken(Content_type,grant_type,client_id,login_redirect,code,secret), KakaoToken.class);
         kakaoToken_user=kakaoToken;
         return kakaoToken;
     }
 
-    public String getkakaoInfo(String code) throws ParseException, JsonProcessingException {
-        return kakaoApi.getUSerInfo("Bearer "+getToken(code).getAccessToken());
+    public String getkakaoInfo(String code, String role) throws ParseException, JsonProcessingException {
+        return kakaoApi.getUSerInfo("Bearer "+getToken(code, role).getAccessToken());
     }
 
     @Transactional
     public String OAuthSignUp(String code,String role) throws ParseException, IOException, org.json.simple.parser.ParseException {
-        String user = getkakaoInfo(code);
+        String user = getkakaoInfo(code,role);
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = (JSONObject) jsonParser.parse(user);
         JSONObject kakaoAccount=(JSONObject) jsonObject.get("kakao_account");
@@ -97,7 +99,7 @@ public class KakaoService {
             memberRepository.updateInfo(member1);
         } //잘 입력 안하면 저장 X (이미 있던 것 사용)
 
-        log.info("첫사용자나 잘 입력해썽요 없이 이것만 나오면, 이미 있는 role과 달라요");
+        log.info(" 잘 입력했어요, 이전 멤버랑 같은 role로 입력");
        return memberDto.getEmail();
     }
 
