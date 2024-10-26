@@ -1,0 +1,22 @@
+#spring:
+#  application:
+#    name: purchase
+#  profiles:
+#    active: dev
+#  config:
+#    import: #optional:configserver:http://KPaaS-config-service-1:8071
+#      optional:configserver:http://localhost:8071
+#
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: ['refresh','beans','env']
+
+spring:
+  cloud:
+    kubernetes:
+      config:
+        enabled: true
+        sources:
+          - name: purchase-config

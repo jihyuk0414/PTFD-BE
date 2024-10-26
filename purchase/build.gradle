@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.3'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+repositories {
+    mavenCentral()
+}
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+}
+dependencies {
+    implementation 'jakarta.servlet:jakarta.servlet-api:5.0.0'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.projectlombok:lombok'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'com.mysql:mysql-connector-j:8.2.0'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.16.1'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+}
+
+bootJar {
+    enabled = true
+    archiveFileName = 'Purchase-0.0.1-SNAPSHOT.jar' // 생성될 JAR 파일명 설정
+    destinationDirectory = file("$buildDir")
+}
+
