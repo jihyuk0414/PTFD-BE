@@ -1,0 +1,7 @@
+spring:
+  cloud:
+    kubernetes:
+      config:
+        enabled: true
+        sources:
+          - name: post-config

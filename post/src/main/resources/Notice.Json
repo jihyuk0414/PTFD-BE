@@ -1,0 +1,37 @@
+[
+  {
+    "title": "방문을 환영합니다",
+    "thumbnail": "/thumbnailfinal.jpg",
+    "promotional_txt" : "지금 확인!",
+    "desc" : "저희 서비스가 새롭게 업데이트 되었습니다. 많은 이용 바랍니다",
+    "createdAt" : "2024.07.01"
+  },
+  {
+    "title": "신규 이벤트 시작",
+    "thumbnail": "/thumbnailfinal.jpg",
+    "promotional_txt" : "이벤트 시작",
+    "desc" : "저희 서비스에서 이벤트를 시작합니다. 많은 이용 바랍니다",
+    "createdAt" : "2024.07.01"
+  },
+  {
+    "title": "세 번째 공지사항",
+    "thumbnail": "/thumbnailfinal.jpg",
+    "promotional_txt" : "지금 확인!",
+    "desc" : "저희 서비스가 세 번째로 업데이트 되었습니다. 많은 이용 바랍니다",
+    "createdAt" : "2024.07.01"
+  },
+  {
+    "title": "네 번째 공지사항",
+    "thumbnail": "/thumbnailfinal.jpg",
+    "promotional_txt" : "지금 확인!",
+    "desc" : "저희 서비스가 네 번째로 업데이트 되었습니다. 많은 이용 바랍니다",
+    "createdAt" : "2024.07.01"
+  },
+  {
+    "title": "다섯 번째 공지사항",
+    "thumbnail": "/thumbnailfinal.jpg",
+    "promotional_txt": "지금 확인!",
+    "desc": "저희 서비스가 다섯 번째로 업데이트 되었습니다. 많은 이용 바랍니다",
+    "createdAt": "2024.07.01"
+  }
+]
