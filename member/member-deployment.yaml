@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: member-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: member-service
+  template:
+    metadata:
+      labels:
+        app: member-service
+    spec:
+      containers:
+        - name: member-service
+          image: contest16-member.kr.ncr.ntruss.com/member:latest
+          ports:
+            - containerPort: 8081
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config/application.yml
+              subPath: application.yml
+          env:
+            - name: SPRING_CONFIG_LOCATION
+              value: "optional:file:/config/application.yml"
+      volumes:
+        - name: config-volume
+          configMap:
+            name: member-config
+            items:
+              - key: application.yml
+                path: application.yml
