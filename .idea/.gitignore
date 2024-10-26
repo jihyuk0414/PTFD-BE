@@ -1,0 +1,7 @@
+# 디폴트 무시된 파일
+/shelf/
+/workspace.xml
+
+*.jar
+build/
+*/build/
