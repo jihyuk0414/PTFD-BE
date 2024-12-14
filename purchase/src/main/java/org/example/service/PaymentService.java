@@ -41,7 +41,7 @@ public class PaymentService {
     //portone에서 결제 조회를 하려면, portonetoken이 필요합니다. 해당 token을 가져오는부 입니다.
     //사이트 내부적으로 너무 빨리 갱신하여, 매번 가져오는 형태로 변경하였습니다.
     public Mono<String> getPortOneToken() {
-        PortoneTokenRequest portoneTokenRequest = new PortoneTokenRequest("hM546ISQZ7vQ61xw0eTV0hk7GpRDS48Pr92uTBGbCc5z9u4iSC3DiMed3SHBohBQHWj8ZEPHJF6J8VNA");
+        PortoneTokenRequest portoneTokenRequest = new PortoneTokenRequest("");
 
         Mono<String> PortOneToken;
 
