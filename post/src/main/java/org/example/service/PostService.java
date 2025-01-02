@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.*;
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PostService {
 
     private final PostRepository postRepository ;
@@ -204,6 +205,7 @@ public class PostService {
             Post post = postRepository.findByPostIdWithLock(postId);
             if(post.getTotalNumber() <=0 )
             {
+                log.error("재고 부족 발생 - PostId: {}, 현재 재고: {}", postId, post.getTotalNumber());
                 throw new OutOfStockByXLockException("상품 Id : " + postId+ " 재고 부족(동시 접근)");
             }
 
