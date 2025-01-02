@@ -1,6 +1,7 @@
 package org.example.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dto.send.Content;
@@ -96,10 +97,17 @@ public class PaymentsService {
             req.setConsumer(purchaseDto.getEmail());
             purchaseOne(req, sellers, sellPostId);
         }
-        PostFeignRes postFeignRes = postFeign.SoldOut(PostFeignReq.builder()
-                .post_id(sellPostId)
-                .email(purchaseDto.getEmail()).
-                build());
+        PostFeignRes postFeignRes;
+
+        try{
+            postFeignRes = postFeign.SoldOut(PostFeignReq.builder()
+                    .post_id(sellPostId)
+                    .email(purchaseDto.getEmail()).
+                    build());
+        } catch(FeignException fe){
+            log.error("동시 접근으로 인한 강의 마감 문제 발생");
+            return getFailureResponse();
+        } //동시성 문제로 인한 Exception 발생
 
         if (postFeignRes.isSuccess()){
             updateConsumerPoint(0,purchaseDto.getEmail());
@@ -116,11 +124,17 @@ public class PaymentsService {
             return PaymentsRes.builder().charge(false).message("예약 성공").build();
         }
         else {
-            return PaymentsRes.builder()
-                    .charge(null)
-                    .message("예약하시려는 수업중 마감된 수업이있습니다")
-                    .build();
+            log.error("강사의 직접 수정으로 인한 강의 마감 문제 발생 ");
+            return getFailureResponse();
         }
+
+    }
+
+    private PaymentsRes getFailureResponse() {
+        return PaymentsRes.builder()
+                .charge(null)
+                .message("예약하시려는 수업중 마감된 수업이있습니다")
+                .build();
     }
 
 

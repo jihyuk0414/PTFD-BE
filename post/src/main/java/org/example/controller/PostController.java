@@ -9,6 +9,7 @@ import org.example.dto.purchase.PaymentsReq;
 import org.example.dto.purchase.PurchaseDto;
 import org.example.dto.purchase.SellDto;
 import org.example.dto.search.SearchDto;
+import org.example.exception.OutOfStockByXLockException;
 import org.example.service.MailService;
 import org.example.service.SearchService;
 import org.example.service.WishListService;
@@ -89,7 +90,7 @@ public class PostController {
     }
 
     @PostMapping("/payments/sell")
-    public PurchaseDto changeState(@RequestBody SellDto sellDto){
+    public PurchaseDto changeState(@RequestBody SellDto sellDto) throws OutOfStockByXLockException {
         int soldOut = wishListService.sellWishList(sellDto.getPost_id(),sellDto.getEmail());
         if (soldOut==0){
             wishListService.successPay(sellDto.getPost_id());

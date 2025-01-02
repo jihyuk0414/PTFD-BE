@@ -7,6 +7,7 @@ import org.example.dto.post.*;
 import org.example.dto.wish_list.EmailDto;
 import org.example.entity.Post;
 import org.example.entity.WishList;
+import org.example.exception.OutOfStockByXLockException;
 import org.example.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ import java.io.IOException;
 import java.util.*;
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PostService {
 
     private final PostRepository postRepository ;
@@ -198,9 +200,15 @@ public class PostService {
     }
 
     @Transactional
-    public void changeState(List<Long> postIds){
+    public void changeState(List<Long> postIds) throws OutOfStockByXLockException {
         for (Long postId : postIds){
             Post post = postRepository.findByPostIdWithLock(postId);
+            if(post.getTotalNumber() <=0 )
+            {
+                log.error("재고 부족 발생 - PostId: {}, 현재 재고: {}", postId, post.getTotalNumber());
+                throw new OutOfStockByXLockException("상품 Id : " + postId+ " 재고 부족(동시 접근)");
+            }
+
             if(post.getTotalNumber()-1>0){ postRepository.updateTotalNumber(post.getTotalNumber()-1,postId);}
             else{
                 postRepository.updateTotalNumber(0,postId);
