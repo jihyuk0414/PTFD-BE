@@ -39,6 +39,7 @@ public class PurchaseController {
     }
 
 
+    //MSA 통신 용
     @PostMapping("/payments/complete")
     public ResponseEntity<PaymentsRes> saveOrder(@RequestBody List<OrderSaveRequest> orderSaveRequestList)
     {
