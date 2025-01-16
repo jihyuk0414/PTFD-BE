@@ -1,12 +1,13 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.2.3'
-    id 'io.spring.dependency-management' version '1.1.4'
+    id 'org.springframework.boot' version '3.4.1'
+    id 'io.spring.dependency-management' version '1.1.7'
 }
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 repositories {
     mavenCentral()
+    maven { url 'https://repo.spring.io/release' }
 }
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -17,9 +18,15 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+//    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'com.mysql:mysql-connector-j:8.2.0'
+//    implementation 'com.mysql:mysql-connector-j:8.2.0'
+    implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    runtimeOnly 'io.asyncer:r2dbc-mysql'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.16.1'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
