@@ -38,7 +38,7 @@ public class PaymentService {
 
     private final PaymentRepository paymentRepository;
 
-    @Value("${}")
+    @Value("${portonekey}")
     private String portoneKey;
 
 

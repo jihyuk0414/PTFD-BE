@@ -1,37 +1,45 @@
 package org.example.entity;
 
-import jakarta.persistence.*;
+//import jakarta.persistence.*;
+
+//import jakarta.persistence.GeneratedValue;
+//import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import lombok.*;
 import org.example.dto.forbackend.OrderSaveRequest;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDate;
 
 
 
 @Table(name = "orders")
-@Entity
+//@Entity
 @Getter
 @RequiredArgsConstructor
 public class Order {
 
     @Id
-    @Column(name = "order_id")
+    @Column("order_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
 
-    @Column(name = "post_id")
+    @Column("post_id")
     private Long postId ;
 
-    @Column(name = "order_price")
+    @Column("order_price")
     private int orderPrice ;
 
-    @Column(name = "consumer_email")
+    @Column("consumer_email")
     private String consumerEmail ;
 
-    @Column(name = "seller_email")
+    @Column("seller_email")
     private String sellerEmail ;
 
-    @Column(name = "order_at")
+    @Column("order_at")
     private LocalDate orderAt;
 
     @Builder
