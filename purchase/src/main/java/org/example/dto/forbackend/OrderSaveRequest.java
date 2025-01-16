@@ -12,8 +12,8 @@ import java.time.LocalDate;
 public class OrderSaveRequest {
     private String seller ;
     private String consumer ;
-    private Long Post_id ;
-    private int Post_point;
+    private Long post_id;
+    private int post_point;
     private LocalDate purchase_at ;
 
 }
