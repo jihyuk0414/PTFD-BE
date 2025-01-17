@@ -101,12 +101,12 @@ public class PaymentService {
             Timestamp purchaseAt = changeDateFormat(portOnePaymentRecords.getRequestedAt()) ;
 
             Payment payment = Payment.builder()
-                    .paymentid(paymentId)
+                    .paymentId(paymentId)
                     .status(portOnePaymentRecords.getStatus())
-                    .purchaseat(purchaseAt) // 변환 필요
-                    .ordername(portOnePaymentRecords.getOrderName())
-                    .totalamount(frontPaymentClaim)
-                    .useremail(useremail)
+                    .paymentAt(purchaseAt) // 변환 필요
+                    .pointName(portOnePaymentRecords.getOrderName())
+                    .totalAmount(frontPaymentClaim)
+                    .memberEmail(useremail)
                     .build();
 
             paymentRepository.save(payment) ; // 검증 정보가 문제 없을시, 결제 완료된걸 저장.
@@ -192,12 +192,12 @@ public class PaymentService {
                         Timestamp purchaseAt = changeDateFormat(requestedAt) ;
 
                         Payment cancelpayment = Payment.builder()
-                                .paymentid(paymentId)
+                                .paymentId(paymentId)
                                 .status(paymentStatus)
-                                .purchaseat(purchaseAt)
-                                .ordername(orderName)
-                                .totalamount(totalAmount)
-                                .useremail(useremail)
+                                .paymentAt(purchaseAt)
+                                .pointName(orderName)
+                                .totalAmount(totalAmount)
+                                .memberEmail(useremail)
                                 .build();
 
                         paymentRepository.save(cancelpayment);
